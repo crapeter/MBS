@@ -191,3 +191,5 @@ out/
 
 ### VS Code ###
 .vscode/
+
+Backend/src/main/resources/.env
