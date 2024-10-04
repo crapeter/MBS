@@ -1,10 +1,12 @@
 package CS_3365.MSB.Backend.DTO;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MovieDto {
   private String title;
   private String description;

@@ -33,7 +33,7 @@ public class User {
 
   @JsonProperty("phoneNum")
   @Column(name = "phone_number", nullable = false)
-  private String phone;
+  private String phoneNumber;
 
   @JsonProperty("address")
   @Column(name = "address", nullable = false)
