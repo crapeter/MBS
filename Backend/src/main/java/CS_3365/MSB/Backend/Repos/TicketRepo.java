@@ -1,4 +1,9 @@
 package CS_3365.MSB.Backend.Repos;
 
-public interface TicketRepo {
+import CS_3365.MSB.Backend.Models.Ticket;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RestResource;
+
+@RestResource
+public interface TicketRepo extends JpaRepository<Ticket, Long> {
 }
