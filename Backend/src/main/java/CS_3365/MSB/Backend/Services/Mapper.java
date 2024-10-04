@@ -3,6 +3,9 @@ package CS_3365.MSB.Backend.Services;
 import CS_3365.MSB.Backend.DTO.*;
 import CS_3365.MSB.Backend.Models.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Mapper {
   // Maps Model to DTO
   public static MovieDto mapToDto(Movie movie) {
@@ -42,5 +45,8 @@ public class Mapper {
     userDto.setEmail(user.getEmail());
     userDto.setPhoneNumber(user.getPhoneNumber());
     return userDto;
+  }
+  public static List<UserDto> mapToDto(List<User> users) {
+    return users.stream().map(Mapper::mapToDto).collect(Collectors.toList());
   }
 }
