@@ -6,4 +6,5 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 @RestResource
 public interface TheaterRepo extends JpaRepository<Theater, Long> {
+  Theater findByMovieId(Long movieId);
 }

@@ -29,7 +29,7 @@ public class Movie {
 
   @JsonProperty("runtime")
   @Column(name = "runtime", nullable = false)
-  private int runtime;
+  private String runtime;
 
   @JsonProperty("releaseDate")
   @Column(name = "ReleaseDate", nullable = false)
