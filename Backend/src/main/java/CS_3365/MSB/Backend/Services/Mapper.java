@@ -44,9 +44,39 @@ public class Mapper {
     userDto.setName(user.getName());
     userDto.setEmail(user.getEmail());
     userDto.setPhoneNumber(user.getPhoneNumber());
+    userDto.setAdmin(user.isAdmin());
     return userDto;
   }
-  public static List<UserDto> mapToDto(List<User> users) {
+
+  // Maps Models to DTOs
+  public static List<UserDto> mapToUList(List<User> users) {
     return users.stream().map(Mapper::mapToDto).collect(Collectors.toList());
+  }
+  public static List<MovieDto> mapToMList(List<Movie> movies) {
+    return movies.stream().map(Mapper::mapToDto).collect(Collectors.toList());
+  }
+  public static List<ReviewDto> mapToRList(List<Review> reviews) {
+    return reviews.stream().map(Mapper::mapToDto).collect(Collectors.toList());
+  }
+  public static List<TheaterDto> mapToThList(List<Theater> theaters) {
+    return theaters.stream().map(Mapper::mapToDto).collect(Collectors.toList());
+  }
+  public static List<TicketDto> mapToTiList(List<Ticket> tickets) {
+    return tickets.stream().map(Mapper::mapToDto).collect(Collectors.toList());
+  }
+
+  public static Movie mapToMovie(MovieDto movieDto) {
+    Movie movie = new Movie();
+    movie.setTitle(movieDto.getTitle());
+    movie.setDescription(movieDto.getDescription());
+    movie.setGenre(movieDto.getGenre());
+    movie.setRuntime(movieDto.getRuntime());
+    movie.setReleaseDate(movieDto.getReleaseDate());
+    movie.setDirector(movieDto.getDirector());
+    movie.setCast(movieDto.getCast());
+    movie.setPrice(movieDto.getPrice());
+    movie.setTheaters(null);
+    movie.setReviews(null);
+    return movie;
   }
 }

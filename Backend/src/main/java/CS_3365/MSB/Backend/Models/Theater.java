@@ -21,6 +21,7 @@ public class Theater {
   @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Ticket> tickets;
 
+  private String location;
   private int roomNumber;
   private int seatsBooked;
 }
