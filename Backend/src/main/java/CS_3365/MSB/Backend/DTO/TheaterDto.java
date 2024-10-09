@@ -5,12 +5,7 @@ import lombok.Data;
 
 @Data
 public class TheaterDto {
-  @JsonProperty("location")
   private String location;
-
-  @JsonProperty("roomNumber")
   private int roomNumber;
-
-  @JsonProperty("seatsBooked")
   private int seatsBooked;
 }
