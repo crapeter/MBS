@@ -6,7 +6,7 @@ import CS_3365.MSB.Backend.Models.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Mapper {
+public abstract class Mapper {
   // Maps Model to DTO
   public static MovieDto mapToDto(Movie movie) {
     MovieDto movieDto = new MovieDto();
@@ -78,5 +78,14 @@ public class Mapper {
     movie.setTheaters(null);
     movie.setReviews(null);
     return movie;
+  }
+  public static Theater mapToTheater(TheaterDto theaterDto) {
+    Theater theater = new Theater();
+    theater.setLocation(theaterDto.getLocation());
+    theater.setRoomNumber(theaterDto.getRoomNumber());
+    theater.setSeatsBooked(theaterDto.getSeatsBooked());
+    theater.setMovie(null);
+    theater.setTickets(null);
+    return theater;
   }
 }

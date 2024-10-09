@@ -10,7 +10,7 @@ import lombok.Data;
 public class Ticket {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @JsonProperty("numberPurchased")
   private int numberPurchased;

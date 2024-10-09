@@ -44,6 +44,11 @@ public class UserController {
     return userService.getAllUsers();
   }
 
+  @GetMapping("/tickets")
+  public Iterable<String> viewTickets(@RequestParam Long userId, @RequestParam Long movieId) {
+    return userService.viewTickets(userId, movieId);
+  }
+
   @GetMapping("/email")
   public UserDto getUserById(@RequestParam String email) {
     return Mapper.mapToDto(userService.getUserByEmail(email));

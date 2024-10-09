@@ -15,7 +15,7 @@ public class Theater {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "MovieId", nullable = false)
+  @JoinColumn(name = "MovieId")
   private Movie movie;
 
   @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, orphanRemoval = true)

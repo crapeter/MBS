@@ -12,6 +12,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -47,7 +48,8 @@ public class UserService {
       return Base64.getEncoder().encodeToString(encrypted);
     } catch (Exception ignored) {
     }
-    return null;  }
+    return null;
+  }
 
   public ResponseEntity<String> addUser(User newUser) {
     try {
@@ -132,5 +134,14 @@ public class UserService {
     }
     userRepo.save(user);
     return ResponseEntity.ok(thingToUpdate + " updated successfully");
+  }
+
+  public Iterable<String> viewTickets(Long userId, Long movieId) {
+    List<Ticket> tickets = ticketRepo.findByUserId(userId);
+    return tickets
+        .stream()
+        .filter(ticket -> ticket.getMovie().getId().equals(movieId))
+        .map(ticket -> ticket.getId().toString())
+        .toList();
   }
 }

@@ -1,5 +1,6 @@
 package CS_3365.MSB.Backend.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
@@ -8,14 +9,33 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieDto {
+  @JsonProperty("title")
   private String title;
+
+  @JsonProperty("description")
   private String description;
+
+  @JsonProperty("genre")
   private String genre;
+
+  @JsonProperty("runtime")
   private String runtime;
+
+  @JsonProperty("releaseDate")
   private String releaseDate;
+
+  @JsonProperty("director")
   private String director;
+
+  @JsonProperty("cast")
   private String cast;
+
+  @JsonProperty("price")
   private double price;
+
+  @JsonProperty("reviews")
   private List<ReviewDto> reviews;
+
+  @JsonProperty("theaters")
   private List<TheaterDto> theaters;
 }
