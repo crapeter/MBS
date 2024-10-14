@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -23,12 +25,13 @@ public class UserController {
     return userService.authenticate(email, password);
   }
 
-  @PostMapping("/purchase/ticket")
+  @PostMapping("/purchase/tickets")
   public ResponseEntity<String> purchaseTicket(
       @RequestParam int numberPurchased,
       @RequestParam Long movieId,
       @RequestParam Long theaterId,
-      @RequestParam Long userId
+      @RequestParam Long userId,
+      @RequestParam String paymentType
   ) {
     if (numberPurchased <= 0 || numberPurchased > 10) {
       return ResponseEntity.badRequest().body("Invalid number of tickets");
@@ -36,7 +39,7 @@ public class UserController {
     if (movieId == null || theaterId == null || userId == null) {
       return ResponseEntity.badRequest().body("Invalid movie, theater, or user ID");
     }
-    return userService.purchaseTicket(numberPurchased, movieId, theaterId, userId);
+    return userService.purchaseTicket(numberPurchased, movieId, theaterId, userId, paymentType);
   }
 
   @GetMapping("/all")
@@ -45,7 +48,7 @@ public class UserController {
   }
 
   @GetMapping("/tickets")
-  public Iterable<String> viewTickets(@RequestParam Long userId, @RequestParam Long movieId) {
+  public ResponseEntity<String> viewTickets(@RequestParam Long userId, @RequestParam Long movieId) {
     return userService.viewTickets(userId, movieId);
   }
 
@@ -77,6 +80,16 @@ public class UserController {
   @PatchMapping("/update/address")
   public ResponseEntity<String> updateUserAddress(@RequestParam String email, @RequestParam String newAddress) {
     return userService.updateUserAddress(email, newAddress);
+  }
+
+  @PatchMapping("/update/card")
+  public ResponseEntity<String> updateUserCardNum(@RequestParam String email, @RequestParam String newCardNum) {
+    return userService.updateUserCardNumber(email, newCardNum);
+  }
+
+  @PatchMapping("/add/review")
+  public ResponseEntity<String> addReview(@RequestParam Long userId, @RequestParam Long movieId, @RequestParam String review) {
+    return userService.addReview(userId, movieId, review);
   }
 
   @DeleteMapping("/delete/{email}")

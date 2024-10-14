@@ -9,4 +9,5 @@ import java.util.List;
 @RestResource
 public interface TicketRepo extends JpaRepository<Ticket, Long> {
   List<Ticket> findByUserId(long userId);
+  Ticket findByUserIdAndMovieId(long userId, long movieId);
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -18,6 +19,8 @@ public class TheaterService {
   @Autowired
   private MovieRepo movieRepo;
 
+  private static final String[] locations = {"Lubbock", "Amarillo", "Levelland", "Plainview", "Synder", "Abilene"};
+
   public ResponseEntity<String> addTheater(TheaterDto theaterDto) {
     List<Theater> theaters = theaterRepo.findByLocation(theaterDto.getLocation());
     for (Theater theater : theaters) {
@@ -26,8 +29,18 @@ public class TheaterService {
       }
     }
 
+    if (theaterDto.getRoomNumber() < 1) {
+      return ResponseEntity.badRequest().body("Invalid room number");
+    }
+
+    if (!Arrays.asList(locations).contains(theaterDto.getLocation())) {
+      return ResponseEntity.badRequest().body("Invalid location");
+    }
+
+    Theater theater = Mapper.mapToTheater(theaterDto);
+    theater.setMovie(movieRepo.findById(theaterDto.getMovieId()).orElse(null));
     try {
-      theaterRepo.save(Mapper.mapToTheater(theaterDto));
+      theaterRepo.save(theater);
       return ResponseEntity.ok("Theater added successfully");
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("Failed to add theater");

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "tickets")
@@ -14,6 +16,9 @@ public class Ticket {
 
   @JsonProperty("numberPurchased")
   private int numberPurchased;
+
+  @JsonProperty("ticketIds")
+  private List<Long> ticketIds;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MovieId", nullable = false)
