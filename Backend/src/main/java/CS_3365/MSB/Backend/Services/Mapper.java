@@ -13,7 +13,8 @@ public abstract class Mapper {
     movieDto.setTitle(movie.getTitle());
     movieDto.setDescription(movie.getDescription());
     movieDto.setGenre(movie.getGenre());
-    movieDto.setRuntime(movie.getRuntime());
+    movieDto.setRunTime(movie.getRuntime());
+    movieDto.setShowTime(movie.getShowTime());
     movieDto.setReleaseDate(movie.getReleaseDate());
     movieDto.setDirector(movie.getDirector());
     movieDto.setCast(movie.getCast());
@@ -70,13 +71,12 @@ public abstract class Mapper {
     movie.setTitle(movieDto.getTitle());
     movie.setDescription(movieDto.getDescription());
     movie.setGenre(movieDto.getGenre());
-    movie.setRuntime(movieDto.getRuntime());
+    movie.setRuntime(movieDto.getRunTime());
+    movie.setShowTime(movieDto.getShowTime());
     movie.setReleaseDate(movieDto.getReleaseDate());
     movie.setDirector(movieDto.getDirector());
     movie.setCast(movieDto.getCast());
     movie.setPrice(movieDto.getPrice());
-    movie.setTheaters(null);
-    movie.setReviews(null);
     return movie;
   }
   public static Theater mapToTheater(TheaterDto theaterDto) {
@@ -84,7 +84,7 @@ public abstract class Mapper {
     theater.setLocation(theaterDto.getLocation());
     theater.setRoomNumber(theaterDto.getRoomNumber());
     theater.setSeatsBooked(theaterDto.getSeatsBooked());
-    theater.setMovie(null);
+    theater.setMovieId(null);
     theater.setTickets(null);
     return theater;
   }

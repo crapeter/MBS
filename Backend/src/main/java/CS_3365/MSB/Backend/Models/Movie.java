@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Entity
 @Table(name = "movies")
@@ -27,9 +25,13 @@ public class Movie {
   @Column(name = "genre", nullable = false)
   private String genre;
 
-  @JsonProperty("runtime")
+  @JsonProperty("runTime")
   @Column(name = "runtime", nullable = false)
   private String runtime;
+
+  @JsonProperty("showTime")
+  @Column(name = "showTime", nullable = false)
+  private String showTime;
 
   @JsonProperty("releaseDate")
   @Column(name = "ReleaseDate", nullable = false)
@@ -46,10 +48,4 @@ public class Movie {
   @JsonProperty("price")
   @Column(name = "price", nullable = false)
   private double price;
-
-  @OneToMany(targetEntity = Review.class, mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Review> reviews;
-
-  @OneToMany(targetEntity = Theater.class, mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Theater> theaters;
 }

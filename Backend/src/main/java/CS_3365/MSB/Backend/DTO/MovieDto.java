@@ -18,8 +18,11 @@ public class MovieDto {
   @JsonProperty("genre")
   private String genre;
 
-  @JsonProperty("runtime")
-  private String runtime;
+  @JsonProperty("runTime")
+  private String runTime;
+
+  @JsonProperty("showTime")
+  private String showTime;
 
   @JsonProperty("releaseDate")
   private String releaseDate;
