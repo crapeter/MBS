@@ -39,6 +39,10 @@ public class User {
   @Column(name = "address", nullable = false)
   private String address;
 
+  @JsonProperty("cardNum")
+  @Column(name = "card_number")
+  private String cardNumber;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Review> reviews;
 
