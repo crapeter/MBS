@@ -38,7 +38,7 @@ public class TheaterService {
     }
 
     Theater theater = Mapper.mapToTheater(theaterDto);
-    theater.setMovie(movieRepo.findById(theaterDto.getMovieId()).orElse(null));
+    theater.setMovieId(null);
     try {
       theaterRepo.save(theater);
       return ResponseEntity.ok("Theater added successfully");
@@ -55,7 +55,7 @@ public class TheaterService {
       return ResponseEntity.badRequest().body("Theater or movie not found");
     }
 
-    theater.setMovie(movie);
+    theater.setMovieId(movieId);
     try {
       theaterRepo.save(theater);
       return ResponseEntity.ok("Movie updated successfully");

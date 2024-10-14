@@ -13,7 +13,4 @@ public class TheaterDto {
 
   @JsonProperty("seatsBooked")
   private int seatsBooked;
-
-  @JsonProperty("movieId")
-  private Long movieId;
 }

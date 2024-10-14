@@ -62,6 +62,11 @@ public class UserService {
     Movie movie = movieRepo.findById(movieId).orElse(null);
     Theater theater = theaterRepo.findById(theaterId).orElse(null);
     User user = userRepo.findById(userId).orElse(null);
+    Ticket ticketsExist = ticketRepo.findByUserIdAndMovieIdAndTheaterId(userId, movieId, theaterId);
+
+    if (ticketsExist != null) {
+      return ResponseEntity.badRequest().body("Tickets already purchased");
+    }
 
     if (movie == null || theater == null || user == null) {
       return ResponseEntity.badRequest().body("Invalid movie, theater, or user ID");

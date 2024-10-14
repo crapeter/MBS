@@ -14,9 +14,8 @@ public class Theater {
   @Column(name = "TheaterId")
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "MovieId")
-  private Movie movie;
+  @Column(name = "movieId")
+  private Long movieId;
 
   @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Ticket> tickets;
