@@ -62,11 +62,6 @@ public class UserService {
     Movie movie = movieRepo.findById(movieId).orElse(null);
     Theater theater = theaterRepo.findById(theaterId).orElse(null);
     User user = userRepo.findById(userId).orElse(null);
-    Ticket ticketsExist = ticketRepo.findByUserIdAndMovieIdAndTheaterId(userId, movieId, theaterId);
-
-    if (ticketsExist != null) {
-      return ResponseEntity.badRequest().body("Tickets already purchased");
-    }
 
     if (movie == null || theater == null || user == null) {
       return ResponseEntity.badRequest().body("Invalid movie, theater, or user ID");
@@ -89,6 +84,20 @@ public class UserService {
     String title = movie.getTitle();
     String email = user.getEmail();
     String uniqueId = location + title + email;
+
+    Ticket ticketsExist = ticketRepo.findByUserIdAndMovieIdAndTheaterId(userId, movieId, theaterId);
+    if (ticketsExist != null) {
+      for (int i = ticketsExist.getTicketIds().size(); i < 10; i++) {
+        ticketsExist.getTicketIds().add(generateRandId(uniqueId, i));
+      }
+      ticketsExist.setNumberPurchased(ticketsExist.getTicketIds().size());
+      try {
+        ticketRepo.save(ticketsExist);
+        return ResponseEntity.ok("Maximum number of tickets (10) purchased");
+      } catch (Exception e) {
+        return ResponseEntity.badRequest().body("Failed to purchase tickets");
+      }
+    }
 
     Ticket ticket = new Ticket();
     ticket.setNumberPurchased(numberPurchased);
