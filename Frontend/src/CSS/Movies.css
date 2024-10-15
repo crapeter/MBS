@@ -1,0 +1,21 @@
+.movie_div {
+  background-color: #303030;
+  color: white;
+  height: 100vh;
+}
+
+.movies_header:hover {
+  cursor: pointer;
+}
+
+.movie_title {
+  padding-top: 10px;
+}
+
+.movie_details {
+  padding-bottom: 20px;
+}
+
+.movie_list {
+  list-style-type: none;
+}

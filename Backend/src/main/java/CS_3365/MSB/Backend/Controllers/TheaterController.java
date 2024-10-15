@@ -1,10 +1,13 @@
 package CS_3365.MSB.Backend.Controllers;
 
 import CS_3365.MSB.Backend.DTO.TheaterDto;
+import CS_3365.MSB.Backend.Models.Theater;
 import CS_3365.MSB.Backend.Services.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/theaters")
@@ -20,6 +23,11 @@ public class TheaterController {
   @GetMapping("/get/id")
   public ResponseEntity<Long> getTheaterId(@RequestParam String location, @RequestParam int roomNumber) {
     return theaterService.getTheaterId(location, roomNumber);
+  }
+
+  @GetMapping("/get/by/location")
+  public List<TheaterDto> getTheatersByLocation(@RequestParam String location) {
+    return theaterService.getTheatersByLocation(location);
   }
 
   @PatchMapping("/change/movie")

@@ -8,7 +8,7 @@ import '../../CSS/UserLogin.css'
 const UserLogin = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { setIsLoggedIn, setIsAdmin } = useAuth()
+  const { setIsLoggedIn, setIsAdmin, setUserEmail } = useAuth()
   const nav = useNavigate()
 
   const handleLogin = async (e) => {
@@ -19,6 +19,7 @@ const UserLogin = () => {
     .then(res => {
       if (res.data) {
         setIsLoggedIn(true)
+        setUserEmail(email)
         loggedIn = true
       } else {
         setIsLoggedIn(false)
@@ -34,7 +35,7 @@ const UserLogin = () => {
           setIsAdmin(true)
         else
           setIsAdmin(false)
-        nav('/movies')
+        nav('/locations')
       })
       .catch(err => alert("Invalid email"))
     }

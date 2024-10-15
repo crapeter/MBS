@@ -28,15 +28,16 @@ public class UserController {
       @RequestParam int numberPurchased,
       @RequestParam Long movieId,
       @RequestParam Long theaterId,
-      @RequestParam Long userId,
+      @RequestParam String userEmail,
       @RequestParam String paymentType
   ) {
     if (numberPurchased <= 0 || numberPurchased > 10) {
       return ResponseEntity.badRequest().body("Invalid number of tickets");
     }
-    if (movieId == null || theaterId == null || userId == null) {
+    if (movieId == null || theaterId == null || userEmail.isEmpty()) {
       return ResponseEntity.badRequest().body("Invalid movie, theater, or user ID");
     }
+    Long userId = userService.getUserIdByEmail(userEmail);
     return userService.purchaseTicket(numberPurchased, movieId, theaterId, userId, paymentType);
   }
 

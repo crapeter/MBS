@@ -1,43 +1,88 @@
-import React, { /* useState */ } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../Misc/AuthContext";
-import { /* Form, */ Button } from "react-bootstrap";
-// import { useNavigate } from "react-router-dom"
-// import axios from 'axios'
+import { useNavigate } from "react-router-dom"
+import '../../CSS/Movies.css';
+import PurchaseTickets from "./PurchaseTickets";
+import axios from 'axios';
 
-const Movies = () => {
-	const { isLoggedIn, isAdmin } = useAuth()
+const Movies = ({ location }) => {
+  const nav = useNavigate()
+  const [movies, setMovies] = useState([]);
+  const [openMovieId, setOpenMovieId] = useState(null);
+	const { isLoggedIn } = useAuth();
 
-	const onLoggedIn = () => {
-		alert(`isLoggedIn: ${isLoggedIn}`)
-	}
+  useEffect(() => {
+    getMovies();
+    // eslint-disable-next-line
+  }, []);
 
-	const onAdmin = () => {
-		alert(`isAdmin: ${isAdmin}`)
-	}
+  const locations = () => {
+    nav('/locations')
+  }
 
-	return (
-		<div>
-			{isLoggedIn ? (
-				<div>
-					<h1>Movie List</h1>
-					<Button variant="primary" onClick={onLoggedIn}>
-						see stuff
-					</Button>
+  const getMovies = async () => {
+    try {
+      const allMovies = await axios.get('/api/movies/all');
+      const locationTheaters = await axios.get(`/api/theaters/get/by/location?location=${location}`);
 
-					{isAdmin ? (
-						<Button variant="primary" onClick={onAdmin}>
-							see admin stuff
-						</Button>
-					) : {}}
+      const allMovieIds = allMovies.data.map(movie => movie.id);
+      const moviesAtLoc = locationTheaters.data.filter(theater => allMovieIds.includes(theater.movieId));
+      
+      const totalMovies = allMovies.data.filter(movie => moviesAtLoc.map(theater => theater.movieId).includes(movie.id));
 
-				</div>
-			) : (
-				<div>
-					<h1>Please log in to view movies</h1>
-				</div>
-			)}
-		</div>
-	)
-}
+      setMovies(totalMovies);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const toggleMovieDetails = (movieId) => {
+    setOpenMovieId(openMovieId === movieId ? null : movieId);
+  };
+
+  return (
+    <div className="movie_div">
+      {isLoggedIn ? (
+        <div>
+          <h1 onClick={locations} className="movies_header">Movies</h1>
+          <ul className="movie_list">
+            {movies.map(movie => (
+              <li key={movie.id}>
+                <p 
+                  onClick={() => toggleMovieDetails(movie.id)} 
+                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
+									className="movie_title"
+                >
+                  {movie.title}
+                </p>
+
+                {openMovieId === movie.id && (
+                  <div className="movie_details" style={{ marginLeft: '20px' }}>
+										<div>
+											<p><strong>Genre:</strong> {movie.genre}</p>
+											<p><strong>Runtime:</strong> {movie.runTime} mins</p>
+											<p><strong>Show time:</strong> {movie.showTime}</p>
+											<p><strong>Release Date:</strong> {movie.releaseDate}</p>
+											<p><strong>Director:</strong> {movie.director}</p>
+											<p><strong>Cast:</strong> {movie.cast}</p>
+											<p><strong>Description:</strong> {movie.description}</p>
+										</div>
+										<div className="purchase_tickets">
+                      <PurchaseTickets movie={movie} location={location} />
+										</div>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div>
+          <h1>Please log in to view movies</h1>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default Movies;
