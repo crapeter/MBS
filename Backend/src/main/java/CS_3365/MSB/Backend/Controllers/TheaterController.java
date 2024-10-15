@@ -22,7 +22,7 @@ public class TheaterController {
     return theaterService.getTheaterId(location, roomNumber);
   }
 
-  @PatchMapping("/update/movie")
+  @PatchMapping("/change/movie")
   public ResponseEntity<String> updateMovie(@RequestParam Long theaterId, @RequestParam Long movieId) {
     return theaterService.updateMovie(theaterId, movieId);
   }

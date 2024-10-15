@@ -38,7 +38,12 @@ public class MovieController {
     return movieService.getPlaying();
   }
 
-  @PatchMapping("/add/theater")
+  @GetMapping("/get/not/playing")
+  public ResponseEntity<String> getNotPlaying() {
+    return movieService.getNotPlaying();
+  }
+
+  @PatchMapping("/add/to/theater")
   public ResponseEntity<String> addTheater(@RequestParam Long theaterId, @RequestParam Long movieId) {
     return movieService.addToTheater(theaterId, movieId);
   }
@@ -51,6 +56,11 @@ public class MovieController {
   @PatchMapping("/update/price")
   public ResponseEntity<String> updatePrice(@RequestParam Long movieId, @RequestParam double newPrice) {
     return movieService.updatePrice(movieId, newPrice);
+  }
+
+  @PatchMapping("/update/playing")
+  public ResponseEntity<String> updatePlaying(@RequestParam Long movieId, @RequestParam boolean isPlaying) {
+    return movieService.updatePlaying(movieId, isPlaying);
   }
 
   @DeleteMapping("/delete/{movieId}")

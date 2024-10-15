@@ -14,16 +14,12 @@ public class TicketService {
   private TicketRepo ticketRepo;
 
   public ResponseEntity<String> getTotalNumberOfTickets() {
-    int totalNumberSold = 0;
     List<Ticket> tickets = ticketRepo.findAll();
 
-    if (tickets.isEmpty()) {
+    if (tickets.isEmpty())
       return ResponseEntity.badRequest().body("No tickets found");
-    }
 
-    for (Ticket ticket : tickets) {
-      totalNumberSold += ticket.getNumberPurchased();
-    }
+    int totalNumberSold = tickets.stream().mapToInt(Ticket::getNumberPurchased).sum();
     return ResponseEntity.ok().body("Total number of tickets: " + totalNumberSold);
   }
 }

@@ -4,5 +4,7 @@ import lombok.Data;
 
 @Data
 public class ReviewDto {
+  private String movieTitle;
+  private String name;
   private String review;
 }

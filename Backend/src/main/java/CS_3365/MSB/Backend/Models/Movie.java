@@ -45,6 +45,10 @@ public class Movie {
   @Column(name = "MovieCast", nullable = false)
   private String cast;
 
+  @JsonProperty("isPlaying")
+  @Column(name = "isPlaying", nullable = false)
+  private boolean isPlaying;
+
   @JsonProperty("price")
   @Column(name = "price", nullable = false)
   private double price;
