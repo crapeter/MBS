@@ -99,4 +99,16 @@ public class MovieService {
       return ResponseEntity.badRequest().body("Failed to update price");
     }
   }
+
+  public ResponseEntity<String> getPlaying() {
+    List<Movie> movies = movieRepo.findAll();
+    StringBuilder playing = new StringBuilder();
+    for (Movie movie : movies) {
+      playing.append(movie.getTitle())
+          .append(" is playing at ")
+          .append(movie.getShowTime())
+          .append("\n");
+    }
+    return ResponseEntity.ok(playing.toString());
+  }
 }

@@ -33,6 +33,11 @@ public class MovieController {
     return movieService.getMovie(title, director, time);
   }
 
+  @GetMapping("/get/playing")
+  public ResponseEntity<String> getPlaying() {
+    return movieService.getPlaying();
+  }
+
   @PatchMapping("/add/theater")
   public ResponseEntity<String> addTheater(@RequestParam Long theaterId, @RequestParam Long movieId) {
     return movieService.addToTheater(theaterId, movieId);
