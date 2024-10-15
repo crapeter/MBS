@@ -40,6 +40,11 @@ public class UserController {
     return userService.purchaseTicket(numberPurchased, movieId, theaterId, userId, paymentType);
   }
 
+  @GetMapping("/is/admin")
+  public boolean isAdmin(@RequestParam String email) {
+    return userService.isAdmin(email);
+  }
+
   @GetMapping("/all")
   public Iterable<UserDto> getAllUsers() {
     return userService.getAllUsers();
