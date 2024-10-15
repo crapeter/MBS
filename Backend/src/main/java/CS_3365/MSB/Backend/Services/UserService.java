@@ -134,6 +134,14 @@ public class UserService {
     return userRepo.findByEmail(email);
   }
 
+  public Long getUserIdByEmail(String email) {
+    User user = userRepo.findByEmail(email);
+    if (user == null) {
+      return null;
+    }
+    return user.getId();
+  }
+
   public ResponseEntity<String> deleteUser(String email) {
     try {
       userRepo.delete(userRepo.findByEmail(email));

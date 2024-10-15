@@ -3,12 +3,13 @@ package CS_3365.MSB.Backend.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieDto {
+  @JsonProperty("id")
+  private Long id;
+
   @JsonProperty("title")
   private String title;
 

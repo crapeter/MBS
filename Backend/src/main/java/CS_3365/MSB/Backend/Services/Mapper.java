@@ -10,6 +10,7 @@ public abstract class Mapper {
   // Maps Model to DTO
   public static MovieDto mapToDto(Movie movie) {
     MovieDto movieDto = new MovieDto();
+    movieDto.setId(movie.getId());
     movieDto.setTitle(movie.getTitle());
     movieDto.setDescription(movie.getDescription());
     movieDto.setGenre(movie.getGenre());
@@ -21,6 +22,7 @@ public abstract class Mapper {
     movieDto.setPrice(movie.getPrice());
     return movieDto;
   }
+
   public static ReviewDto mapToDto(Review review) {
     ReviewDto reviewDto = new ReviewDto();
     reviewDto.setMovieTitle(review.getMovie().getTitle());
@@ -28,12 +30,15 @@ public abstract class Mapper {
     reviewDto.setReview(review.getReview());
     return reviewDto;
   }
+
   public static TheaterDto mapToDto(Theater theater) {
     TheaterDto theaterDto = new TheaterDto();
     theaterDto.setRoomNumber(theater.getRoomNumber());
     theaterDto.setSeatsBooked(theater.getSeatsBooked());
+    theaterDto.setMovieId(theater.getMovieId());
     return theaterDto;
   }
+
   public static TicketDto mapToDto(Ticket ticket) {
     TicketDto ticketDto = new TicketDto();
     ticketDto.setMovie(mapToDto(ticket.getMovie()));
@@ -41,6 +46,7 @@ public abstract class Mapper {
     ticketDto.setNumberPurchased(ticket.getNumberPurchased());
     return ticketDto;
   }
+
   public static UserDto mapToDto(User user) {
     UserDto userDto = new UserDto();
     userDto.setAddress(user.getAddress());
@@ -55,15 +61,19 @@ public abstract class Mapper {
   public static List<UserDto> mapToUList(List<User> users) {
     return users.stream().map(Mapper::mapToDto).collect(Collectors.toList());
   }
+
   public static List<MovieDto> mapToMList(List<Movie> movies) {
     return movies.stream().map(Mapper::mapToDto).collect(Collectors.toList());
   }
+
   public static List<ReviewDto> mapToRList(List<Review> reviews) {
     return reviews.stream().map(Mapper::mapToDto).collect(Collectors.toList());
   }
+
   public static List<TheaterDto> mapToThList(List<Theater> theaters) {
     return theaters.stream().map(Mapper::mapToDto).collect(Collectors.toList());
   }
+
   public static List<TicketDto> mapToTiList(List<Ticket> tickets) {
     return tickets.stream().map(Mapper::mapToDto).collect(Collectors.toList());
   }
@@ -81,6 +91,7 @@ public abstract class Mapper {
     movie.setPrice(movieDto.getPrice());
     return movie;
   }
+
   public static Theater mapToTheater(TheaterDto theaterDto) {
     Theater theater = new Theater();
     theater.setLocation(theaterDto.getLocation());

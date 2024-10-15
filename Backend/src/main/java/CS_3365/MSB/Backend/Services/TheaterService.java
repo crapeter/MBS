@@ -19,7 +19,7 @@ public class TheaterService {
   @Autowired
   private MovieRepo movieRepo;
 
-  private static final String[] locations = {"Lubbock", "Amarillo", "Levelland", "Plainview", "Synder", "Abilene"};
+  private static final String[] locations = {"Lubbock", "Amarillo", "Levelland", "Plainview", "Snyder", "Abilene"};
 
   public ResponseEntity<String> addTheater(TheaterDto theaterDto) {
     List<Theater> theaters = theaterRepo.findByLocation(theaterDto.getLocation());
@@ -83,5 +83,12 @@ public class TheaterService {
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("Failed to delete theater");
     }
+  }
+
+  public List<TheaterDto> getTheatersByLocation(String location) {
+    List<Theater> theaters = theaterRepo.findByLocation(location);
+    List<TheaterDto> theaterDtos = Mapper.mapToThList(theaters);
+    theaterDtos.forEach(theaterDto -> theaterDto.setLocation(location));
+    return theaterDtos;
   }
 }
