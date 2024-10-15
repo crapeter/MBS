@@ -2,7 +2,8 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './Components/Misc/AuthContext';
-// import Home_Page from './Components/Misc/HomePage'
+import UserLogin from './Components/Login/UserLogin'
+import Movies from './Components/Movie/Movies'
 import './App.css';
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
         <div className='test'>
           <BrowserRouter>
             <Routes>
-              {/* <Route exact path="/" Component={Home_Page} /> */}
+              <Route exact path='/' Component={UserLogin} />
+              <Route exact path='/movies' Component={Movies} />
             </Routes>
           </BrowserRouter>
         </div>

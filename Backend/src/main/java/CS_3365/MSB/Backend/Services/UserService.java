@@ -34,7 +34,19 @@ public class UserService {
   private static final String INIT_VECTOR = System.getenv("INIT_VECTOR");
 
   public boolean authenticate(String email, String password) {
-    return userRepo.findByEmail(email).getPassword().equals(encrypt(password));
+    User user = userRepo.findByEmail(email);
+    if (user == null) {
+      return false;
+    }
+    return user.getPassword().equals(encrypt(password));
+  }
+
+  public boolean isAdmin(String email) {
+    User user = userRepo.findByEmail(email);
+    if (user == null) {
+      return false;
+    }
+    return user.isAdmin();
   }
 
   public ResponseEntity<String> addUser(User newUser) {
