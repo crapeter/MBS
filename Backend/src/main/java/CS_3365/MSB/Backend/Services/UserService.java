@@ -72,6 +72,11 @@ public class UserService {
       return ResponseEntity.badRequest().body("Invalid movie, theater, or user ID");
     }
 
+    /* Option to only allow customers to purchase tickets if the movie is playing
+    if (!movie.isPlaying())
+      return ResponseEntity.badRequest().body("Movie is not playing");
+    */
+
     if (paymentType.toLowerCase().contains("card")) {
       if (!validateCard(Objects.requireNonNull(decrypt(user.getCardNumber())))) {
         return ResponseEntity.badRequest().body("Invalid card number");

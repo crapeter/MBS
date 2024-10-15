@@ -10,7 +10,7 @@ import lombok.Data;
 public class Review {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @Column(nullable = false)
   @JsonProperty("rating")

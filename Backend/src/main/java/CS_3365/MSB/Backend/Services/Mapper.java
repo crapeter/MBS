@@ -23,6 +23,8 @@ public abstract class Mapper {
   }
   public static ReviewDto mapToDto(Review review) {
     ReviewDto reviewDto = new ReviewDto();
+    reviewDto.setMovieTitle(review.getMovie().getTitle());
+    reviewDto.setName(review.getUser().getName());
     reviewDto.setReview(review.getReview());
     return reviewDto;
   }

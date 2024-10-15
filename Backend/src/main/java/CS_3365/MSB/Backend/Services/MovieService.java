@@ -73,42 +73,58 @@ public class MovieService {
   }
 
   public ResponseEntity<String> updateTime(Long movieId, String newTime) {
-    Movie movie = movieRepo.findById(movieId).orElse(null);
-    if (movie == null)
-      return ResponseEntity.badRequest().body("Movie not found");
-
-    try {
-      movie.setShowTime(newTime);
-      movieRepo.save(movie);
-      return ResponseEntity.ok("Time updated successfully");
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Failed to update time");
-    }
+    return updateStat(movieId, "time", newTime);
   }
 
   public ResponseEntity<String> updatePrice(Long movieId, double newPrice) {
-    Movie movie = movieRepo.findById(movieId).orElse(null);
-    if (movie == null)
-      return ResponseEntity.badRequest().body("Movie not found");
+    return updateStat(movieId, "price", newPrice);
+  }
 
-    try {
-      movie.setPrice(newPrice);
-      movieRepo.save(movie);
-      return ResponseEntity.ok("Price updated successfully");
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Failed to update price");
-    }
+  public ResponseEntity<String> updatePlaying(Long movieId, boolean isPlaying) {
+    return updateStat(movieId, "playing", isPlaying);
   }
 
   public ResponseEntity<String> getPlaying() {
     List<Movie> movies = movieRepo.findAll();
     StringBuilder playing = new StringBuilder();
     for (Movie movie : movies) {
-      playing.append(movie.getTitle())
-          .append(" is playing at ")
-          .append(movie.getShowTime())
-          .append("\n");
+      if (movie.isPlaying())
+        playing.append(movie.getTitle())
+            .append(" is playing at ")
+            .append(movie.getShowTime())
+            .append("\n");
     }
     return ResponseEntity.ok(playing.toString());
+  }
+
+  public ResponseEntity<String> getNotPlaying() {
+    List<Movie> movies = movieRepo.findAll();
+    StringBuilder notPlaying = new StringBuilder();
+    for (Movie movie : movies) {
+      if (!movie.isPlaying())
+        notPlaying.append(movie.getTitle())
+            .append(" will be playing at ")
+            .append(movie.getShowTime())
+            .append("\n");
+    }
+    return ResponseEntity.ok(notPlaying.toString());
+  }
+
+  private ResponseEntity<String> updateStat(Long movieId, String statName, Object stat) {
+    Movie movie = movieRepo.findById(movieId).orElse(null);
+    if (movie == null)
+      return ResponseEntity.badRequest().body("Movie not found");
+
+    try {
+      switch (statName) {
+        case "time" -> movie.setShowTime((String) stat);
+        case "price" -> movie.setPrice((double) stat);
+        case "playing" -> movie.setPlaying((boolean) stat);
+      }
+      movieRepo.save(movie);
+      return ResponseEntity.ok(statName + " updated successfully");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Failed to update " + statName);
+    }
   }
 }

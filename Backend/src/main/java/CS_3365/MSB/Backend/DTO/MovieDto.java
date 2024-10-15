@@ -36,9 +36,6 @@ public class MovieDto {
   @JsonProperty("price")
   private double price;
 
-  @JsonProperty("reviews")
-  private List<ReviewDto> reviews;
-
-  @JsonProperty("theaters")
-  private List<TheaterDto> theaters;
+  @JsonProperty("isPlaying")
+  private boolean isPlaying;
 }
