@@ -22,4 +22,9 @@ public class TicketService {
     int totalNumberSold = tickets.stream().mapToInt(Ticket::getNumberPurchased).sum();
     return ResponseEntity.ok().body("Total number of tickets: " + totalNumberSold);
   }
+
+  public List<Integer> numberSold() {
+    List<Ticket> tickets = ticketRepo.findAll();
+    return tickets.stream().map(Ticket::getNumberPurchased).toList();
+  }
 }

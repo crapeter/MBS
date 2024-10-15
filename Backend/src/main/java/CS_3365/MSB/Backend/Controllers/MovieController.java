@@ -19,7 +19,9 @@ public class MovieController {
   }
 
   @GetMapping("/get/id")
-  public ResponseEntity<Long> getMovieId(@RequestParam String title, @RequestParam String director, @RequestParam String time) {
+  public ResponseEntity<Long> getMovieId(
+      @RequestParam String title, @RequestParam String director, @RequestParam String time
+  ) {
     return movieService.getMovieId(title, director, time);
   }
 

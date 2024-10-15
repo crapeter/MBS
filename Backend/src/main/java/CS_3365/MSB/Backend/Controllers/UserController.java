@@ -86,7 +86,9 @@ public class UserController {
   }
 
   @PatchMapping("/add/review")
-  public ResponseEntity<String> addReview(@RequestParam Long userId, @RequestParam Long movieId, @RequestParam String review) {
+  public ResponseEntity<String> addReview(
+      @RequestParam Long userId, @RequestParam Long movieId, @RequestParam String review
+  ) {
     return userService.addReview(userId, movieId, review);
   }
 
