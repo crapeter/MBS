@@ -3,6 +3,7 @@ import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './Components/Misc/AuthContext'
 import UserLogin from './Components/Login/UserLogin'
+import UserRegistration from './Components/Login/NewUser'
 import Movies from './Components/Movie/Movies'
 import Locations from './Components/Movie/Locations'
 import Abilene from './Components/Locations/Abilene'
@@ -21,6 +22,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route exact path='/' Component={UserLogin} />
+              <Route exact path='/register' Component={UserRegistration} />
               <Route exact path='/locations' Component={Locations} />
               <Route exact path='/movies' Component={Movies} />
               <Route exact path='/Abilene' Component={Abilene}/>

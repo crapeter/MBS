@@ -99,7 +99,8 @@ public class UserService {
 
     Ticket ticketsExist = ticketRepo.findByUserIdAndMovieIdAndTheaterId(userId, movieId, theaterId);
     if (ticketsExist != null) {
-      for (int i = ticketsExist.getTicketIds().size(); i < 10; i++) {
+      int oldNumPurchased = ticketsExist.getTicketIds().size();
+      for (int i = oldNumPurchased; i < 10 && i < oldNumPurchased + numberPurchased; i++) {
         ticketsExist.getTicketIds().add(generateRandId(uniqueId, i));
       }
       ticketsExist.setNumberPurchased(ticketsExist.getTicketIds().size());
@@ -195,12 +196,24 @@ public class UserService {
     return ResponseEntity.ok(thingToUpdate + " updated successfully");
   }
 
-  public ResponseEntity<String> viewTickets(Long userId, Long movieId) {
-    Ticket ticket = ticketRepo.findByUserIdAndMovieId(userId, movieId);
+  public List<Long> viewTickets(Long userId, Long movieId, Long theaterId) {
+    Ticket ticket = ticketRepo.findByUserIdAndMovieIdAndTheaterId(userId, movieId, theaterId);
     if (ticket == null) {
-      return ResponseEntity.badRequest().body("No tickets found");
+      return null;
     }
-    return ResponseEntity.ok(ticket.getTicketIds().toString());
+    return ticket.getTicketIds();
+  }
+
+  public List<Theater> getTheatersByLocation(String location) {
+    return theaterRepo.findByLocation(location);
+  }
+
+  public Long getTheaterId(String location, int roomNumber) {
+    Theater theater = theaterRepo.findByLocationAndRoomNumber(location, roomNumber);
+    if (theater == null) {
+      return -1L;
+    }
+    return theater.getId();
   }
 
   public ResponseEntity<String> addReview(Long userId, Long movieId, String review) {

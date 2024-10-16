@@ -3,6 +3,7 @@ import { useAuth } from "../Misc/AuthContext";
 import { useNavigate } from "react-router-dom"
 import '../../CSS/Movies.css';
 import PurchaseTickets from "./PurchaseTickets";
+import ViewTickets from "./ViewTickets";
 import axios from 'axios';
 
 const Movies = ({ location }) => {
@@ -10,6 +11,7 @@ const Movies = ({ location }) => {
   const [movies, setMovies] = useState([]);
   const [openMovieId, setOpenMovieId] = useState(null);
 	const { isLoggedIn } = useAuth();
+  const [ticketUpdated, setTicketUpdated] = useState(false);
 
   useEffect(() => {
     getMovies();
@@ -18,6 +20,10 @@ const Movies = ({ location }) => {
 
   const locations = () => {
     nav('/locations')
+  }
+
+  const refreshTickets = () => {
+    setTicketUpdated(prev => !prev)
   }
 
   const getMovies = async () => {
@@ -44,7 +50,7 @@ const Movies = ({ location }) => {
     <div className="movie_div">
       {isLoggedIn ? (
         <div>
-          <h1 onClick={locations} className="movies_header">Movies</h1>
+          <h1 onClick={locations} className="movies_header">Movies available in {location}</h1>
           <ul className="movie_list">
             {movies.map(movie => (
               <li key={movie.id}>
@@ -68,8 +74,11 @@ const Movies = ({ location }) => {
 											<p><strong>Description:</strong> {movie.description}</p>
 										</div>
 										<div className="purchase_tickets">
-                      <PurchaseTickets movie={movie} location={location} />
+                      <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets}/>
 										</div>
+                    <div className="view_tickets">
+                      <ViewTickets className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated}/>
+                    </div>
                   </div>
                 )}
               </li>
@@ -78,7 +87,7 @@ const Movies = ({ location }) => {
         </div>
       ) : (
         <div>
-          <h1>Please log in to view movies</h1>
+          <h1 style={{color: "white"}}>Log in to view movies</h1>
         </div>
       )}
     </div>

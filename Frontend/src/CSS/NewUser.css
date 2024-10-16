@@ -1,11 +1,11 @@
-.top_login_div {
+.top_register_div {
   display: grid;
   place-items: center;
   height: 100vh;
   background-color: #303030;
 }
 
-.user_login {
+.register {
   width: 15%;
   padding: 20px;
   border: 1px solid #ccc;
@@ -14,7 +14,7 @@
   background-color: white;
 }
 
-.login_input {
+.register_input {
   width: 75%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -23,6 +23,6 @@
   border-radius: 4px;
 }
 
-.user_buttons {
+.register_buttons {
   margin-right: 5px;
 }

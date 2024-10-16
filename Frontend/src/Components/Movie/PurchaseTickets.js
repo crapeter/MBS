@@ -1,9 +1,11 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Modal, Button, Form } from 'react-bootstrap'
+import { useAuth } from "../Misc/AuthContext";
 import axios from "axios"
 import '../../CSS/PurchaseTickets.css'
 
-const PurchaseTickets = ({ movie, location }) => {
+const PurchaseTickets = ({ movie, location, refreshTickets }) => {
+  const { userEmail } = useAuth()
   const [show, setShow] = useState(false)
   const [theaters, setTheaters] = useState([])
   const [ticketQuantity, setTicketQuantity] = useState(1)
@@ -11,6 +13,7 @@ const PurchaseTickets = ({ movie, location }) => {
   const [paymentType, setPaymentType] = useState([])
   const [payment, setPayment] = useState('')
   const [paypalEmail, setPaypalEmail] = useState('')
+  const [currentPrice, setCurrentPrice] = useState(movie.price)
 
   const handleClose = () => setShow(false)
   const handleShow = () => {
@@ -37,10 +40,34 @@ const PurchaseTickets = ({ movie, location }) => {
     setTheaters(possibleTheaters)
   }
 
+  const purchaseTicket = async () => {
+    try {
+      const res = await axios.post(`/api/users/purchase/tickets`, null, {
+        params: {
+          numberPurchased: ticketQuantity,
+          movieId: movie.id,
+          location: location,
+          roomNumber: selectedTheater,
+          userEmail: userEmail,
+          paymentType: payment
+        }
+      })
+      alert(res.data)
+      refreshTickets()
+      handleClose()
+    } catch (err) {
+      alert(err.message)
+    }
+  }
+
   const setPayments = () => {
     const types = ['Credit Card', 'Debit Card', 'PayPal']
     setPaymentType(types)
   }
+
+  useEffect(() => {
+    setCurrentPrice(ticketQuantity * movie.price)
+  }, [ticketQuantity, movie.price])
 
   return (
     <div>
@@ -58,6 +85,15 @@ const PurchaseTickets = ({ movie, location }) => {
                 <Button variant="danger" onClick={decrement}>-</Button>
                 <div style={{ padding: '0 20px', fontSize: '18px' }}>{ticketQuantity}</div>
                 <Button variant="success" onClick={increment}>+</Button>
+              </div>
+            </Form.Group>
+          </Form>
+
+          <Form className="purchase_forms">
+            <Form.Group>
+              <Form.Label>Total Price</Form.Label>
+              <div style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                ${currentPrice.toFixed(2)}
               </div>
             </Form.Group>
           </Form>
@@ -98,17 +134,22 @@ const PurchaseTickets = ({ movie, location }) => {
             </Form.Group>
 
             {payment === 'PayPal' && (
-              <Form.Group>
-                <Form.Label>Enter your PayPal email</Form.Label>
-                <Form.Control
-                  type="email"
-                  value={paypalEmail}
-                  onChange={(e) => setPaypalEmail(e.target.value)}
-                  required
-                />
-              </Form.Group>
+              <Form className="purchase_forms">
+                <Form.Group>
+                  <Form.Label>Enter your PayPal email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    value={paypalEmail}
+                    onChange={(e) => setPaypalEmail(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+              </Form>
             )}
           </Form>
+
+          <Form className="purchase_forms"></Form>
+          <Button variant="success" onClick={purchaseTicket}>Purchase</Button>
         </Modal.Body>
       </Modal>
     </div>
