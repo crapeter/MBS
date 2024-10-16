@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -27,16 +29,23 @@ public class UserController {
   public ResponseEntity<String> purchaseTicket(
       @RequestParam int numberPurchased,
       @RequestParam Long movieId,
-      @RequestParam Long theaterId,
+      @RequestParam String location,
+      @RequestParam int roomNumber,
       @RequestParam String userEmail,
       @RequestParam String paymentType
   ) {
     if (numberPurchased <= 0 || numberPurchased > 10) {
       return ResponseEntity.badRequest().body("Invalid number of tickets");
     }
-    if (movieId == null || theaterId == null || userEmail.isEmpty()) {
+    if (movieId == null || location == null || userEmail.isEmpty()) {
       return ResponseEntity.badRequest().body("Invalid movie, theater, or user ID");
     }
+
+    Long theaterId = userService.getTheaterId(location, roomNumber);
+    if (theaterId == null) {
+      return ResponseEntity.badRequest().body("Theater not found");
+    }
+
     Long userId = userService.getUserIdByEmail(userEmail);
     return userService.purchaseTicket(numberPurchased, movieId, theaterId, userId, paymentType);
   }
@@ -51,9 +60,29 @@ public class UserController {
     return userService.getAllUsers();
   }
 
-  @GetMapping("/tickets")
-  public ResponseEntity<String> viewTickets(@RequestParam Long userId, @RequestParam Long movieId) {
-    return userService.viewTickets(userId, movieId);
+  @GetMapping("/tickets/{email}/{movieId}/{location}")
+  public List<Long> viewTickets(
+      @PathVariable String email,
+      @PathVariable Long movieId,
+      @PathVariable String location
+  ) {
+    Long userId = userService.getUserIdByEmail(email);
+    if (userId == null) {
+      return null;
+    }
+
+    List<Theater> theaters = userService.getTheatersByLocation(location);
+    if (theaters == null) {
+      return null;
+    }
+
+    for (Theater t : theaters) {
+      if (t.getMovieId() == null) continue;
+      if (t.getMovieId().equals(movieId)) {
+        return userService.viewTickets(userId, movieId, t.getId());
+      }
+    }
+    return null;
   }
 
   @GetMapping("/email")

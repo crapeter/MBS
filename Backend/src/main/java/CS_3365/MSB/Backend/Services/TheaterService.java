@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TheaterService {
@@ -53,6 +54,15 @@ public class TheaterService {
 
     if (movie == null || theater == null) {
       return ResponseEntity.badRequest().body("Theater or movie not found");
+    }
+
+    List<Theater> theaters = theaterRepo.findByLocation(theater.getLocation());
+    for (Theater t : theaters) {
+      if (Objects.equals(t.getId(), theaterId)) continue;
+
+      if (t.getMovieId().equals(movieId)) {
+        return ResponseEntity.badRequest().body("Movie already playing in another theater");
+      }
     }
 
     theater.setMovieId(movieId);

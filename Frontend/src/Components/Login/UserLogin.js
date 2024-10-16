@@ -41,6 +41,10 @@ const UserLogin = () => {
     }
   }
 
+  const register = () => {
+    nav('/register')
+  }
+
   return (
     <div className = "top_login_div">
       <div className="user_login">
@@ -62,9 +66,14 @@ const UserLogin = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
-          <Button variant="primary" onClick={handleLogin}>
+          <div>
+          <Button className="user_buttons" variant="primary" onClick={handleLogin}>
             Log in
           </Button>
+          <Button className="user_buttons" variant="success" onClick={register}>
+            Register
+          </Button>
+          </div>
         </Form>
       </div>
     </div>

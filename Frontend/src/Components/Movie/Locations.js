@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth } from "../Misc/AuthContext";
 import { useNavigate } from "react-router-dom"
+import Logout from "../Misc/Logout"
 import '../../CSS/Locations.css';
 
 const Locations = () => {
@@ -43,11 +44,12 @@ const Locations = () => {
             <button className="to_city" onClick={Plainview}>Plainview</button>
             <button className="to_city" onClick={Snyder}>Snyder</button>
             <button className="to_city" onClick={Abilene}>Abilene</button>
+            <Logout />
           </div>
         </div>
       ) : (
         <div>
-          <h1>Please log in to view locations</h1>
+          <h1 style={{color: "white"}}>Log in to view locations</h1>
         </div>
       )}
     </div>

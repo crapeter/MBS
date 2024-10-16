@@ -2,6 +2,7 @@
   background-color: #303030;
   color: white;
   height: 100vh;
+  background-attachment: fixed;
 }
 
 .movies_header:hover {
@@ -18,4 +19,8 @@
 
 .movie_list {
   list-style-type: none;
+}
+
+.view_tickets {
+  padding-top: 7px;
 }
