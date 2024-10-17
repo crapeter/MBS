@@ -31,7 +31,7 @@ const ViewTickets = ({ movie, location, ticketUpdated }) => {
 
   return (
     <div>
-      <Button onClick={handleShow}>View Tickets</Button>
+      <Button variant="info" onClick={handleShow}>View Tickets</Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Your ticket numbers for {movie.title}</Modal.Title>

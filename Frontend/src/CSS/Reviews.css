@@ -1,0 +1,71 @@
+.top_review_div {
+  padding: 20px;
+  background-color: #303030;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reviews {
+  width: 60%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.return_button {
+  margin-bottom: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.write_new_review {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.review_input {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-right: 10px;
+  font-family: 'Comic Sans MS', sans-serif;
+}
+
+.written_reviews {
+  margin-top: 20px;
+}
+
+.review {
+  background-color: #fafafa;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+}
+
+.review h3 {
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.review p {
+  color: #666;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+}

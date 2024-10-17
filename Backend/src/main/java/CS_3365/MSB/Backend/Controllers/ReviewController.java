@@ -5,6 +5,7 @@ import CS_3365.MSB.Backend.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,12 +17,12 @@ public class ReviewController {
   private ReviewService reviewService;
 
   @GetMapping("/by/user")
-  public List<ReviewDto> getReviewsByUser(Long userId) {
+  public List<ReviewDto> getReviewsByUser(@RequestParam Long userId) {
     return reviewService.getReviewsByUser(userId);
   }
 
   @GetMapping("/by/movie")
-  public List<ReviewDto> getReviewsByMovie(Long movieId) {
+  public List<ReviewDto> getReviewsByMovie(@RequestParam Long movieId) {
     return reviewService.getReviewsByMovie(movieId);
   }
 }

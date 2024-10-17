@@ -20,6 +20,11 @@ public class TheaterController {
     return theaterService.addTheater(theaterDto);
   }
 
+  @GetMapping("/get/all")
+  public List<TheaterDto> getAllTheaters() {
+    return theaterService.getAllTheaters();
+  }
+
   @GetMapping("/get/id")
   public ResponseEntity<Long> getTheaterId(@RequestParam String location, @RequestParam int roomNumber) {
     return theaterService.getTheaterId(location, roomNumber);

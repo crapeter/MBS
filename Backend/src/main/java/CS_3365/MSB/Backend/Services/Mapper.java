@@ -20,6 +20,7 @@ public abstract class Mapper {
     movieDto.setDirector(movie.getDirector());
     movieDto.setCast(movie.getCast());
     movieDto.setPrice(movie.getPrice());
+    movieDto.setPlaying(movie.isPlaying());
     return movieDto;
   }
 
@@ -33,6 +34,7 @@ public abstract class Mapper {
 
   public static TheaterDto mapToDto(Theater theater) {
     TheaterDto theaterDto = new TheaterDto();
+    theaterDto.setLocation(theater.getLocation());
     theaterDto.setRoomNumber(theater.getRoomNumber());
     theaterDto.setSeatsBooked(theater.getSeatsBooked());
     theaterDto.setMovieId(theater.getMovieId());

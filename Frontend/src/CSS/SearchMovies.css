@@ -1,0 +1,42 @@
+.search_movie_div {
+  background-color: #303030;
+  color: white;
+  height: 100vh;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  padding-top: 25px;
+}
+
+.movie_title {
+  padding-top: 10px;
+  list-style-type: none;
+}
+
+.movie_details {
+  padding-bottom: 20px;
+}
+
+.movie_list {
+  list-style-type: none;
+}
+
+.top_features {
+  display: flex;
+  justify-content: center;
+}
+
+.view_tickets {
+  padding-top: 7px;
+}
+
+.search_input {
+  border-radius: 5px;
+}
+
+.return_button {
+  margin-left: 5px;
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 5px;
+}

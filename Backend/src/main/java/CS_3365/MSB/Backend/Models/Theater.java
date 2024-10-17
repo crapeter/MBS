@@ -14,7 +14,7 @@ public class Theater {
   @Column(name = "TheaterId")
   private Long id;
 
-  @Column(name = "movieId")
+  @Column(name = "movieId", nullable = false)
   private Long movieId;
 
   @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, orphanRemoval = true)
