@@ -41,6 +41,7 @@ const PurchaseTickets = ({ movie, location, refreshTickets }) => {
   }
 
   const purchaseTicket = async () => {
+    alert(userEmail)
     try {
       const res = await axios.post(`/api/users/purchase/tickets`, null, {
         params: {
@@ -71,7 +72,7 @@ const PurchaseTickets = ({ movie, location, refreshTickets }) => {
 
   return (
     <div>
-      <Button onClick={handleShow}>Purchase Tickets</Button>
+      <Button variant="primary" onClick={handleShow}>Purchase Tickets</Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Purchase Tickets</Modal.Title>

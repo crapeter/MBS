@@ -18,6 +18,10 @@ public class MovieService {
   private TheaterRepo theaterRepo;
 
   public ResponseEntity<String> addMovie(Movie newMovie) {
+    List<Movie> movies = movieRepo.findByDirectorAndTitle(newMovie.getDirector(), newMovie.getTitle());
+    if (!movies.isEmpty())
+      return ResponseEntity.badRequest().body("Movie already exists");
+
     try {
       movieRepo.save(newMovie);
       return ResponseEntity.ok("Movie added successfully");
@@ -28,6 +32,10 @@ public class MovieService {
 
   public Iterable<MovieDto> getAllMovies() {
     return Mapper.mapToMList(movieRepo.findAll());
+  }
+
+  public Iterable<MovieDto> getMoviesByTitle(String title) {
+    return Mapper.mapToMList(movieRepo.findByTitle(title));
   }
 
   public MovieDto getMovie(String title, String director, String time) {
@@ -47,7 +55,12 @@ public class MovieService {
       return ResponseEntity.badRequest().body("Theater or movie not found");
 
     theater.setMovieId(movieId);
-    return ResponseEntity.ok("Theater added successfully");
+    try {
+      theaterRepo.save(theater);
+      return ResponseEntity.ok("Movie added successfully");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Failed to add movie to theater");
+    }
   }
 
   public ResponseEntity<Long> getMovieId(String title, String director, String time) {

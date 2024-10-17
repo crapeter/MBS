@@ -122,8 +122,12 @@ public class UserController {
 
   @PatchMapping("/add/review")
   public ResponseEntity<String> addReview(
-      @RequestParam Long userId, @RequestParam Long movieId, @RequestParam String review
+      @RequestParam String userEmail, @RequestParam Long movieId, @RequestParam String review
   ) {
+    Long userId = userService.getUserIdByEmail(userEmail);
+    if (userId == null) {
+      return ResponseEntity.badRequest().body("User not found");
+    }
     return userService.addReview(userId, movieId, review);
   }
 

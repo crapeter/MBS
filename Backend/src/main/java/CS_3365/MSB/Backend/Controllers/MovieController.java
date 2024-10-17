@@ -45,6 +45,11 @@ public class MovieController {
     return movieService.getNotPlaying();
   }
 
+  @GetMapping("/get/by/title")
+  public Iterable<MovieDto> getMoviesByTitle(@RequestParam String title) {
+    return movieService.getMoviesByTitle(title);
+  }
+
   @PatchMapping("/add/to/theater")
   public ResponseEntity<String> addTheater(@RequestParam Long theaterId, @RequestParam Long movieId) {
     return movieService.addToTheater(theaterId, movieId);

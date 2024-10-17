@@ -6,12 +6,22 @@ import UserLogin from './Components/Login/UserLogin'
 import UserRegistration from './Components/Login/NewUser'
 import Movies from './Components/Movie/Movies'
 import Locations from './Components/Movie/Locations'
+
 import Abilene from './Components/Locations/Abilene'
 import Amarillo from './Components/Locations/Amarillo'
 import Levelland from './Components/Locations/Levelland'
 import Lubbock from './Components/Locations/Lubbock'
 import Plainview from './Components/Locations/Plainview'
 import Snyder from './Components/Locations/Snyder'
+
+import AbileneSearch from './Components/Locations/AbileneSearch'
+import AmarilloSearch from './Components/Locations/AmarilloSearch'
+import LevellandSearch from './Components/Locations/LevellandSearch'
+import LubbockSearch from './Components/Locations/LubbockSearch'
+import PlainviewSearch from './Components/Locations/PlainviewSearch'
+import SnyderSearch from './Components/Locations/SnyderSearch'
+import Reviews from './Components/Movie/Reviews'
+
 import './App.css'
 
 function App() {
@@ -31,6 +41,13 @@ function App() {
               <Route exact path='/Lubbock' Component={Lubbock}/>
               <Route exact path='/Plainview' Component={Plainview}/>
               <Route exact path='/Snyder' Component={Snyder}/>
+              <Route exact path='/Abilene/Search' Component={AbileneSearch}/>
+              <Route exact path='/Amarillo/Search' Component={AmarilloSearch}/>
+              <Route exact path='/Levelland/Search' Component={LevellandSearch}/>
+              <Route exact path='/Lubbock/Search' Component={LubbockSearch}/>
+              <Route exact path='/Plainview/Search' Component={PlainviewSearch}/>
+              <Route exact path='/Snyder/Search' Component={SnyderSearch}/>
+              <Route exact path='/:location/:movieTitle/Reviews' Component={Reviews}/>
             </Routes>
           </BrowserRouter>
         </div>

@@ -9,4 +9,8 @@ import java.util.List;
 @RestResource
 public interface MovieRepo extends JpaRepository<Movie, Long> {
   List<Movie> findByDirector(String director);
+
+  List<Movie> findByDirectorAndTitle(String director, String title);
+
+  List<Movie> findByTitle(String title);
 }

@@ -50,6 +50,9 @@ public class UserService {
   }
 
   public ResponseEntity<String> addUser(User newUser) {
+    if (!validateCard(newUser.getCardNumber())) {
+      return ResponseEntity.badRequest().body("Invalid card number");
+    }
     try {
       newUser.setPassword(encrypt(newUser.getPassword()));
       newUser.setCardNumber(encrypt(newUser.getCardNumber()));
@@ -79,10 +82,8 @@ public class UserService {
       return ResponseEntity.badRequest().body("Invalid movie, theater, or user ID");
     }
 
-    /* Option to only allow customers to purchase tickets if the movie is playing
     if (!movie.isPlaying())
       return ResponseEntity.badRequest().body("Movie is not playing");
-    */
 
     if (paymentType.toLowerCase().contains("card")) {
       if (!validateCard(Objects.requireNonNull(decrypt(user.getCardNumber())))) {

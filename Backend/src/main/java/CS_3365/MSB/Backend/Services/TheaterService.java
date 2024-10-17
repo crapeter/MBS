@@ -101,4 +101,9 @@ public class TheaterService {
     theaterDtos.forEach(theaterDto -> theaterDto.setLocation(location));
     return theaterDtos;
   }
+
+  public List<TheaterDto> getAllTheaters() {
+    List<Theater> theaters = theaterRepo.findAll();
+    return Mapper.mapToThList(theaters);
+  }
 }

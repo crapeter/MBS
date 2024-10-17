@@ -1,22 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../Misc/AuthContext";
+import React, { useEffect, useState } from "react"
+import { useAuth } from "../Misc/AuthContext"
 import { useNavigate } from "react-router-dom"
-import '../../CSS/Movies.css';
-import PurchaseTickets from "./PurchaseTickets";
-import ViewTickets from "./ViewTickets";
-import axios from 'axios';
+import { Button, Form } from 'react-bootstrap'
+import '../../CSS/Movies.css'
+import PurchaseTickets from "./PurchaseTickets"
+import ViewTickets from "./ViewTickets"
+import axios from 'axios'
 
 const Movies = ({ location }) => {
   const nav = useNavigate()
-  const [movies, setMovies] = useState([]);
-  const [openMovieId, setOpenMovieId] = useState(null);
-	const { isLoggedIn } = useAuth();
-  const [ticketUpdated, setTicketUpdated] = useState(false);
+  const movieDisplays = ['All Movies', 'Current Movie Catalog', 'Upcoming Movie Catalog']
+
+	const { isLoggedIn, isAdmin } = useAuth()
+  const [movies, setMovies] = useState([])
+  const [openMovieId, setOpenMovieId] = useState(null)
+  const [ticketUpdated, setTicketUpdated] = useState(false)
+  const [movieDisplay, setMovieDisplay] = useState('All Movies')
+  const [allMovies, setAllMovies] = useState([])
 
   useEffect(() => {
-    getMovies();
+    getMovies()
     // eslint-disable-next-line
-  }, []);
+  }, [])
+
+  useEffect(() => {
+    filterMovies()
+    // eslint-disable-next-line
+  }, [movieDisplay])
 
   const locations = () => {
     nav('/locations')
@@ -26,31 +36,68 @@ const Movies = ({ location }) => {
     setTicketUpdated(prev => !prev)
   }
 
+  const toggleMovieDetails = (movieId) => {
+    setOpenMovieId(openMovieId === movieId ? null : movieId)
+  }
+
+  const toSearch = () => {
+    nav(`/${location}/search`)
+  }
+
+  const toReviews = (movie) => {
+    nav(`/${location}/${movie.title}/reviews`)
+  }
+
   const getMovies = async () => {
     try {
-      const allMovies = await axios.get('/api/movies/all');
-      const locationTheaters = await axios.get(`/api/theaters/get/by/location?location=${location}`);
+      const allMovies = await axios.get('/api/movies/all')
+      const locationTheaters = await axios.get(`/api/theaters/get/by/location?location=${location}`)
 
-      const allMovieIds = allMovies.data.map(movie => movie.id);
-      const moviesAtLoc = locationTheaters.data.filter(theater => allMovieIds.includes(theater.movieId));
+      const allMovieIds = allMovies.data.map(movie => movie.id)
+      const moviesAtLoc = locationTheaters.data.filter(theater => allMovieIds.includes(theater.movieId))
       
-      const totalMovies = allMovies.data.filter(movie => moviesAtLoc.map(theater => theater.movieId).includes(movie.id));
+      const totalMovies = allMovies.data.filter(movie => moviesAtLoc.map(theater => theater.movieId).includes(movie.id))
 
-      setMovies(totalMovies);
+      setMovies(totalMovies)
+      setAllMovies(totalMovies)
     } catch (err) {
-      alert(err);
+      alert(err)
     }
-  };
+  }
 
-  const toggleMovieDetails = (movieId) => {
-    setOpenMovieId(openMovieId === movieId ? null : movieId);
-  };
+  const filterMovies = () => {
+    const movieList = [...allMovies]
+    if (movieDisplay === 'Current Movie Catalog') {
+      const movie = movieList.filter(movie => movie.isPlaying)
+      setMovies(movie)
+    } else if (movieDisplay === 'Upcoming Movie Catalog') {
+      const movie = movieList.filter(movie => !movie.isPlaying)
+      setMovies(movie)
+    } else if (movieDisplay === 'All Movies') {
+      setMovies(movieList)
+    }
+  }
 
   return (
     <div className="movie_div">
       {isLoggedIn ? (
-        <div>
-          <h1 onClick={locations} className="movies_header">Movies available in {location}</h1>
+        <div className="movies">
+          <h1 onClick={locations} className="movies_header">Movies showing in {location}</h1>
+          <Button variant="danger" onClick={toSearch}>Search Movies</Button>
+          <h3 className="movies_header">
+            <Form>
+              <Form.Select
+                value={movieDisplay}
+                onChange={(e) => setMovieDisplay(e.target.value)}
+                required
+              >
+                <option value="">View Movies</option>
+                {movieDisplays.map((display, idx) => (
+                  <option key={idx} value={display}>{display}</option>
+                ))}
+              </Form.Select>
+            </Form>
+          </h3>
           <ul className="movie_list">
             {movies.map(movie => (
               <li key={movie.id}>
@@ -73,12 +120,24 @@ const Movies = ({ location }) => {
 											<p><strong>Cast:</strong> {movie.cast}</p>
 											<p><strong>Description:</strong> {movie.description}</p>
 										</div>
-										<div className="purchase_tickets">
-                      <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets}/>
-										</div>
-                    <div className="view_tickets">
-                      <ViewTickets className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated}/>
+                    {movie.isPlaying && (
+                      <div>
+                        <div className="purchase_tickets">
+                          <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets}/>
+                        </div>
+                        <div className="view_tickets">
+                          <ViewTickets className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated}/>
+                        </div>
+                      </div>
+                    )}
+                    <div className="review_movie_button">
+                      <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
                     </div>
+                    {isAdmin && (
+                      <div className="review_movie_button">
+                        <Button variant="danger">You an admin mf</Button>
+                      </div>
+                    )}
                   </div>
                 )}
               </li>
@@ -91,7 +150,7 @@ const Movies = ({ location }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Movies;
+export default Movies

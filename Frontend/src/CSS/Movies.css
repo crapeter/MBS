@@ -3,24 +3,54 @@
   color: white;
   height: 100vh;
   background-attachment: fixed;
+  padding: 20px;
+}
+
+.movies {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.movies_header {
+  text-align: center;
+  color: #ff6347;
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .movies_header:hover {
   cursor: pointer;
+  color: #ff4500;
 }
 
 .movie_title {
+  font-size: 1.2rem;
   padding-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #444;
 }
 
 .movie_details {
+  margin-left: 20px;
   padding-bottom: 20px;
+  padding-left: 5px;
+  border-left: 2px solid #ff6347;
+  margin-top: 10px;
 }
 
 .movie_list {
   list-style-type: none;
+  padding-left: 0;
+}
+
+.purchase_tickets, .view_tickets, .review_movie_button   {
+  margin-top: 15px;
 }
 
 .view_tickets {
   padding-top: 7px;
+}
+
+button {
+  cursor: pointer;
 }
