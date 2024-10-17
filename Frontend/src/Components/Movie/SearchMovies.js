@@ -90,7 +90,7 @@ const SearchMovies = ({ location }) => {
                 </p>
 
                 {openMovieId === movie.id && (
-                  <div className="movie_details" style={{ marginLeft: '20px' }}>
+                  <div className="search_movie_details" style={{ marginLeft: '20px' }}>
                     <div>
                       <p><strong>Genre:</strong> {movie.genre}</p>
                       <p><strong>Runtime:</strong> {movie.runTime} mins</p>

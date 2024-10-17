@@ -41,7 +41,6 @@ const PurchaseTickets = ({ movie, location, refreshTickets }) => {
   }
 
   const purchaseTicket = async () => {
-    alert(userEmail)
     try {
       const res = await axios.post(`/api/users/purchase/tickets`, null, {
         params: {
