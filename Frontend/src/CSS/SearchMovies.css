@@ -1,8 +1,9 @@
 .search_movie_div {
   background-color: #303030;
   color: white;
-  height: 100vh;
+  min-height: 100vh;
   background-attachment: fixed;
+  background-size: cover;
   display: flex;
   justify-content: center;
   padding-top: 25px;
@@ -13,8 +14,13 @@
   list-style-type: none;
 }
 
-.movie_details {
+.search_movie_details {
+  max-width: 225px;
+  margin-left: 20px;
   padding-bottom: 20px;
+  padding-left: 5px;
+  border-left: 2px solid #ff6347;
+  margin-top: 10px;
 }
 
 .movie_list {

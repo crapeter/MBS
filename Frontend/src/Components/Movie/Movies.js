@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react"
 import { useAuth } from "../Misc/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { Button, Form } from 'react-bootstrap'
-import '../../CSS/Movies.css'
 import PurchaseTickets from "./PurchaseTickets"
 import ViewTickets from "./ViewTickets"
+import AddMovie from "./AddMovie"
+import '../../CSS/Movies.css'
 import axios from 'axios'
 
 const Movies = ({ location }) => {
@@ -59,7 +60,7 @@ const Movies = ({ location }) => {
       const totalMovies = allMovies.data.filter(movie => moviesAtLoc.map(theater => theater.movieId).includes(movie.id))
 
       setMovies(totalMovies)
-      setAllMovies(totalMovies)
+      setAllMovies(allMovies.data)
     } catch (err) {
       alert(err)
     }
@@ -83,7 +84,10 @@ const Movies = ({ location }) => {
       {isLoggedIn ? (
         <div className="movies">
           <h1 onClick={locations} className="movies_header">Movies showing in {location}</h1>
-          <Button variant="danger" onClick={toSearch}>Search Movies</Button>
+          <div className="user_buttons">
+            <Button variant="danger" onClick={toSearch}>Search Movies</Button>
+            {isAdmin && <AddMovie location={location}/>}
+          </div>
           <h3 className="movies_header">
             <Form>
               <Form.Select
@@ -133,11 +137,6 @@ const Movies = ({ location }) => {
                     <div className="review_movie_button">
                       <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
                     </div>
-                    {isAdmin && (
-                      <div className="review_movie_button">
-                        <Button variant="danger">You an admin mf</Button>
-                      </div>
-                    )}
                   </div>
                 )}
               </li>

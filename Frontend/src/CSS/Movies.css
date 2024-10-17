@@ -1,8 +1,9 @@
 .movie_div {
   background-color: #303030;
   color: white;
-  height: 100vh;
+  min-height: 100vh;
   background-attachment: fixed;
+  background-size: cover;
   padding: 20px;
 }
 
