@@ -48,10 +48,20 @@
   margin-top: 15px;
 }
 
-.view_tickets {
-  padding-top: 7px;
-}
-
 button {
   cursor: pointer;
+}
+
+.user_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user_admin_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.give_me_some_space {
+  margin-left: 8px;
 }

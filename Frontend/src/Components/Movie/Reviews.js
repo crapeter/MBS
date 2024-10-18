@@ -7,7 +7,7 @@ import axios from 'axios'
 
 const Reviews = () => {
   const nav = useNavigate()
-  const { location, movieTitle } = useParams()
+  const { movieTitle } = useParams()
   const { isLoggedIn, userEmail } = useAuth()
   const [newReview, setNewReview] = useState('')
   const [reviews, setReviews] = useState([])
@@ -55,7 +55,7 @@ const Reviews = () => {
   }
 
   const goBack = () => {
-    nav(`/${location}`)
+    nav(-1)
   }
 
   return (

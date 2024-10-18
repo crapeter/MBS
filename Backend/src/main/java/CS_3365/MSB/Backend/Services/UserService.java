@@ -107,7 +107,9 @@ public class UserService {
       ticketsExist.setNumberPurchased(ticketsExist.getTicketIds().size());
       try {
         ticketRepo.save(ticketsExist);
-        return ResponseEntity.ok("Maximum number of tickets (10) purchased");
+        if (ticketsExist.getTicketIds().size() == 10)
+          return ResponseEntity.ok("Maximum number of tickets (10) purchased");
+        return ResponseEntity.ok("Tickets purchased successfully");
       } catch (Exception e) {
         return ResponseEntity.badRequest().body("Failed to purchase tickets");
       }

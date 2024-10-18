@@ -56,15 +56,6 @@ public class TheaterService {
       return ResponseEntity.badRequest().body("Theater or movie not found");
     }
 
-    List<Theater> theaters = theaterRepo.findByLocation(theater.getLocation());
-    for (Theater t : theaters) {
-      if (Objects.equals(t.getId(), theaterId)) continue;
-
-      if (t.getMovieId().equals(movieId)) {
-        return ResponseEntity.badRequest().body("Movie already playing in another theater");
-      }
-    }
-
     theater.setMovieId(movieId);
     try {
       theaterRepo.save(theater);

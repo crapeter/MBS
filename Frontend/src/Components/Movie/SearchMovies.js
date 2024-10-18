@@ -15,6 +15,8 @@ const SearchMovies = ({ location }) => {
   const [allMovies, setAllMovies] = useState([])
   const [ticketUpdated, setTicketUpdated] = useState(false)
   const [search, setSearch] = useState('')
+  const [theaters, setTheaters] = useState([])
+  const [theaterMovieIds, setTheaterMovieIds] = useState([])
 
   useEffect(() => {
     getMovies()
@@ -26,6 +28,11 @@ const SearchMovies = ({ location }) => {
     // eslint-disable-next-line
   }, [search])
 
+  useEffect(() => {
+    setMovieIds()
+    // eslint-disable-next-line
+  }, [theaters, allMovies])
+
   const refreshTickets = () => {
     setTicketUpdated(prev => !prev)
   }
@@ -34,18 +41,18 @@ const SearchMovies = ({ location }) => {
     setOpenMovieId(openMovieId === movieId ? null : movieId)
   }
 
+  const toReviews = (movie) => {
+    nav(`/${location}/${movie.title}/reviews`)
+  }
+
   const getMovies = async () => {
     try {
       const allMovies = await axios.get('/api/movies/all')
       const locationTheaters = await axios.get(`/api/theaters/get/by/location?location=${location}`)
 
-      const allMovieIds = allMovies.data.map(movie => movie.id)
-      const moviesAtLoc = locationTheaters.data.filter(theater => allMovieIds.includes(theater.movieId))
-
-      const totalMovies = allMovies.data.filter(movie => moviesAtLoc.map(theater => theater.movieId).includes(movie.id))
-
-      setAllMovies(totalMovies)
-      setFilterMovies(totalMovies)
+      setAllMovies(allMovies.data)
+      setFilterMovies(allMovies.data)
+      setTheaters(locationTheaters.data)
     } catch (err) {
       alert(err)
     }
@@ -57,6 +64,15 @@ const SearchMovies = ({ location }) => {
       movie.title.toLowerCase().includes(search.toLowerCase())
     )
     setFilterMovies(movies)
+  }
+
+  const setMovieIds = () => {
+    const movieList = [...allMovies]
+    const theaterList = [...theaters]
+
+    const movie = movieList.filter(movie => theaterList.map(theater => theater.movieId).includes(movie.id))
+    const movieIds = movie.map(movie => movie.id)
+    setTheaterMovieIds(movieIds)
   }
 
   const goBack = () => {
@@ -100,7 +116,7 @@ const SearchMovies = ({ location }) => {
                       <p><strong>Cast:</strong> {movie.cast}</p>
                       <p><strong>Description:</strong> {movie.description}</p>
                     </div>
-                    {movie.isPlaying && (
+                    {theaterMovieIds.includes(movie.id) && (
                       <div>
                         <div className="purchase_tickets">
                           <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets}/>
@@ -110,6 +126,9 @@ const SearchMovies = ({ location }) => {
                         </div>
                       </div>
                     )}
+                    <div className="review_movie_button">
+                      <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
+                    </div>
                   </div>
                   )}
               </li>
