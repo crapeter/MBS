@@ -36,7 +36,11 @@ public class TheaterController {
   }
 
   @PatchMapping("/change/movie")
-  public ResponseEntity<String> updateMovie(@RequestParam Long theaterId, @RequestParam Long movieId) {
+  public ResponseEntity<String> updateMovie(@RequestParam String location, @RequestParam int roomNumber, @RequestParam Long movieId) {
+    Long theaterId = theaterService.getTheaterId(location, roomNumber).getBody();
+    if (theaterId == null) {
+      return ResponseEntity.badRequest().body("Theater not found");
+    }
     return theaterService.updateMovie(theaterId, movieId);
   }
 

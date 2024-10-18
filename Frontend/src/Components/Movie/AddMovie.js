@@ -13,7 +13,6 @@ const AddMovie = ({ location }) => {
   const [releaseDate, setReleaseDate] = useState('')
   const [director, setDirector] = useState('')
   const [cast, setCast] = useState('')
-  const [isPlaying, setIsPlaying] = useState(false)
   const [price, setPrice] = useState('')
 
   const handleClose = () => setShow(false)
@@ -43,7 +42,7 @@ const AddMovie = ({ location }) => {
         releaseDate: releaseDate,
         director: director,
         cast: cast,
-        isPlaying: isPlaying,
+        isPlaying: true,
         price: priceNum
       })
       handleClose()
@@ -140,15 +139,6 @@ const AddMovie = ({ location }) => {
                 placeholder="Price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formBasicIsPlaying">
-              <Form.Check
-                type="checkbox"
-                label="Is Playing"
-                value={isPlaying}
-                onChange={(e) => setIsPlaying(e.target.checked)}
               />
             </Form.Group>
 

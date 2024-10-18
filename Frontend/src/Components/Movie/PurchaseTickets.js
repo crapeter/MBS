@@ -42,16 +42,7 @@ const PurchaseTickets = ({ movie, location, refreshTickets }) => {
 
   const purchaseTicket = async () => {
     try {
-      const res = await axios.post(`/api/users/purchase/tickets`, null, {
-        params: {
-          numberPurchased: ticketQuantity,
-          movieId: movie.id,
-          location: location,
-          roomNumber: selectedTheater,
-          userEmail: userEmail,
-          paymentType: payment
-        }
-      })
+      const res = await axios.post(`/api/users/purchase/tickets?numberPurchased=${ticketQuantity}&movieId=${movie.id}&location=${location}&roomNumber=${selectedTheater}&userEmail=${userEmail}&paymentType=${payment}`)
       alert(res.data)
       refreshTickets()
       handleClose()

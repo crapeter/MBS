@@ -1,0 +1,60 @@
+.update_theater_top_div {
+  background-color: #303030;
+  padding: 30px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.update_theater_top_div > div {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 60%;
+}
+
+.update_theater_button {
+  margin-bottom: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.update_theater_button:hover {
+  background-color: #0056b3;
+}
+
+.update_theater_form {
+  margin-top: 20px;
+}
+
+.update_theater_label {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  display: block;
+  color: #333;
+}
+
+.update_theater_select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: #f8f9fa;
+}
+
+.update_theater_h1 {
+  color: #dc3545;
+  text-align: center;
+}
+
+.update_theater_div {
+  color: black;
+  text-align: center;
+}
