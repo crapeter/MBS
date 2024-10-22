@@ -52,6 +52,18 @@ button {
   cursor: pointer;
 }
 
+.movie_buttons_flex {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.movie_buttons_flex_special {
+  display: flex;
+  gap: 10px;
+}
+
 .user_buttons {
   display: flex;
   justify-content: space-between;
@@ -60,8 +72,5 @@ button {
 .user_admin_buttons {
   display: flex;
   justify-content: space-between;
-}
-
-.give_me_some_space {
-  margin-left: 8px;
+  gap: 5px;
 }

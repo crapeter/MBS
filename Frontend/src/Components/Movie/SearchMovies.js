@@ -116,18 +116,20 @@ const SearchMovies = ({ location }) => {
                       <p><strong>Cast:</strong> {movie.cast}</p>
                       <p><strong>Description:</strong> {movie.description}</p>
                     </div>
-                    {theaterMovieIds.includes(movie.id) && (
-                      <div>
-                        <div className="purchase_tickets">
-                          <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets}/>
-                        </div>
-                        <div className="view_tickets">
-                          <ViewTickets className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated}/>
-                        </div>
+                    <div className="search_movie_buttons">
+                      <div className="review_movie_button">
+                        <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
                       </div>
-                    )}
-                    <div className="review_movie_button">
-                      <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
+                      {theaterMovieIds.includes(movie.id) && (
+                        <div className="search_movie_buttons">
+                          <div className="purchase_tickets">
+                            <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets}/>
+                          </div>
+                          <div className="view_tickets">
+                            <ViewTickets className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated}/>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                   )}

@@ -20,7 +20,7 @@ public class TicketService {
       return ResponseEntity.badRequest().body("No tickets found");
 
     int totalNumberSold = tickets.stream().mapToInt(Ticket::getNumberPurchased).sum();
-    return ResponseEntity.ok().body("Total number of tickets: " + totalNumberSold);
+    return ResponseEntity.ok().body("Total number of tickets sold: " + totalNumberSold);
   }
 
   public List<Integer> numberSold() {

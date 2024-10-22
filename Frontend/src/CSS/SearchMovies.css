@@ -2,51 +2,83 @@
   background-color: #303030;
   color: white;
   min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-attachment: fixed;
   background-size: cover;
-  display: flex;
-  justify-content: center;
-  padding-top: 25px;
 }
 
-.movie_title {
-  padding-top: 10px;
-  list-style-type: none;
+.search_div {
+  width: 100%;
+  max-width: 800px;
 }
 
-.search_movie_details {
-  max-width: 225px;
-  margin-left: 20px;
-  padding-bottom: 20px;
-  padding-left: 5px;
-  border-left: 2px solid #ff6347;
-  margin-top: 10px;
-}
-
-.movie_list {
-  list-style-type: none;
-}
-
-.purchase_tickets, .view_tickets, .review_movie_button   {
-  margin-top: 15px;
+h1 {
+  margin-bottom: 20px;
 }
 
 .top_features {
   display: flex;
-  justify-content: center;
-}
-
-.view_tickets {
-  padding-top: 7px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .search_input {
+  width: 70%;
+  padding: 10px;
+  border: none;
   border-radius: 5px;
+  background-color: #444;
+  color: white;
 }
 
 .return_button {
-  margin-left: 5px;
-  display: flex;
-  justify-content: flex-end;
+  margin-left: 20px;
+}
+
+.movie_list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.movie_title {
+  font-weight: bold;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.movie_title:hover {
+  color: #f39c12;
+}
+
+.search_movie_details {
+  background-color: #444;
   border-radius: 5px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.review_movie_button {
+  margin-top: 10px;
+}
+
+.search_movie_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.movie_buttons {
+  margin-top: 10px;
+}
+
+.purchase_tickets, .view_tickets {
+  padding-left: 5px;
+}
+
+.purchase_tickets, .view_tickets {
+  display: flex;
+  justify-content: space-between;
 }
