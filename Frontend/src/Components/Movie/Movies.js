@@ -5,6 +5,7 @@ import { Button, Form } from 'react-bootstrap'
 import PurchaseTickets from "./PurchaseTickets"
 import ViewTickets from "./ViewTickets"
 import AddMovie from "./AddMovie"
+import StatusReport from "./StatusReport"
 import '../../CSS/Movies.css'
 import axios from 'axios'
 
@@ -111,8 +112,9 @@ const Movies = ({ location }) => {
             <Button variant="danger" onClick={toSearch}>Search Movies</Button>
             {isAdmin && (
               <div className="user_admin_buttons">
-                <AddMovie className="give_me_some_space" location={location}/>
-                <Button className="give_me_some_space" variant="info" onClick={toUpdateTheaters}>Update Theaters</Button>
+                <AddMovie location={location}/>
+                <Button variant="info" onClick={toUpdateTheaters}>Update Theaters</Button>
+                <StatusReport/>
               </div>
             )}
           </div>
@@ -152,18 +154,16 @@ const Movies = ({ location }) => {
 											<p><strong>Cast:</strong> {movie.cast}</p>
 											<p><strong>Description:</strong> {movie.description}</p>
 										</div>
-                    {theaterMovieIds.includes(movie.id) && (
-                      <div>
-                        <div className="purchase_tickets">
+                    <div className="movie_buttons_flex">
+                      <div className="review_movie_button">
+                        <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
+                      </div>
+                      {theaterMovieIds.includes(movie.id) && (
+                        <div className="movie_buttons_flex_special">
                           <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets}/>
-                        </div>
-                        <div className="view_tickets">
                           <ViewTickets className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated}/>
                         </div>
-                      </div>
-                    )}
-                    <div className="review_movie_button">
-                      <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
+                      )}
                     </div>
                   </div>
                 )}
