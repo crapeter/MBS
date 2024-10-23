@@ -47,8 +47,14 @@ const SearchMovies = ({ location }) => {
 
   const getMovies = async () => {
     try {
-      const allMovies = await axios.get('/api/movies/all')
-      const locationTheaters = await axios.get(`/api/theaters/get/by/location?location=${location}`)
+      const [allMoviesResponse, locationTheatersResponse] = await Promise.all([
+        axios.get('/api/movies/all'),
+        axios.get(`/api/theaters/get/by/location?location=${location}`)
+      ])
+
+      const allMovies = allMoviesResponse
+      const locationTheaters = locationTheatersResponse
+
 
       setAllMovies(allMovies.data)
       setFilterMovies(allMovies.data)
@@ -69,8 +75,9 @@ const SearchMovies = ({ location }) => {
   const setMovieIds = () => {
     const movieList = [...allMovies]
     const theaterList = [...theaters]
+    const theaterIds = theaterList.flatMap(theater => theater.movieIds)
 
-    const movie = movieList.filter(movie => theaterList.map(theater => theater.movieId).includes(movie.id))
+    const movie = movieList.filter(movie => theaterIds.includes(movie.id))
     const movieIds = movie.map(movie => movie.id)
     setTheaterMovieIds(movieIds)
   }
@@ -118,7 +125,7 @@ const SearchMovies = ({ location }) => {
                     </div>
                     <div className="search_movie_buttons">
                       <div className="review_movie_button">
-                        <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
+                        <Button className="smovie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
                       </div>
                       {theaterMovieIds.includes(movie.id) && (
                         <div className="search_movie_buttons">

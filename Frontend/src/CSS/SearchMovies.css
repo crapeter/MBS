@@ -67,11 +67,7 @@ h1 {
 
 .search_movie_buttons {
   display: flex;
-  justify-content: space-between;
-}
-
-.movie_buttons {
-  margin-top: 10px;
+  /* justify-content: space-between; */
 }
 
 .purchase_tickets, .view_tickets {

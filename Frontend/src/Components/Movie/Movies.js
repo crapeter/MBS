@@ -17,10 +17,12 @@ const Movies = ({ location }) => {
   const [movies, setMovies] = useState([])
   const [openMovieId, setOpenMovieId] = useState(null)
   const [ticketUpdated, setTicketUpdated] = useState(false)
-  const [movieDisplay, setMovieDisplay] = useState('Current Movie Catalog')
+  const [movieDisplay, setMovieDisplay] = useState('All Movies')
   const [allMovies, setAllMovies] = useState([])
   const [theaters, setTheaters] = useState([])
   const [theaterMovieIds, setTheaterMovies] = useState([])
+  const [isPlaying, setIsPlaying] = useState([])
+  const [isUpcoming, setIsUpcoming] = useState([])
 
   useEffect(() => {
     getMovies()
@@ -28,7 +30,7 @@ const Movies = ({ location }) => {
   }, [])
 
   useEffect(() => {
-    filterMovies()
+    getFilteredMovies()
     // eslint-disable-next-line
   }, [movieDisplay])
 
@@ -61,44 +63,59 @@ const Movies = ({ location }) => {
     nav(`/${location}/playing`)
   }
 
+
   const getMovies = async () => {
     try {
-      const allMovies = await axios.get('/api/movies/all')
-      const locationTheaters = await axios.get(`/api/theaters/get/by/location?location=${location}`)
+      const [allMoviesResponse, locationTheatersResponse] = await Promise.all([
+        axios.get('/api/movies/all'),
+        axios.get(`/api/theaters/get/by/location?location=${location}`)
+      ])
 
-      const allMovieIds = allMovies.data.map(movie => movie.id)
-      const moviesAtLoc = locationTheaters.data.filter(theater => allMovieIds.includes(theater.movieId))
+      const allMovies = allMoviesResponse
+      const locationTheaters = locationTheatersResponse
+
+      // sort allMovies by title a..z
+      const sortedMovies = allMovies.data.sort((a, b) => { return a.title > b.title ? 1 : -1 })
+      setMovies(sortedMovies)
+
+      const theaterIds = locationTheaters.data.flatMap(theater => theater.movieIds)
+      const { playingMovies, upcomingMovies } = allMovies.data.reduce((acc, movie) => {
+        if (theaterIds.includes(movie.id)) {
+          acc.playingMovies.push(movie)
+        } else {
+          acc.upcomingMovies.push(movie)
+        }
+        return acc
+      }, { playingMovies: [], upcomingMovies: [] })
+
+      playingMovies.sort((a, b) => { return a.title > b.title ? 1 : -1 })
+      upcomingMovies.sort((a, b) => { return a.title > b.title ? 1 : -1 })
       
-      const totalMovies = allMovies.data.filter(movie => moviesAtLoc.map(theater => theater.movieId).includes(movie.id))
-
-      setMovies(totalMovies)
       setTheaters(locationTheaters.data)
       setAllMovies(allMovies.data)
+      setIsPlaying(playingMovies)
+      setIsUpcoming(upcomingMovies)
     } catch (err) {
       alert(err)
     }
   }
 
-  const filterMovies = () => {
-    const movieList = [...allMovies]
-    const theaterList = [...theaters]
-
+  const getFilteredMovies = () => {
     if (movieDisplay === 'Current Movie Catalog') {
-      const movie = movieList.filter(movie => theaterList.map(theater => theater.movieId).includes(movie.id))
-      setMovies(movie)
+      setMovies(isPlaying)
     } else if (movieDisplay === 'Upcoming Movie Catalog') {
-      const movie = movieList.filter(movie => !theaterList.map(theater => theater.movieId).includes(movie.id))
-      setMovies(movie)
+      setMovies(isUpcoming)
     } else if (movieDisplay === 'All Movies') {
-      setMovies(movieList)
+      setMovies(allMovies)
     }
   }
 
   const setMovieIds = () => {
     const movieList = [...allMovies]
     const theaterList = [...theaters]
+    const theaterIds = theaterList.flatMap(theater => theater.movieIds)
 
-    const movie = movieList.filter(movie => theaterList.map(theater => theater.movieId).includes(movie.id))
+    const movie = movieList.filter(movie => theaterIds.includes(movie.id))
     const movieIds = movie.map(movie => movie.id)
     setTheaterMovies(movieIds)
   }
@@ -123,9 +140,10 @@ const Movies = ({ location }) => {
               <Form.Select
                 value={movieDisplay}
                 onChange={(e) => setMovieDisplay(e.target.value)}
+                className="movies_header_select"
                 required
               >
-                <option value="">View Movies</option>
+                <option value="" className="movies_options">View Movies</option>
                 {movieDisplays.map((display, idx) => (
                   <option key={idx} value={display}>{display}</option>
                 ))}
@@ -155,11 +173,9 @@ const Movies = ({ location }) => {
 											<p><strong>Description:</strong> {movie.description}</p>
 										</div>
                     <div className="movie_buttons_flex">
-                      <div className="review_movie_button">
-                        <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
-                      </div>
+                      <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
                       {theaterMovieIds.includes(movie.id) && (
-                        <div className="movie_buttons_flex_special">
+                        <div className="movie_buttons_flex">
                           <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets}/>
                           <ViewTickets className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated}/>
                         </div>

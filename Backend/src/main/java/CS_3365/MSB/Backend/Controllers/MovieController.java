@@ -31,8 +31,8 @@ public class MovieController {
   }
 
   @GetMapping("/unique")
-  public MovieDto getMovie(@RequestParam String title, @RequestParam String director, @RequestParam String time) {
-    return movieService.getMovie(title, director, time);
+  public MovieDto getMovie(@RequestParam String title, @RequestParam String director) {
+    return movieService.getMovie(title, director);
   }
 
   @GetMapping("/get/playing")
@@ -51,13 +51,10 @@ public class MovieController {
   }
 
   @PatchMapping("/add/to/theater")
-  public ResponseEntity<String> addTheater(@RequestParam Long theaterId, @RequestParam Long movieId) {
-    return movieService.addToTheater(theaterId, movieId);
-  }
-
-  @PatchMapping("/update/time")
-  public ResponseEntity<String> updateTime(@RequestParam Long movieId, @RequestParam String newTime) {
-    return movieService.updateTime(movieId, newTime);
+  public ResponseEntity<String> addTheater(
+      @RequestParam Long theaterId, @RequestParam Long movieId, @RequestParam String time
+  ) {
+    return movieService.addToTheater(theaterId, movieId, time);
   }
 
   @PatchMapping("/update/price")

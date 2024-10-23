@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -38,23 +39,34 @@ public class MovieService {
     return Mapper.mapToMList(movieRepo.findByTitle(title));
   }
 
-  public MovieDto getMovie(String title, String director, String time) {
+  public MovieDto getMovie(String title, String director) {
     List<Movie> movies = movieRepo.findByDirector(director);
     for (Movie movie : movies) {
-      if (movie.getTitle().equalsIgnoreCase(title) && movie.getShowTime().equalsIgnoreCase(time))
+      if (movie.getTitle().equalsIgnoreCase(title))
         return Mapper.mapToDto(movie);
     }
     return null;
   }
 
-  public ResponseEntity<String> addToTheater(Long theaterId, Long movieId) {
+  public ResponseEntity<String> addToTheater(Long theaterId, Long movieId, String time) {
     Movie movie = movieRepo.findById(movieId).orElse(null);
     Theater theater = theaterRepo.findById(theaterId).orElse(null);
 
     if (movie == null || theater == null)
       return ResponseEntity.badRequest().body("Theater or movie not found");
 
-    theater.setMovieId(movieId);
+    if (!theater.getTimes().contains(time))
+      return ResponseEntity.badRequest().body("Theater does not have that time slot");
+
+    if (theater.getMovieId().contains(movieId))
+      return ResponseEntity.badRequest().body("Movie already added to theater");
+
+    List<Long> movieIds = theater.getMovieId();
+    List<LocalTime> timesLoc = theater.getTimes();
+    List<String> times = Mapper.mapToStringList(timesLoc);
+    int idx = times.indexOf(time);
+    movieIds.add(idx, movieId);
+
     try {
       theaterRepo.save(theater);
       return ResponseEntity.ok("Movie added successfully");
@@ -66,7 +78,7 @@ public class MovieService {
   public ResponseEntity<Long> getMovieId(String title, String director, String time) {
     List<Movie> movies = movieRepo.findByDirector(director);
     for (Movie movie : movies) {
-      if (movie.getTitle().equalsIgnoreCase(title) && movie.getShowTime().equalsIgnoreCase(time))
+      if (movie.getTitle().equalsIgnoreCase(title))
         return ResponseEntity.ok(movie.getId());
     }
     return ResponseEntity.badRequest().body(-1L);
@@ -85,10 +97,6 @@ public class MovieService {
     }
   }
 
-  public ResponseEntity<String> updateTime(Long movieId, String newTime) {
-    return updateStat(movieId, "time", newTime);
-  }
-
   public ResponseEntity<String> updatePrice(Long movieId, double newPrice) {
     return updateStat(movieId, "price", newPrice);
   }
@@ -103,8 +111,7 @@ public class MovieService {
     for (Movie movie : movies) {
       if (movie.isPlaying())
         playing.append(movie.getTitle())
-            .append(" is playing at ")
-            .append(movie.getShowTime())
+            .append(" is playing")
             .append("\n");
     }
     return ResponseEntity.ok(playing.toString());
@@ -116,8 +123,7 @@ public class MovieService {
     for (Movie movie : movies) {
       if (!movie.isPlaying())
         notPlaying.append(movie.getTitle())
-            .append(" will be playing at ")
-            .append(movie.getShowTime())
+            .append(" will be playing")
             .append("\n");
     }
     return ResponseEntity.ok(notPlaying.toString());
@@ -130,7 +136,6 @@ public class MovieService {
 
     try {
       switch (statName) {
-        case "time" -> movie.setShowTime((String) stat);
         case "price" -> movie.setPrice((double) stat);
         case "playing" -> movie.setPlaying((boolean) stat);
       }

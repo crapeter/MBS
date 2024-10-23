@@ -3,6 +3,7 @@ package CS_3365.MSB.Backend.Models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -15,7 +16,10 @@ public class Theater {
   private Long id;
 
   @Column(name = "movieId", nullable = false)
-  private Long movieId;
+  private List<Long> movieId;
+
+  @Column(name = "times", nullable = false)
+  private List<LocalTime> times;
 
   @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Ticket> tickets;

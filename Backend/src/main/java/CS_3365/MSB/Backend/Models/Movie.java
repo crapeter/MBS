@@ -29,10 +29,6 @@ public class Movie {
   @Column(name = "runtime", nullable = false)
   private String runtime;
 
-  @JsonProperty("showTime")
-  @Column(name = "showTime", nullable = false)
-  private String showTime;
-
   @JsonProperty("releaseDate")
   @Column(name = "ReleaseDate", nullable = false)
   private String releaseDate;

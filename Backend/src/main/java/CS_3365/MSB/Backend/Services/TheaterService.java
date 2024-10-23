@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class TheaterService {
@@ -48,7 +48,7 @@ public class TheaterService {
     }
   }
 
-  public ResponseEntity<String> updateMovie(Long theaterId, Long movieId) {
+  public ResponseEntity<String> updateMovie(Long theaterId, Long movieId, String time) {
     Theater theater = theaterRepo.findById(theaterId).orElse(null);
     Movie movie = movieRepo.findById(movieId).orElse(null);
 
@@ -56,7 +56,17 @@ public class TheaterService {
       return ResponseEntity.badRequest().body("Theater or movie not found");
     }
 
-    theater.setMovieId(movieId);
+    List<Long> movieIds = theater.getMovieId();
+    List<LocalTime> timesLoc = theater.getTimes();
+    List<String> times = Mapper.mapToStringList(timesLoc);
+
+    if (!times.contains(time)) {
+      return ResponseEntity.badRequest().body("Invalid time");
+    }
+
+    int index = times.indexOf(time);
+    movieIds.set(index, movieId);
+
     try {
       theaterRepo.save(theater);
       return ResponseEntity.ok("Movie updated successfully");
@@ -88,9 +98,7 @@ public class TheaterService {
 
   public List<TheaterDto> getTheatersByLocation(String location) {
     List<Theater> theaters = theaterRepo.findByLocation(location);
-    List<TheaterDto> theaterDtos = Mapper.mapToThList(theaters);
-    theaterDtos.forEach(theaterDto -> theaterDto.setLocation(location));
-    return theaterDtos;
+    return Mapper.mapToThList(theaters);
   }
 
   public List<TheaterDto> getAllTheaters() {
