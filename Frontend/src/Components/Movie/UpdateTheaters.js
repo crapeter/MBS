@@ -27,7 +27,8 @@ const UpdateTheaters = () => {
   const getTheaters = async () => {
     try {
       const locationTheaters = await axios.get(`/api/theaters/get/by/location?location=${location}`)
-      setTheaters(locationTheaters.data)
+      const sortedTheaters = locationTheaters.data.sort((a, b) => a.roomNumber - b.roomNumber)
+      setTheaters(sortedTheaters)
     } catch (err) {
       console.log(err)
     }
@@ -43,12 +44,22 @@ const UpdateTheaters = () => {
   }
 
   const updateTheater = async (theaterLoc, theaterRoomNum, movieId, time) => {
+    if (time === "11:00") {
+      time = '11:00:00'
+    } else if (time === "2:30") {
+      time = '14:30'
+    } else if (time === "5:00") {
+      time = '17:00'
+    } else if (time === "8:30") {
+      time = '20:30'
+    }
+
     try {
       const updated = await axios.patch(`/api/theaters/change/movie?location=${theaterLoc}&roomNumber=${theaterRoomNum}&movieId=${movieId}&time=${time}`)
       alert(updated.data)
       window.location.reload()
     } catch (err) {
-      alert(err.message)
+      alert("Error updating theater")
     }
   }
 
