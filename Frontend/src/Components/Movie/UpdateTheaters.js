@@ -11,12 +11,18 @@ const UpdateTheaters = () => {
   const { isLoggedIn, isAdmin } = useAuth()
   const [theaters, setTheaters] = useState([])
   const [movies, setMovies] = useState([])
+  const [openTheaterId, setOpenTheaterId] = useState(null)
+  const times = ["11:00","2:30","5:00","8:30"]
 
   useEffect(() => {
     getTheaters()
     getMovies()
     // eslint-disable-next-line
   }, [])
+
+  const toggleTheaterDetails = (theaterId) => {
+    setOpenTheaterId(openTheaterId === theaterId ? null : theaterId)
+  }
 
   const getTheaters = async () => {
     try {
@@ -36,9 +42,9 @@ const UpdateTheaters = () => {
     }
   }
 
-  const updateTheater = async (theaterLoc, theaterRoomNum, movieId) => {
+  const updateTheater = async (theaterLoc, theaterRoomNum, movieId, time) => {
     try {
-      const updated = await axios.patch(`/api/theaters/change/movie?location=${theaterLoc}&roomNumber=${theaterRoomNum}&movieId=${movieId}`)
+      const updated = await axios.patch(`/api/theaters/change/movie?location=${theaterLoc}&roomNumber=${theaterRoomNum}&movieId=${movieId}&time=${time}`)
       alert(updated.data)
       window.location.reload()
     } catch (err) {
@@ -55,29 +61,44 @@ const UpdateTheaters = () => {
   }
 
   return (
-    <div className="update_theater_top_div">
+    <div className="update_theater_top_div_s">
       {isLoggedIn && isAdmin ? (
         <div>
-          <h1 className="update_theater_div">{location} Theaters</h1>
-          <Button className="update_theater_button" onClick={() => nav(`/${location}`)}>return</Button>
-          <Form className="update_theater_form">
+          <h1 className="update_theater_div_s">{location} Theaters</h1>
+          <Button className="update_theater_button_s" onClick={() => nav(`/${location}`)}>return</Button>
+          <Form className="update_theater_form_s">
             {theaters.map(theater => (
-              <Form.Group key={theater.id}>
-                <Form.Label className="update_theater_label">Room Number {theater.roomNumber} currently playing {getMovieTitle(theater.movieId)}</Form.Label>
-                <Form.Select
-                  className="update_theater_select"
-                  onChange={(e) => updateTheater(theater.location, theater.roomNumber, e.target.value)}
+              <div>
+                <Form.Label 
+                  className="update_theater_label_s"
+                  onClick={() => toggleTheaterDetails(theater.id)}
+                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
                 >
-                  {movies.map(movie => (
-                    <option key={movie.id} value={movie.id}>{movie.title}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
+                  Room Number {theater.roomNumber}
+                </Form.Label>
+                {openTheaterId === theater.id && (
+                  <div>
+                    {times.map((time, index) => (
+                      <Form.Group key={theater.id}>
+                        <Form.Label className="update_theater_label_s">{time} is playing: {getMovieTitle(theater.movieIds[index])}</Form.Label>
+                        <Form.Select
+                          className="update_theater_select_s"
+                          onChange={(e) => updateTheater(theater.location, theater.roomNumber, e.target.value, time)}
+                        >
+                          {movies.map(movie => (
+                            <option key={movie.id} value={movie.id}>{movie.title}</option>
+                          ))}
+                        </Form.Select>
+                      </Form.Group>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </Form>
         </div>
       ) : (
-        <h1 className="update_theater_h1">Unauthorized</h1>
+        <h1 className="update_theater_h1_s">Unauthorized</h1>
       )}
     </div>
   )

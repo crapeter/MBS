@@ -36,12 +36,17 @@ public class TheaterController {
   }
 
   @PatchMapping("/change/movie")
-  public ResponseEntity<String> updateMovie(@RequestParam String location, @RequestParam int roomNumber, @RequestParam Long movieId) {
+  public ResponseEntity<String> updateMovie(
+      @RequestParam String location, @RequestParam int roomNumber, @RequestParam Long movieId, @RequestParam String time
+  ) {
     Long theaterId = theaterService.getTheaterId(location, roomNumber).getBody();
     if (theaterId == null) {
       return ResponseEntity.badRequest().body("Theater not found");
     }
-    return theaterService.updateMovie(theaterId, movieId);
+    if (!time.matches("^(1[0-2]|0?[1-9]):[0-5][0-9]$")) {
+      return ResponseEntity.badRequest().body("Invalid time");
+    }
+    return theaterService.updateMovie(theaterId, movieId, time);
   }
 
   @DeleteMapping("/delete/{theaterId}")

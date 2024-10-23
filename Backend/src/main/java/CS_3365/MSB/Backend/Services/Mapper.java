@@ -3,6 +3,7 @@ package CS_3365.MSB.Backend.Services;
 import CS_3365.MSB.Backend.DTO.*;
 import CS_3365.MSB.Backend.Models.*;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,6 @@ public abstract class Mapper {
     movieDto.setDescription(movie.getDescription());
     movieDto.setGenre(movie.getGenre());
     movieDto.setRunTime(movie.getRuntime());
-    movieDto.setShowTime(movie.getShowTime());
     movieDto.setReleaseDate(movie.getReleaseDate());
     movieDto.setDirector(movie.getDirector());
     movieDto.setCast(movie.getCast());
@@ -34,10 +34,11 @@ public abstract class Mapper {
 
   public static TheaterDto mapToDto(Theater theater) {
     TheaterDto theaterDto = new TheaterDto();
+    theaterDto.setId(theater.getId());
     theaterDto.setLocation(theater.getLocation());
     theaterDto.setRoomNumber(theater.getRoomNumber());
     theaterDto.setSeatsBooked(theater.getSeatsBooked());
-    theaterDto.setMovieId(theater.getMovieId());
+    theaterDto.setMovieIds(theater.getMovieId());
     return theaterDto;
   }
 
@@ -86,7 +87,6 @@ public abstract class Mapper {
     movie.setDescription(movieDto.getDescription());
     movie.setGenre(movieDto.getGenre());
     movie.setRuntime(movieDto.getRunTime());
-    movie.setShowTime(movieDto.getShowTime());
     movie.setReleaseDate(movieDto.getReleaseDate());
     movie.setDirector(movieDto.getDirector());
     movie.setCast(movieDto.getCast());
@@ -102,5 +102,9 @@ public abstract class Mapper {
     theater.setMovieId(null);
     theater.setTickets(null);
     return theater;
+  }
+
+  public static List<String> mapToStringList(List<LocalTime> timesLoc) {
+    return timesLoc.stream().map(LocalTime::toString).collect(Collectors.toList());
   }
 }

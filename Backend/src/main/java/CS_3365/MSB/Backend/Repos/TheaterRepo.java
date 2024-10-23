@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestResource
 public interface TheaterRepo extends JpaRepository<Theater, Long> {
-  Theater findByMovieId(Long movieId);
   Theater findByLocationAndRoomNumber(String location, int roomNumber);
+
   List<Theater> findByLocation(String location);
 }
