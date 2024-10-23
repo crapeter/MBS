@@ -43,9 +43,6 @@ public class TheaterController {
     if (theaterId == null) {
       return ResponseEntity.badRequest().body("Theater not found");
     }
-    if (!time.matches("^(1[0-2]|0?[1-9]):[0-5][0-9]$")) {
-      return ResponseEntity.badRequest().body("Invalid time");
-    }
     return theaterService.updateMovie(theaterId, movieId, time);
   }
 
