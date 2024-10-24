@@ -9,6 +9,12 @@ import java.util.List;
 @RestResource
 public interface TicketRepo extends JpaRepository<Ticket, Long> {
   List<Ticket> findByUserId(long userId);
+
   Ticket findByUserIdAndMovieId(long userId, long movieId);
+
   Ticket findByUserIdAndMovieIdAndTheaterId(long userId, long movieId, long theaterId);
+
+  Ticket findByUserIdAndMovieIdAndTheaterIdAndRoomNumber(long userId, long movieId, long theaterId, int roomNumber);
+
+  Ticket findByUserIdAndMovieIdAndTheaterIdAndRoomNumberAndTime(Long userId, Long movieId, Long theaterId, int roomNumber, String time);
 }

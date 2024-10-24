@@ -3,7 +3,7 @@ import { useAuth } from "../Misc/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { Button, Form } from 'react-bootstrap'
 import PurchaseTickets from "./PurchaseTickets"
-import ViewTickets from "./ViewTickets"
+import MovieChoise from "./MovieChoice"
 import AddMovie from "./AddMovie"
 import StatusReport from "./StatusReport"
 import '../../CSS/Movies.css'
@@ -120,6 +120,42 @@ const Movies = ({ location }) => {
     setTheaterMovies(movieIds)
   }
 
+  const getShowTimes = (movie) => {
+    let showTimes = ""
+    for (let i = 0; i < theaters.length; i++) {
+      if (theaters[i].movieIds.includes(movie.id)) {
+        for (let j = 0; j < theaters[i].movieIds.length; j++) {
+          if (theaters[i].movieIds[j] === movie.id) {
+            let time = ''
+            switch (j) {
+              case 0:
+                time = "11:00am"
+                break;
+              case 1:
+                time = "2:30pm "
+                break;
+              case 2:
+                time = "5:00pm"
+                break;
+              case 3:
+                time = "8:30pm"
+                break;
+              default:
+                time = "No showtimes available"
+            }
+            showTimes += "Theater " + theaters[i].roomNumber + ": " + time + " | "
+          }
+        }
+      }
+    }
+    if (showTimes === "") {
+      showTimes = "No showtimes available"
+    } else {
+      showTimes = showTimes.slice(0, -3)
+    }
+    return showTimes;
+  }
+
   return (
     <div className="movie_div">
       {isLoggedIn ? (
@@ -165,8 +201,8 @@ const Movies = ({ location }) => {
                   <div className="movie_details" style={{ marginLeft: '20px' }}>
 										<div>
 											<p><strong>Genre:</strong> {movie.genre}</p>
-											<p><strong>Runtime:</strong> {movie.runTime} mins</p>
-											<p><strong>Show time:</strong> {movie.showTime}</p>
+											<p><strong>Runtime:</strong> {movie.runTime}</p>
+											<p><strong>Show time:</strong> {getShowTimes(movie)}</p>
 											<p><strong>Release Date:</strong> {movie.releaseDate}</p>
 											<p><strong>Director:</strong> {movie.director}</p>
 											<p><strong>Cast:</strong> {movie.cast}</p>
@@ -176,8 +212,8 @@ const Movies = ({ location }) => {
                       <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
                       {theaterMovieIds.includes(movie.id) && (
                         <div className="movie_buttons_flex">
-                          <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets}/>
-                          <ViewTickets className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated}/>
+                          <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets} showTimes={getShowTimes(movie)}/>
+                          <MovieChoise className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated} showTimes={getShowTimes(movie)}/>
                         </div>
                       )}
                     </div>

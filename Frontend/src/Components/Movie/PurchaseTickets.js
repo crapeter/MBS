@@ -4,7 +4,7 @@ import { useAuth } from "../Misc/AuthContext";
 import axios from "axios"
 import '../../CSS/PurchaseTickets.css'
 
-const PurchaseTickets = ({ movie, location, refreshTickets }) => {
+const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
   const { userEmail } = useAuth()
   const [show, setShow] = useState(false)
   const [theaters, setTheaters] = useState([])
@@ -14,6 +14,8 @@ const PurchaseTickets = ({ movie, location, refreshTickets }) => {
   const [payment, setPayment] = useState('')
   const [paypalEmail, setPaypalEmail] = useState('')
   const [currentPrice, setCurrentPrice] = useState(movie.price)
+  const [time, setTime] = useState('')
+  const [availableTimes, setAvailableTimes] = useState([])
 
   const handleClose = () => setShow(false)
   const handleShow = () => {
@@ -21,6 +23,11 @@ const PurchaseTickets = ({ movie, location, refreshTickets }) => {
     getTheaters()
     setPayments()
   }
+
+  useEffect(() => {
+    getTimes()
+    // eslint-disable-next-line
+  }, [selectedTheater])
 
   const increment = () => {
     if (ticketQuantity < 10) {
@@ -36,13 +43,25 @@ const PurchaseTickets = ({ movie, location, refreshTickets }) => {
 
   const getTheaters = async () => {
     const showingTheaters = await axios.get(`/api/theaters/get/by/location?location=${location}`)
-    const possibleTheaters = showingTheaters.data.filter(theater => theater.movieId === movie.id)
+    const possibleTheaters = showingTheaters.data.filter(theater => theater.movieIds.includes(movie.id))
     setTheaters(possibleTheaters)
   }
 
+  const getTimes = () => {
+    let splitTimes = showTimes.split(" | ")
+    let times = splitTimes.filter(time => time.split(':')[0].includes(selectedTheater)).map(time => {
+      let idx = time.indexOf(":")
+      let part1 =  time.slice(idx + 1)
+      let idx2 = part1.indexOf(":")
+      return part1.substring(0, idx2+3)
+    })
+    setAvailableTimes(times)
+  }
+
   const purchaseTicket = async () => {
+    alert(time)
     try {
-      const res = await axios.post(`/api/users/purchase/tickets?numberPurchased=${ticketQuantity}&movieId=${movie.id}&location=${location}&roomNumber=${selectedTheater}&userEmail=${userEmail}&paymentType=${payment}`)
+      const res = await axios.post(`/api/users/purchase/tickets?numberPurchased=${ticketQuantity}&movieId=${movie.id}&location=${location}&roomNumber=${selectedTheater}&userEmail=${userEmail}&paymentType=${payment}&time=${time}`)
       alert(res.data)
       refreshTickets()
       handleClose()
@@ -103,6 +122,26 @@ const PurchaseTickets = ({ movie, location, refreshTickets }) => {
                     {theater.roomNumber}
                   </option>
                 ))}
+              </Form.Select>
+            </Form.Group>
+          </Form>
+
+          <Form className="purchase_forms">
+            <Form.Group controlId="theaterSelection">
+              <Form.Label>Choose the time</Form.Label>
+              <Form.Select
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                required
+              >
+                <option value="">Times available</option>
+                {selectedTheater !== '' && 
+                  availableTimes.map((time, idx) => (
+                    <option key={idx} value={time}>
+                      {time}
+                    </option>
+                  ))
+                }
               </Form.Select>
             </Form.Group>
           </Form>

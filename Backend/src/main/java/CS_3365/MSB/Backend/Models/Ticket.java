@@ -34,4 +34,10 @@ public class Ticket {
   @JoinColumn(name = "UserId", nullable = false)
   @JsonProperty("userId")
   private User user;
+
+  @JsonProperty("roomNumber")
+  private int roomNumber;
+
+  @JsonProperty("time")
+  private String time;
 }

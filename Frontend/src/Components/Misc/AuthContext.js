@@ -4,27 +4,35 @@ const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem('isLoggedIn') === 'true'
+    const storedValue = localStorage.getItem('isLoggedIn')
+    return storedValue === 'true'
   })
 
   const [isAdmin, setIsAdmin] = useState(() => {
-    return localStorage.getItem('isAdmin') === 'true'
+    const storedValue = localStorage.getItem('isAdmin')
+    return storedValue === 'true'
   })
 
   const [userEmail, setUserEmail] = useState(() => {
-    return localStorage.getItem('email')
+    return localStorage.getItem('userEmail') || ''
   })
 
   useEffect(() => {
-    localStorage.setItem('isLoggedIn', isLoggedIn)
+    if (isLoggedIn !== null) {
+      localStorage.setItem('isLoggedIn', isLoggedIn.toString())
+    }
   }, [isLoggedIn])
 
   useEffect(() => {
-    localStorage.setItem('isAdmin', isAdmin)
+    if (isAdmin !== null) {
+      localStorage.setItem('isAdmin', isAdmin.toString())
+    }
   }, [isAdmin])
 
   useEffect(() => {
-    localStorage.setItem('userEmail', userEmail)
+    if (userEmail) {
+      localStorage.setItem('userEmail', userEmail)
+    }
   }, [userEmail])
 
   return (

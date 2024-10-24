@@ -7,4 +7,5 @@ public class TicketDto {
   private MovieDto movie;
   private TheaterDto theater;
   private int numberPurchased;
+  private int roomNumber;
 }
