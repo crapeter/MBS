@@ -50,7 +50,7 @@ public class UserService {
   }
 
   public ResponseEntity<String> addUser(User newUser) {
-    if (!validateCard(newUser.getCardNumber())) {
+    if (validateCard(newUser.getCardNumber())) {
       return ResponseEntity.badRequest().body("Invalid card number");
     }
     try {
@@ -68,7 +68,7 @@ public class UserService {
   }
 
   public ResponseEntity<String> purchaseTicket(
-      int numberPurchased, Long movieId, Long theaterId, Long userId, String paymentType
+      int numberPurchased, Long movieId, Long theaterId, Long userId, String paymentType, int roomNumber, String time
   ) {
     if (movieId == null || theaterId == null || userId == null) {
       return ResponseEntity.badRequest().body("Invalid movie, theater, or user ID");
@@ -86,7 +86,7 @@ public class UserService {
       return ResponseEntity.badRequest().body("Movie is not playing");
 
     if (paymentType.toLowerCase().contains("card")) {
-      if (!validateCard(Objects.requireNonNull(decrypt(user.getCardNumber())))) {
+      if (validateCard(Objects.requireNonNull(decrypt(user.getCardNumber())))) {
         return ResponseEntity.badRequest().body("Invalid card number");
       }
     } else if (!paymentType.equalsIgnoreCase("paypal")) {
@@ -98,7 +98,9 @@ public class UserService {
     String email = user.getEmail();
     String uniqueId = location + title + email;
 
-    Ticket ticketsExist = ticketRepo.findByUserIdAndMovieIdAndTheaterId(userId, movieId, theaterId);
+    Ticket ticketsExist = ticketRepo.findByUserIdAndMovieIdAndTheaterIdAndRoomNumberAndTime(
+        userId, movieId, theaterId, roomNumber, time
+    );
     if (ticketsExist != null) {
       int oldNumPurchased = ticketsExist.getTicketIds().size();
       for (int i = oldNumPurchased; i < 10 && i < oldNumPurchased + numberPurchased; i++) {
@@ -121,6 +123,8 @@ public class UserService {
     ticket.setTheater(theater);
     ticket.setUser(user);
     ticket.setTicketIds(new ArrayList<>());
+    ticket.setRoomNumber(roomNumber);
+    ticket.setTime(time);
 
     for (int i = 0; i < numberPurchased; i++) {
       ticket.getTicketIds().add(generateRandId(uniqueId, i));
@@ -199,8 +203,10 @@ public class UserService {
     return ResponseEntity.ok(thingToUpdate + " updated successfully");
   }
 
-  public List<Long> viewTickets(Long userId, Long movieId, Long theaterId) {
-    Ticket ticket = ticketRepo.findByUserIdAndMovieIdAndTheaterId(userId, movieId, theaterId);
+  public List<Long> viewTickets(Long userId, Long movieId, Long theaterId, int roomNumber, String time) {
+    Ticket ticket = ticketRepo.findByUserIdAndMovieIdAndTheaterIdAndRoomNumberAndTime(
+        userId, movieId, theaterId, roomNumber, time
+    );
     if (ticket == null) {
       return null;
     }
@@ -209,6 +215,10 @@ public class UserService {
 
   public List<Theater> getTheatersByLocation(String location) {
     return theaterRepo.findByLocation(location);
+  }
+
+  public Theater getTheater(String location, int roomNumber) {
+    return theaterRepo.findByLocationAndRoomNumber(location, roomNumber);
   }
 
   public Long getTheaterId(String location, int roomNumber) {
@@ -292,6 +302,6 @@ public class UserService {
       isSecond = !isSecond;
     }
 
-    return (sum % 10 == 0);
+    return (sum % 10 != 0);
   }
 }

@@ -32,7 +32,8 @@ public class UserController {
       @RequestParam String location,
       @RequestParam int roomNumber,
       @RequestParam String userEmail,
-      @RequestParam String paymentType
+      @RequestParam String paymentType,
+      @RequestParam String time
   ) {
     if (numberPurchased <= 0 || numberPurchased > 10) {
       return ResponseEntity.badRequest().body("Invalid number of tickets");
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     Long userId = userService.getUserIdByEmail(userEmail);
-    return userService.purchaseTicket(numberPurchased, movieId, theaterId, userId, paymentType);
+    return userService.purchaseTicket(numberPurchased, movieId, theaterId, userId, paymentType, roomNumber, time);
   }
 
   @GetMapping("/is/admin")
@@ -60,29 +61,21 @@ public class UserController {
     return userService.getAllUsers();
   }
 
-  @GetMapping("/tickets/{email}/{movieId}/{location}")
+  @GetMapping("/tickets/{email}/{movieId}/{location}/{roomNumber}/{time}")
   public List<Long> viewTickets(
       @PathVariable String email,
       @PathVariable Long movieId,
-      @PathVariable String location
+      @PathVariable String location,
+      @PathVariable int roomNumber,
+      @PathVariable String time
   ) {
     Long userId = userService.getUserIdByEmail(email);
     if (userId == null) {
       return null;
     }
 
-    List<Theater> theaters = userService.getTheatersByLocation(location);
-    if (theaters == null) {
-      return null;
-    }
-
-    for (Theater t : theaters) {
-      if (t.getMovieId() == null) continue;
-      if (t.getMovieId().equals(movieId)) {
-        return userService.viewTickets(userId, movieId, t.getId());
-      }
-    }
-    return null;
+    Theater theater = userService.getTheater(location, roomNumber);
+    return userService.viewTickets(userId, movieId, theater.getId(), roomNumber, time);
   }
 
   @GetMapping("/email")
