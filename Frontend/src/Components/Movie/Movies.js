@@ -13,7 +13,7 @@ const Movies = ({ location }) => {
   const nav = useNavigate()
   const movieDisplays = ['All Movies', 'Current Movie Catalog', 'Upcoming Movie Catalog']
 
-	const { isLoggedIn, isAdmin } = useAuth()
+  const { isLoggedIn, isAdmin } = useAuth()
   const [movies, setMovies] = useState([])
   const [openMovieId, setOpenMovieId] = useState(null)
   const [ticketUpdated, setTicketUpdated] = useState(false)
@@ -63,7 +63,6 @@ const Movies = ({ location }) => {
     nav(`/${location}/playing`)
   }
 
-
   const getMovies = async () => {
     try {
       const [allMoviesResponse, locationTheatersResponse] = await Promise.all([
@@ -90,7 +89,7 @@ const Movies = ({ location }) => {
 
       playingMovies.sort((a, b) => { return a.title > b.title ? 1 : -1 })
       upcomingMovies.sort((a, b) => { return a.title > b.title ? 1 : -1 })
-      
+
       setTheaters(locationTheaters.data)
       setAllMovies(allMovies.data)
       setIsPlaying(playingMovies)
@@ -165,9 +164,9 @@ const Movies = ({ location }) => {
             <Button variant="danger" onClick={toSearch}>Search Movies</Button>
             {isAdmin && (
               <div className="user_admin_buttons">
-                <AddMovie location={location}/>
+                <AddMovie location={location} />
                 <Button variant="info" onClick={toUpdateTheaters}>Update Theaters</Button>
-                <StatusReport/>
+                <StatusReport />
               </div>
             )}
           </div>
@@ -189,31 +188,31 @@ const Movies = ({ location }) => {
           <ul className="movie_list">
             {movies.map(movie => (
               <li key={movie.id}>
-                <p 
-                  onClick={() => toggleMovieDetails(movie.id)} 
+                <p
+                  onClick={() => toggleMovieDetails(movie.id)}
                   style={{ cursor: 'pointer', fontWeight: 'bold' }}
-									className="movie_title"
+                  className="movie_title"
                 >
                   {movie.title}
                 </p>
 
                 {openMovieId === movie.id && (
                   <div className="movie_details" style={{ marginLeft: '20px' }}>
-										<div>
-											<p><strong>Genre:</strong> {movie.genre}</p>
-											<p><strong>Runtime:</strong> {movie.runTime}</p>
-											<p><strong>Show time:</strong> {getShowTimes(movie)}</p>
-											<p><strong>Release Date:</strong> {movie.releaseDate}</p>
-											<p><strong>Director:</strong> {movie.director}</p>
-											<p><strong>Cast:</strong> {movie.cast}</p>
-											<p><strong>Description:</strong> {movie.description}</p>
-										</div>
+                    <div>
+                      <p><strong>Genre:</strong> {movie.genre}</p>
+                      <p><strong>Runtime:</strong> {movie.runTime}</p>
+                      <p><strong>Show time:</strong> {getShowTimes(movie)}</p>
+                      <p><strong>Release Date:</strong> {movie.releaseDate}</p>
+                      <p><strong>Director:</strong> {movie.director}</p>
+                      <p><strong>Cast:</strong> {movie.cast}</p>
+                      <p><strong>Description:</strong> {movie.description}</p>
+                    </div>
                     <div className="movie_buttons_flex">
                       <Button className="movie_buttons" variant="success" onClick={() => toReviews(movie)}>View Reviews</Button>
                       {theaterMovieIds.includes(movie.id) && (
                         <div className="movie_buttons_flex">
-                          <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets} showTimes={getShowTimes(movie)}/>
-                          <MovieChoise className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated} showTimes={getShowTimes(movie)}/>
+                          <PurchaseTickets className="movie_buttons" movie={movie} location={location} refreshTickets={refreshTickets} showTimes={getShowTimes(movie)} />
+                          <MovieChoise className="movie_buttons" movie={movie} location={location} ticketUpdated={ticketUpdated} showTimes={getShowTimes(movie)} />
                         </div>
                       )}
                     </div>
@@ -225,7 +224,7 @@ const Movies = ({ location }) => {
         </div>
       ) : (
         <div>
-          <h1 style={{color: "white"}}>Log in to view movies</h1>
+          <h1 style={{ color: "white" }}>Log in to view movies</h1>
         </div>
       )}
     </div>

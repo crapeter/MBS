@@ -45,7 +45,7 @@ const UpdateTheaters = () => {
 
   const updateTheater = async (theaterLoc, theaterRoomNum, movieId, time) => {
     if (time === "11:00") {
-      time = '11:00:00'
+      time = '11:00'
     } else if (time === "2:30") {
       time = '14:30'
     } else if (time === "5:00") {
@@ -59,7 +59,8 @@ const UpdateTheaters = () => {
       alert(updated.data)
       window.location.reload()
     } catch (err) {
-      alert("Error updating theater")
+      alert(`${theaterLoc} ${theaterRoomNum} ${movieId} ${time}`)
+      // alert("Error updating theater")
     }
   }
 
