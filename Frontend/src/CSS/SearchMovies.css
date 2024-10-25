@@ -13,6 +13,10 @@
 .search_div {
   width: 100%;
   max-width: 800px;
+  padding: 20px;
+  background-color: #444;
+  border: 3px solid black;
+  border-radius: 20px;
 }
 
 h1 {
@@ -31,12 +35,16 @@ h1 {
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #444;
-  color: white;
+  background-color: #ababab;
+  color: black;
 }
 
 .return_button {
   margin-left: 20px;
+  margin-top: 12px;
+  padding: 10px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .movie_list {
@@ -55,10 +63,12 @@ h1 {
 }
 
 .search_movie_details {
-  background-color: #444;
+  background-color: #ababab;
   border-radius: 5px;
+  border: 2px solid black;
   padding: 15px;
   margin-top: 10px;
+  color: black;
 }
 
 .review_movie_button {
