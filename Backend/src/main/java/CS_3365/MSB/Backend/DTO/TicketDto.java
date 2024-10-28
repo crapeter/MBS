@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class TicketDto {
-  private MovieDto movie;
-  private TheaterDto theater;
+  private Long movieId;
+  private Long theaterId;
   private int numberPurchased;
   private int roomNumber;
 }

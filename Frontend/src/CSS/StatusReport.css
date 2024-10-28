@@ -1,0 +1,87 @@
+.status_report_container_sr {
+  background-color: #303030;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.status_report_button_sr {
+  margin-top: 20px;
+  padding: 10px 20px;
+  color: black;
+  border: 3px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.location_list_sr {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  background-color: #444;
+  border: 3px solid black;
+  border-radius: 20px;
+  list-style-type: none;
+  margin-top: 20px;
+}
+
+.location_list_sr li {
+  margin-bottom: 15px;
+}
+
+.location_title_sr {
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 10px 0;
+}
+
+.movie_details_sr {
+  background-color: #ababab;
+  border-radius: 10px;
+  border: 2px solid black;
+  padding: 15px;
+  margin-top: 10px;
+  color: black;
+}
+
+.movie_title_sr {
+  font-weight: bold;
+  font-size: 1rem;
+  color: black;
+  padding: 5px 0;
+}
+
+.movie_list_sr {
+  margin-top: 10px;
+}
+
+.tickets_sold {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.location_info_sr {
+  background-color: #ababab;
+  border-radius: 5px;
+  border: 2px solid black;
+  padding: 15px;
+  margin-top: 10px;
+  color: black;
+}
+
+.current_movie_p_tag {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.movies_playing_at_loc_sr {
+  margin-left: 20px;
+}

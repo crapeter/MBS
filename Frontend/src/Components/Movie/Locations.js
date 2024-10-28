@@ -5,7 +5,7 @@ import Logout from "../Misc/Logout"
 import '../../CSS/Locations.css';
 
 const Locations = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isAdmin } = useAuth();
   const nav = useNavigate()
 
   const Lubbock = () => {
@@ -32,12 +32,19 @@ const Locations = () => {
     nav('/Abilene')
   }
 
+  const toStatusReport = () => {
+    nav('/status/report')
+  }
+
   return (
     <div className="top_loc_div">
       {isLoggedIn ? (
         <div className="locations">
           <div className="container">
             <h1>Movie Theater Locations</h1>
+            {isAdmin && (
+              <button className="to_status_report" onClick={toStatusReport}>Status Report</button>
+            )}
             <button className="to_city" onClick={Lubbock}>Lubbock</button>
             <button className="to_city" onClick={Amarillo}>Amarillo</button>
             <button className="to_city" onClick={Levelland}>Levelland</button>
@@ -49,7 +56,7 @@ const Locations = () => {
         </div>
       ) : (
         <div>
-          <h1 style={{color: "white"}}>Log in to view locations</h1>
+          <h1 style={{ color: "white" }}>Log in to view locations</h1>
         </div>
       )}
     </div>

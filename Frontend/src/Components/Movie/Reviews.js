@@ -12,6 +12,7 @@ const Reviews = () => {
   const [newReview, setNewReview] = useState('')
   const [reviews, setReviews] = useState([])
   const [movie, setMovie] = useState({})
+  const profanaties = ["fuck", "shit", "bitch", "pussy", "pussies", "cunt"]
 
   useEffect(() => {
     getMovies()
@@ -33,12 +34,23 @@ const Reviews = () => {
   }
 
   const createReview = async () => {
-    try {
-      const res = await axios.patch(`/api/users/add/review?userEmail=${userEmail}&movieId=${movie.id}&review=${newReview}`)
-      alert(res.data)
-      window.location.reload()
-    } catch (err) {
-      alert(err)
+    let allowed = true;
+    for (let prof of profanaties) {
+      if (newReview.toLowerCase().includes(prof)) {
+        allowed = false
+      }
+    }
+
+    if (!allowed){
+      alert("Swear words not allowed")
+    } else {
+      try {
+        const res = await axios.patch(`/api/users/add/review?userEmail=${userEmail}&movieId=${movie.id}&review=${newReview}`)
+        alert(res.data)
+        window.location.reload()
+      } catch (err) {
+        alert(err)
+      }
     }
   }
 

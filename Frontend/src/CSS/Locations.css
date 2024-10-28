@@ -26,7 +26,7 @@
   box-sizing: border-box;
 }
 
-.to_city {
+.to_city, .to_status_report {
   background-color: blue;
   border: none;
   border-radius: 10px;
@@ -41,5 +41,14 @@
 }
 
 .to_city:hover {
-  background-color: #0000aa;
+  filter: brightness(75%)
+}
+
+.to_status_report {
+  background-color: #5cb85c;
+  color: black;
+}
+
+.to_status_report:hover {
+  filter: brightness(75%)
 }
