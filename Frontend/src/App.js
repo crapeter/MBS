@@ -21,7 +21,9 @@ import LubbockSearch from './Components/Locations/LubbockSearch'
 import PlainviewSearch from './Components/Locations/PlainviewSearch'
 import SnyderSearch from './Components/Locations/SnyderSearch'
 import UpdateTheater from './Components/Movie/UpdateTheaters'
+
 import Reviews from './Components/Movie/Reviews'
+import StatusReport from './Components/Movie/StatusReport'
 
 import './App.css'
 
@@ -50,6 +52,7 @@ function App() {
               <Route exact path='/Snyder/Search' Component={SnyderSearch}/>
               <Route exact path='/:location/:movieTitle/Reviews' Component={Reviews}/>
               <Route exact path='/:location/Playing' Component={UpdateTheater}/>
+              <Route exact path='/Status/Report' Component={StatusReport}/>
             </Routes>
           </BrowserRouter>
         </div>

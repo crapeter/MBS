@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap'
 import PurchaseTickets from "./PurchaseTickets"
 import MovieChoise from "./MovieChoice"
 import AddMovie from "./AddMovie"
-import StatusReport from "./StatusReport"
+import Logout from "../Misc/Logout"
 import '../../CSS/Movies.css'
 import axios from 'axios'
 
@@ -62,6 +62,7 @@ const Movies = ({ location }) => {
   const toUpdateTheaters = () => {
     nav(`/${location}/playing`)
   }
+
 
   const getMovies = async () => {
     try {
@@ -166,9 +167,9 @@ const Movies = ({ location }) => {
               <div className="user_admin_buttons">
                 <AddMovie location={location} />
                 <Button variant="info" onClick={toUpdateTheaters}>Update Theaters</Button>
-                <StatusReport />
               </div>
             )}
+            <Logout />
           </div>
           <h3 className="movies_header">
             <Form>

@@ -44,8 +44,8 @@ public abstract class Mapper {
 
   public static TicketDto mapToDto(Ticket ticket) {
     TicketDto ticketDto = new TicketDto();
-    ticketDto.setMovie(mapToDto(ticket.getMovie()));
-    ticketDto.setTheater(mapToDto(ticket.getTheater()));
+    ticketDto.setMovieId(ticket.getMovie().getId());
+    ticketDto.setTheaterId(ticket.getTheater().getId());
     ticketDto.setNumberPurchased(ticket.getNumberPurchased());
     ticketDto.setRoomNumber(ticket.getRoomNumber());
     return ticketDto;
