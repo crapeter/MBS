@@ -1,5 +1,6 @@
 package CS_3365.MSB.Backend.Services;
 
+import CS_3365.MSB.Backend.DTO.TicketDto;
 import CS_3365.MSB.Backend.Models.*;
 import CS_3365.MSB.Backend.Repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,21 @@ public class TicketService {
   public List<Integer> numberSold() {
     List<Ticket> tickets = ticketRepo.findAll();
     return tickets.stream().map(Ticket::getNumberPurchased).toList();
+  }
+
+  public ResponseEntity<Integer> getUniqueTickets(String location) {
+    List<Ticket> tickets = ticketRepo.findAll();
+    int ticketsSold = tickets.stream()
+        .filter(ticket -> ticket.getTheater().getLocation().equalsIgnoreCase(location))
+        .mapToInt(Ticket::getNumberPurchased)
+        .sum();
+    return ResponseEntity.ok().body(ticketsSold);
+  }
+
+  public List<TicketDto> getTicketsByLocation(String location) {
+    List<Ticket> tickets = ticketRepo.findAll().stream()
+        .filter(ticket -> ticket.getTheater().getLocation().equalsIgnoreCase(location))
+        .toList();
+    return Mapper.mapToTiList(tickets);
   }
 }

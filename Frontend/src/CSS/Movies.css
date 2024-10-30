@@ -24,12 +24,25 @@
 .user_buttons {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
+  width: 100%;
+}
+
+.user_public_buttons {
+  flex: 1;
 }
 
 .user_admin_buttons {
   display: flex;
+  align-items: center;
   gap: 10px;
+  text-align: center;
+}
+
+.user_logout_button {
+  flex: 1;
+  text-align: right;
 }
 
 .user_buttons button{

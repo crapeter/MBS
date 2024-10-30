@@ -14,7 +14,7 @@ public interface TicketRepo extends JpaRepository<Ticket, Long> {
 
   Ticket findByUserIdAndMovieIdAndTheaterId(long userId, long movieId, long theaterId);
 
-  Ticket findByUserIdAndMovieIdAndTheaterIdAndRoomNumber(long userId, long movieId, long theaterId, int roomNumber);
+  List<Ticket> findByMovieIdAndTheaterIdAndRoomNumber(Long movieId, Long theaterId, int roomNumber);
 
   Ticket findByUserIdAndMovieIdAndTheaterIdAndRoomNumberAndTime(Long userId, Long movieId, Long theaterId, int roomNumber, String time);
 }

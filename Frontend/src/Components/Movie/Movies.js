@@ -23,9 +23,16 @@ const Movies = ({ location }) => {
   const [theaterMovieIds, setTheaterMovies] = useState([])
   const [isPlaying, setIsPlaying] = useState([])
   const [isUpcoming, setIsUpcoming] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getMovies()
+    try {
+      getMovies()
+    } catch (err) {
+      alert(err)
+    } finally {
+      setLoading(false)
+    }
     // eslint-disable-next-line
   }, [])
 
@@ -156,20 +163,27 @@ const Movies = ({ location }) => {
     return showTimes;
   }
 
+  if (loading) return <div>Loading...</div>
+
   return (
     <div className="movie_div">
       {isLoggedIn ? (
         <div className="movies">
           <h1 onClick={locations} className="movies_header">Movies showing in {location}</h1>
           <div className="user_buttons">
-            <Button variant="danger" onClick={toSearch}>Search Movies</Button>
+            <div className="user_public_buttons">
+              <Button variant="primary" onClick={toSearch}>Search Movies</Button>
+              <Button style={{ marginLeft: '10px' }} variant="danger" onClick={() => nav('/locations')}>View Locations</Button>
+            </div>
             {isAdmin && (
               <div className="user_admin_buttons">
                 <AddMovie location={location} />
-                <Button variant="info" onClick={toUpdateTheaters}>Update Theaters</Button>
+                <Button variant="success" onClick={toUpdateTheaters}>Update Theaters</Button>
               </div>
             )}
-            <Logout />
+            <div className="user_logout_button">
+              <Logout />
+            </div>
           </div>
           <h3 className="movies_header">
             <Form>

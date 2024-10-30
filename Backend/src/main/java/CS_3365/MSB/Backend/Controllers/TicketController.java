@@ -1,10 +1,12 @@
 package CS_3365.MSB.Backend.Controllers;
 
+import CS_3365.MSB.Backend.DTO.TicketDto;
 import CS_3365.MSB.Backend.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,5 +25,15 @@ public class TicketController {
   @GetMapping("/list")
   public List<Integer> numberSold() {
     return ticketService.numberSold();
+  }
+
+  @GetMapping("/location/total")
+  public ResponseEntity<Integer> getUniqueTickets(@RequestParam String location) {
+    return ticketService.getUniqueTickets(location);
+  }
+
+  @GetMapping("/location")
+  public List<TicketDto> getTicketsByLocation(@RequestParam String location) {
+    return ticketService.getTicketsByLocation(location);
   }
 }

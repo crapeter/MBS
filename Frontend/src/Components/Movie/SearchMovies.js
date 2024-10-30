@@ -125,7 +125,7 @@ const SearchMovies = ({ location }) => {
     <div className="search_movie_div">
       {isLoggedIn && (
         <div className="search_div">
-          <h1>Search for a Movie</h1>
+          <h1 onClick={goBack} style={{cursor: 'pointer'}}>Search for a Movie</h1>
           <div className="top_features">
             <input
               value={search}
