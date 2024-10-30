@@ -117,7 +117,7 @@ const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
               >
                 <option value="">Room options</option>
                 {theaters.map(theater => (
-                  <option key={theater.id} value={theater.id}>
+                  <option key={theater.id} value={theater.roomNumber}>
                     {theater.roomNumber}
                   </option>
                 ))}

@@ -11,23 +11,31 @@
 }
 
 .status_report_button_sr {
-  margin-top: 20px;
+  margin-top: 15px;
   padding: 10px 20px;
   color: black;
   border: 3px solid black;
   border-radius: 10px;
   cursor: pointer;
+  width: 50%;
 }
 
-.location_list_sr {
+.location_list_sr, .status_report_div {
   width: 100%;
   max-width: 800px;
   padding: 20px;
-  background-color: #444;
+  background-color: #6b6b6b;
   border: 3px solid black;
   border-radius: 20px;
   list-style-type: none;
   margin-top: 20px;
+}
+
+.status_report_div {
+  background-color: #444;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .location_list_sr li {
@@ -63,14 +71,20 @@
 }
 
 .tickets_sold {
-  font-size: 1.5rem;
+  font-size: 1.65rem;
   margin-bottom: 20px;
   text-align: center;
+  font-weight: bold;
+  background-color: #6b6b6b;
+  padding: 10px;
+  margin: 10px;
+  border: 3px solid black;
+  border-radius: 15px;
 }
 
 .location_info_sr {
   background-color: #ababab;
-  border-radius: 5px;
+  border-radius: 15px;
   border: 2px solid black;
   padding: 15px;
   margin-top: 10px;
@@ -79,9 +93,13 @@
 
 .current_movie_p_tag {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.35rem;
 }
 
 .movies_playing_at_loc_sr {
   margin-left: 20px;
+}
+
+.status_movie_info {
+  font-size: 1.35rem;
 }

@@ -53,34 +53,32 @@ const UpdateTheaters = () => {
     } else if (time === "8:30") {
       time = '20:30'
     }
-
+  
     try {
-      const updated = await axios.patch(`/api/theaters/change/movie?location=${theaterLoc}&roomNumber=${theaterRoomNum}&movieId=${movieId}&time=${time}`)
-      alert(updated.data)
-      window.location.reload()
+      const updated = await axios.patch(`/api/theaters/change/movie?location=${theaterLoc}&roomNumber=${theaterRoomNum}&movieId=${movieId}&time=${time}`);
+      alert(updated.data);
     } catch (err) {
-      alert(`${theaterLoc} ${theaterRoomNum} ${movieId} ${time}`)
-      // alert("Error updating theater")
+      alert(err.message)
+    } finally {
+      getTheaters()
     }
-  }
+  };
+  
 
   const getMovieTitle = (movieId) => {
-    for (let i = 0; i < movies.length; i++) {
-      if (movies[i].id === movieId) {
-        return movies[i].title
-      }
-    }
+    const movie = movies.find(movie => movie.id === movieId)
+    return movie ? movie.title : "No Movie Selected"
   }
 
   return (
     <div className="update_theater_top_div_s">
       {isLoggedIn && isAdmin ? (
-        <div>
+        <div className="update_theater_container_s">
           <h1 className="update_theater_div_s">{location} Theaters</h1>
           <Button className="update_theater_button_s" onClick={() => nav(`/${location}`)}>return</Button>
           <Form className="update_theater_form_s">
             {theaters.map(theater => (
-              <div>
+              <div className="room_container_s">
                 <Form.Label 
                   className="update_theater_label_s"
                   onClick={() => toggleTheaterDetails(theater.id)}
@@ -89,14 +87,15 @@ const UpdateTheaters = () => {
                   Room Number {theater.roomNumber}
                 </Form.Label>
                 {openTheaterId === theater.id && (
-                  <div>
+                  <div className="inner_stuff_s">
                     {times.map((time, index) => (
                       <Form.Group key={theater.id}>
-                        <Form.Label className="update_theater_label_s">{time} is playing: {getMovieTitle(theater.movieIds[index])}</Form.Label>
+                        <Form.Label className="update_theater_label">{time} is playing: {getMovieTitle(theater.movieIds[index])}</Form.Label>
                         <Form.Select
                           className="update_theater_select_s"
                           onChange={(e) => updateTheater(theater.location, theater.roomNumber, e.target.value, time)}
                         >
+                          <option value="" className="movies_options">Choose the new movie</option>
                           {movies.map(movie => (
                             <option key={movie.id} value={movie.id}>{movie.title}</option>
                           ))}

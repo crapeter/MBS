@@ -45,12 +45,12 @@ const Locations = () => {
             {isAdmin && (
               <button className="to_status_report" onClick={toStatusReport}>Status Report</button>
             )}
-            <button className="to_city" onClick={Lubbock}>Lubbock</button>
+            <button className="to_city" onClick={Abilene}>Abilene</button>
             <button className="to_city" onClick={Amarillo}>Amarillo</button>
             <button className="to_city" onClick={Levelland}>Levelland</button>
+            <button className="to_city" onClick={Lubbock}>Lubbock</button>
             <button className="to_city" onClick={Plainview}>Plainview</button>
             <button className="to_city" onClick={Snyder}>Snyder</button>
-            <button className="to_city" onClick={Abilene}>Abilene</button>
             <Logout />
           </div>
         </div>
