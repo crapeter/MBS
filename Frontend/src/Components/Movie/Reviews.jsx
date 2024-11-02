@@ -72,10 +72,10 @@ const Reviews = () => {
 
   return (
     <div className="top_review_div">
-      {isLoggedIn ? (
-        <div className="reviews">
-          <h1>Reviews for {movie.title}</h1>
-          <Button className="return_button" variant="danger" onClick={goBack}>Return</Button>
+      <div className="reviews">
+        <h1>Reviews for {movie.title}</h1>
+        <Button className="return_button" variant="danger" onClick={goBack}>Return</Button>
+        {isLoggedIn && (
           <div className="write_new_review">
             <input style={{ font: 'comic sans ms' }}
               value={newReview}
@@ -86,20 +86,16 @@ const Reviews = () => {
             />
             <Button variant="success" onClick={createReview}>Submit</Button>
           </div>
-          <div className="written_reviews">
-            {reviews.map((review, index) => (
-              <div key={index} className="review">
-                <h3>{review.name}</h3>
-                <p>{review.review}</p>
-              </div>
-            ))}
-          </div>
+        )}
+        <div className="written_reviews">
+          {reviews.map((review, index) => (
+            <div key={index} className="review">
+              <h3>{review.name}</h3>
+              <p>{review.review}</p>
+            </div>
+          ))}
         </div>
-      ) : (
-        <div>
-          <h1 style={{ color: "white" }}>Log in to view movies</h1>
-        </div>
-      )}
+      </div>
     </div>
   )
 }

@@ -84,13 +84,17 @@ const UpdateTheaters = () => {
                   onClick={() => toggleTheaterDetails(theater.id)}
                   style={{ cursor: 'pointer', fontWeight: 'bold' }}
                 >
-                  Room Number {theater.roomNumber}
+                  Theater Number {theater.roomNumber}
                 </Form.Label>
                 {openTheaterId === theater.id && (
                   <div className="inner_stuff_s">
                     {times.map((time, index) => (
                       <Form.Group key={theater.id}>
-                        <Form.Label className="update_theater_label">{time} is playing: {getMovieTitle(theater.movieIds[index])}</Form.Label>
+                        {time === "11:00" ? (
+                          <Form.Label className="update_theater_label">{time}am is playing: {getMovieTitle(theater.movieIds[index])}</Form.Label>
+                        ) : (
+                          <Form.Label className="update_theater_label">{time}pm is playing: {getMovieTitle(theater.movieIds[index])}</Form.Label>
+                        )}
                         <Form.Select
                           className="update_theater_select_s"
                           onChange={(e) => updateTheater(theater.location, theater.roomNumber, e.target.value, time)}

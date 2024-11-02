@@ -42,7 +42,7 @@ const NewUser = () => {
   }
 
   const goBack = () => {
-    nav('/')
+    nav('/login')
   }
 
   return (
@@ -122,7 +122,7 @@ const NewUser = () => {
         </Form>
         <div>
           <Button className="register_buttons" variant="primary" onClick={handleRegistation}>Register</Button>
-          <Button className="register_buttons" variant="success" onClick={goBack}>Return</Button>
+          <Button className="register_buttons" variant="danger" onClick={goBack}>Return</Button>
         </div>
       </div>
     </div>

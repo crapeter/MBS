@@ -42,7 +42,7 @@ const SearchMovies = ({ location }) => {
   }
 
   const toReviews = (movie) => {
-    nav(`/${location}/${movie.title}/reviews`)
+    nav(`/${movie.title}/reviews`)
   }
 
   const getMovies = async () => {
