@@ -1,0 +1,70 @@
+.home_page_div {
+  background-color: #303030;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.home_page_container {
+  width: 100%;
+  max-width: 1000px;
+  background-color: #444;
+  padding: 20px;
+  border-radius: 20px;
+  border: 3px solid black;
+}
+
+.home_page_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home_page_movie_list {
+  padding-left: 10;
+}
+
+.home_page_movie_details {
+  background-color: #ababab;
+  border-radius: 15px;
+  border: 2px solid black;
+  padding: 15px;
+  margin-top: 10px;
+  color: black;
+}
+
+.home_page_movie_text {
+  font-size: 1.2em;
+}
+
+.to_login_page {
+  width: 20%;
+  min-width: 100px;
+}
+
+.view_home_page_catalog {
+  width: 35%;
+  min-width: 100px;
+  height: 50px;
+  padding: 10px;
+  font-size: 1.1em;
+  border-radius: 10px;
+  background-color: #4CAF50;
+  border: none;
+  outline: none;
+  transition: filter 0.3s ease;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.view_home_page_catalog:hover {
+  cursor: pointer;
+  filter: brightness(1.3);
+}

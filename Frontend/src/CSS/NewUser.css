@@ -6,7 +6,8 @@
 }
 
 .register {
-  width: 15%;
+  width: 25%;
+  min-width: 300px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;

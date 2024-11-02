@@ -12,7 +12,7 @@ const Logout = () => {
     setIsLoggedIn(false)
     setIsAdmin(false)
     setUserEmail('')
-    nav('/')
+    nav('/login')
   }
 
   return (

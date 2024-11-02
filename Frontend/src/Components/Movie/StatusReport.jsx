@@ -10,6 +10,7 @@ const StatusReport = () => {
   const nav = useNavigate();
   const { isLoggedIn, isAdmin } = useAuth();
 
+  const [loading, setLoading] = useState(true);
   const [ticketsSold, setTicketsSold] = useState(0);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [playingMovies, setPlayingMovies] = useState([]);
@@ -28,8 +29,10 @@ const StatusReport = () => {
       await getAllTickets()
       await Promise.all(locations.map(async (loc) => {
         await getTicketsByLocation(loc)
+        await getTickets(loc)
         await getMovies(loc)
       }))
+      setLoading(false);
     } catch (err) {
       alert(err.message)
     }
@@ -116,33 +119,37 @@ const StatusReport = () => {
             <p className="tickets_sold">
               The total number of tickets sold between all theaters is: {ticketsSold}
             </p>
-            <ul className="location_list_sr">
-              {locations.map((location, index) => (
-                <li key={index}>
-                  <h3
-                    onClick={() => {
-                      getMovies(location)
-                      getTickets(location)
-                      toggleMovies(location)
-                    }}
-                    style={{ cursor: "pointer", fontWeight: "bold" }}
-                  >
-                    {location} has sold {ticketsByLocation[location] || 0} tickets
-                  </h3>
+            {loading ? (
+              <p className="status_loading">Loading...</p>
+            ) : (
+              <ul className="location_list_sr">
+                {locations.map((location, index) => (
+                  <li key={index}>
+                    <h3
+                      onClick={() => {
+                        getMovies(location)
+                        getTickets(location)
+                        toggleMovies(location)
+                      }}
+                      style={{ cursor: "pointer", fontWeight: "bold" }}
+                    >
+                      {location} has sold {ticketsByLocation[location] || 0} tickets
+                    </h3>
 
-                  {selectedLocation === location && (
-                    <div className="location_info_sr">
-                      <p className="current_movie_p_tag">Current movies:</p>
-                      {playingMovies.map((movie, idx) => (
-                        <div key={idx} className="movies_playing_at_loc_sr">
-                          <p className="status_movie_info">{movie.title} has {getTicketsByMovie(movie.id) || 0} tickets purchased</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
+                    {selectedLocation === location && (
+                      <div className="location_info_sr">
+                        <p className="current_movie_p_tag">Current movies:</p>
+                        {playingMovies.map((movie, idx) => (
+                          <div key={idx} className="movies_playing_at_loc_sr">
+                            <p className="status_movie_info">{movie.title} has {getTicketsByMovie(movie.id) || 0} tickets purchased</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       ) : (

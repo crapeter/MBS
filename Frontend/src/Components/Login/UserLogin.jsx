@@ -67,12 +67,15 @@ const UserLogin = () => {
             />
           </Form.Group>
           <div>
-          <Button className="user_lr_buttons" variant="primary" onClick={handleLogin}>
-            Log in
-          </Button>
-          <Button className="user_lr_buttons" variant="success" onClick={register}>
-            Register
-          </Button>
+            <Button className="user_lr_buttons" variant="primary" onClick={handleLogin}>
+              Log in
+            </Button>
+            <Button className="user_lr_buttons" variant="success" onClick={register}>
+              Register
+            </Button>
+            <Button className="user_lr_buttons" variant="danger" onClick={() => nav('/')}>
+              Return
+            </Button>
           </div>
         </Form>
       </div>

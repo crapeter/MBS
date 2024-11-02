@@ -2,6 +2,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './Components/Misc/AuthContext'
+import HomePage from './Components/Movie/HomePage'
 import UserLogin from './Components/Login/UserLogin'
 import UserRegistration from './Components/Login/NewUser'
 import Movies from './Components/Movie/Movies'
@@ -34,7 +35,8 @@ function App() {
         <div className='test'>
           <BrowserRouter>
             <Routes>
-              <Route exact path='/' Component={UserLogin} />
+              <Route exact path='/' Component={HomePage} />
+              <Route exact path='/login' Component={UserLogin} />
               <Route exact path='/register' Component={UserRegistration} />
               <Route exact path='/locations' Component={Locations} />
               <Route exact path='/movies' Component={Movies} />
@@ -50,7 +52,7 @@ function App() {
               <Route exact path='/Lubbock/Search' Component={LubbockSearch}/>
               <Route exact path='/Plainview/Search' Component={PlainviewSearch}/>
               <Route exact path='/Snyder/Search' Component={SnyderSearch}/>
-              <Route exact path='/:location/:movieTitle/Reviews' Component={Reviews}/>
+              <Route exact path='/:movieTitle/Reviews' Component={Reviews}/>
               <Route exact path='/:location/Playing' Component={UpdateTheater}/>
               <Route exact path='/Status/Report' Component={StatusReport}/>
             </Routes>

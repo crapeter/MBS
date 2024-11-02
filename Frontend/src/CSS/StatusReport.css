@@ -103,3 +103,8 @@
 .status_movie_info {
   font-size: 1.35rem;
 }
+
+.status_loading {
+  font-size: 1.35rem;
+  margin-top: 20px;
+}
