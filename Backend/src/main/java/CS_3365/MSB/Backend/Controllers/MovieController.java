@@ -39,7 +39,7 @@ public class MovieController {
   public ResponseEntity<String> getPlaying() {
     return movieService.getPlaying();
   }
-
+ 
   @GetMapping("/get/not/playing")
   public ResponseEntity<String> getNotPlaying() {
     return movieService.getNotPlaying();

@@ -1,86 +1,96 @@
-import React, { useEffect, useState } from "react"
-import { Modal, Button, Form } from 'react-bootstrap'
+import React, { useEffect, useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 import { useAuth } from "../Misc/AuthContext";
-import axios from "axios"
-import '../../CSS/PurchaseTickets.css'
+import axios from "axios";
+import "../../CSS/PurchaseTickets.css";
 
 const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
-  const { userEmail } = useAuth()
-  const [show, setShow] = useState(false)
-  const [theaters, setTheaters] = useState([])
-  const [ticketQuantity, setTicketQuantity] = useState(1)
-  const [selectedTheater, setSelectedTheater] = useState('')
-  const [paymentType, setPaymentType] = useState([])
-  const [payment, setPayment] = useState('')
-  const [paypalEmail, setPaypalEmail] = useState('')
-  const [currentPrice, setCurrentPrice] = useState(movie.price)
-  const [time, setTime] = useState('')
-  const [availableTimes, setAvailableTimes] = useState([])
+  const { userEmail } = useAuth();
+  const [show, setShow] = useState(false);
+  const [theaters, setTheaters] = useState([]);
+  const [ticketQuantity, setTicketQuantity] = useState(1);
+  const [selectedTheater, setSelectedTheater] = useState("");
+  const [paymentType, setPaymentType] = useState([]);
+  const [payment, setPayment] = useState("");
+  const [paypalEmail, setPaypalEmail] = useState("");
+  const [currentPrice, setCurrentPrice] = useState(movie.price);
+  const [time, setTime] = useState("");
+  const [availableTimes, setAvailableTimes] = useState([]);
 
-  const handleClose = () => setShow(false)
+  const handleClose = () => setShow(false);
   const handleShow = () => {
-    setShow(true)
-    getTheaters()
-    setPayments()
-  }
+    setShow(true);
+    getTheaters();
+    setPayments();
+  };
 
   useEffect(() => {
-    getTimes()
+    getTimes();
     // eslint-disable-next-line
-  }, [selectedTheater])
+  }, [selectedTheater]);
 
   const increment = () => {
     if (ticketQuantity < 10) {
-      setTicketQuantity(ticketQuantity + 1)
+      setTicketQuantity(ticketQuantity + 1);
     }
-  }
+  };
 
   const decrement = () => {
     if (ticketQuantity > 1) {
-      setTicketQuantity(ticketQuantity - 1)
+      setTicketQuantity(ticketQuantity - 1);
     }
-  }
+  };
 
   const getTheaters = async () => {
-    const showingTheaters = await axios.get(`/api/theaters/get/by/location?location=${location}`)
-    const possibleTheaters = showingTheaters.data.filter(theater => theater.movieIds.includes(movie.id))
-    setTheaters(possibleTheaters)
-  }
+    const showingTheaters = await axios.get(
+      `/api/theaters/get/by/location?location=${location}`
+    );
+    const possibleTheaters = showingTheaters.data.filter((theater) =>
+      theater.movieIds.includes(movie.id)
+    );
+    setTheaters(possibleTheaters);
+  };
 
   const getTimes = () => {
-    let splitTimes = showTimes.split(" | ")
-    let times = splitTimes.filter(time => time.split(':')[0].includes(selectedTheater)).map(time => {
-      let idx = time.indexOf(":")
-      let part1 =  time.slice(idx + 1)
-      let idx2 = part1.indexOf(":")
-      return part1.substring(0, idx2+3)
-    })
-    setAvailableTimes(times)
-  }
+    let splitTimes = showTimes.split(" | ");
+    let times = splitTimes
+      .filter((time) => time.split(":")[0].includes(selectedTheater))
+      .map((time) => {
+        let idx = time.indexOf(":");
+        let part1 = time.slice(idx + 1);
+        let idx2 = part1.indexOf(":");
+        return part1.substring(0, idx2 + 3);
+      });
+    setAvailableTimes(times);
+  };
 
   const purchaseTicket = async () => {
     try {
-      const res = await axios.post(`/api/users/purchase/tickets?numberPurchased=${ticketQuantity}&movieId=${movie.id}&location=${location}&roomNumber=${selectedTheater}&userEmail=${userEmail}&paymentType=${payment}&time=${time}`)
-      alert(res.data)
-      refreshTickets()
-      handleClose()
+      const res = await axios.post(
+        `/api/users/purchase/tickets?numberPurchased=${ticketQuantity}&movieId=${movie.id}&location=${location}&roomNumber=${selectedTheater}&userEmail=${userEmail}&paymentType=${payment}&time=${time}`
+      );
+      alert(res.data);
+      refreshTickets();
+      handleClose();
     } catch (err) {
-      alert(err.message)
+      alert(err.message);
     }
-  }
+  };
 
   const setPayments = () => {
-    const types = ['Credit Card', 'Debit Card', 'PayPal']
-    setPaymentType(types)
-  }
+    const types = ["Credit Card", "Debit Card", "PayPal"];
+    setPaymentType(types);
+  };
 
   useEffect(() => {
-    setCurrentPrice(ticketQuantity * movie.price)
-  }, [ticketQuantity, movie.price])
+    setCurrentPrice(ticketQuantity * movie.price);
+  }, [ticketQuantity, movie.price]);
 
   return (
     <div>
-      <Button variant="primary" onClick={handleShow}>Purchase Tickets</Button>
+      <Button variant="primary" onClick={handleShow}>
+        Purchase Tickets
+      </Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Purchase Tickets</Modal.Title>
@@ -90,10 +100,22 @@ const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
           <Form className="purchase_forms">
             <Form.Group>
               <Form.Label>How many tickets do you want to purchase</Form.Label>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Button variant="danger" onClick={decrement}>-</Button>
-                <div style={{ padding: '0 20px', fontSize: '18px' }}>{ticketQuantity}</div>
-                <Button variant="success" onClick={increment}>+</Button>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Button variant="danger" onClick={decrement}>
+                  -
+                </Button>
+                <div style={{ padding: "0 20px", fontSize: "18px" }}>
+                  {ticketQuantity}
+                </div>
+                <Button variant="success" onClick={increment}>
+                  +
+                </Button>
               </div>
             </Form.Group>
           </Form>
@@ -101,7 +123,7 @@ const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
           <Form className="purchase_forms">
             <Form.Group>
               <Form.Label>Total Price</Form.Label>
-              <div style={{ fontSize: '16px', fontWeight: 'bold' }}>
+              <div style={{ fontSize: "16px", fontWeight: "bold" }}>
                 ${currentPrice.toFixed(2)}
               </div>
             </Form.Group>
@@ -116,7 +138,7 @@ const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
                 required
               >
                 <option value="">Room options</option>
-                {theaters.map(theater => (
+                {theaters.map((theater) => (
                   <option key={theater.id} value={theater.roomNumber}>
                     {theater.roomNumber}
                   </option>
@@ -134,13 +156,12 @@ const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
                 required
               >
                 <option value="">Times available</option>
-                {selectedTheater !== '' && 
+                {selectedTheater !== "" &&
                   availableTimes.map((time, idx) => (
                     <option key={idx} value={time}>
                       {time}
                     </option>
-                  ))
-                }
+                  ))}
               </Form.Select>
             </Form.Group>
           </Form>
@@ -162,7 +183,7 @@ const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
               </Form.Select>
             </Form.Group>
 
-            {payment === 'PayPal' && (
+            {payment === "PayPal" && (
               <Form className="purchase_forms">
                 <Form.Group>
                   <Form.Label>Enter your PayPal email</Form.Label>
@@ -178,11 +199,13 @@ const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
           </Form>
 
           <Form className="purchase_forms"></Form>
-          <Button variant="success" onClick={purchaseTicket}>Purchase</Button>
+          <Button variant="success" onClick={purchaseTicket}>
+            Purchase
+          </Button>
         </Modal.Body>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default PurchaseTickets
+export default PurchaseTickets;
