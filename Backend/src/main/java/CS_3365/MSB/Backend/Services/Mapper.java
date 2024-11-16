@@ -61,6 +61,12 @@ public abstract class Mapper {
     return userDto;
   }
 
+  public static PosterDTO mapToDto(Poster poster) {
+    PosterDTO posterDto = new PosterDTO();
+    posterDto.setImage(poster.getImage());
+    return posterDto;
+  }
+
   // Maps Models to DTOs
   public static List<UserDto> mapToUList(List<User> users) {
     return users.stream().map(Mapper::mapToDto).collect(Collectors.toList());
