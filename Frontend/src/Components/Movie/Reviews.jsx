@@ -1,90 +1,95 @@
-import React, { useEffect, useState } from "react"
-import { useAuth } from "../Misc/AuthContext"
-import { useNavigate, useParams } from "react-router-dom"
-import { Button } from 'react-bootstrap'
-import '../../CSS/Reviews.css'
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../Misc/AuthContext";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import "../../CSS/Reviews.css";
+import axios from "axios";
 
 const Reviews = () => {
-  const nav = useNavigate()
-  const { movieTitle } = useParams()
-  const { isLoggedIn, userEmail } = useAuth()
-  const [newReview, setNewReview] = useState('')
-  const [reviews, setReviews] = useState([])
-  const [movie, setMovie] = useState({})
-  const profanaties = ["fuck", "shit", "bitch", "pussy", "pussies", "cunt"]
+  const nav = useNavigate();
+  const { movieTitle } = useParams();
+  const { isLoggedIn, userEmail } = useAuth();
+  const [newReview, setNewReview] = useState("");
+  const [reviews, setReviews] = useState([]);
+  const [movie, setMovie] = useState({});
+  const profanaties = ["fuck", "shit", "bitch", "pussy", "pussies", "cunt"];
 
   useEffect(() => {
-    getMovies()
+    getMovies();
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   useEffect(() => {
-    getReviews()
+    getReviews();
     // eslint-disable-next-line
-  }, [movie])
-
+  }, [movie]);
 
   const getMovies = async () => {
     try {
-      const movies = await axios.get(`/api/movies/get/by/title?title=${movieTitle}`)
-      setMovie(movies.data[0])
-    } catch (err) {
-    }
-  }
+      const movies = await axios.get(
+        `/api/movies/get/by/title?title=${movieTitle}`
+      );
+      setMovie(movies.data[0]);
+    } catch (err) {}
+  };
 
   const createReview = async () => {
     let allowed = true;
     for (let prof of profanaties) {
       if (newReview.toLowerCase().includes(prof)) {
-        allowed = false
+        allowed = false;
       }
     }
 
-    if (!allowed){
-      alert("Swear words not allowed")
+    if (!allowed) {
+      alert("Swear words not allowed");
     } else {
       try {
-        const res = await axios.patch(`/api/users/add/review?userEmail=${userEmail}&movieId=${movie.id}&review=${newReview}`)
-        alert(res.data)
-        window.location.reload()
+        await axios.patch(
+          `/api/users/add/review?userEmail=${userEmail}&movieId=${movie.id}&review=${newReview}`
+        );
+        window.location.reload();
       } catch (err) {
-        alert(err)
+        alert(err);
       }
     }
-  }
+  };
 
   const getReviews = async () => {
     try {
-      const res = await axios.get('/api/reviews/by/movie', {
+      const res = await axios.get("/api/reviews/by/movie", {
         params: {
-          movieId: movie.id
-        }
-      })
-      setReviews(res.data)
-    } catch (err) {
-    }
-  }
+          movieId: movie.id,
+        },
+      });
+      setReviews(res.data);
+    } catch (err) {}
+  };
 
   const goBack = () => {
-    nav(-1)
-  }
+    nav(-1);
+  };
 
   return (
     <div className="top_review_div">
       <div className="reviews">
         <h1>Reviews for {movie.title}</h1>
-        <Button className="return_button" variant="danger" onClick={goBack}>Return</Button>
+        <Button className="return_button" variant="danger" onClick={goBack}>
+          Return
+        </Button>
         {isLoggedIn && (
           <div className="write_new_review">
-            <input style={{ font: 'comic sans ms' }}
+            <input
+              style={{ font: "comic sans ms" }}
               value={newReview}
               type="text"
               placeholder="Write a review..."
               onChange={(e) => setNewReview(e.target.value)}
               className="review_input"
             />
-            <Button variant="success" onClick={createReview}>Submit</Button>
+            <Button variant="success" onClick={createReview}>
+              Submit
+            </Button>
           </div>
         )}
         <div className="written_reviews">
@@ -97,7 +102,7 @@ const Reviews = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Reviews;

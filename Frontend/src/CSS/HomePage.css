@@ -67,17 +67,12 @@
 }
 
 .home_page_movie_details {
-  background-color: #ababab;
+  background-color: #bbbbbb;
   border-radius: 15px;
   border: 2px solid black;
   padding: 15px;
   margin-top: 10px;
   color: black;
-  transition: background-color 0.3s ease;
-}
-
-.home_page_movie_details:hover {
-  background-color: #c3c3c3;
 }
 
 .home_page_movie_text {

@@ -110,7 +110,10 @@ const HomePage = () => {
                 </div>
 
                 {openMovieId === movie.id && (
-                  <div className="movie_details" style={{ marginLeft: "20px" }}>
+                  <div
+                    className="movie_details"
+                    style={{ marginLeft: "20px", border: "2px solid black" }}
+                  >
                     <Button
                       className="big_review_button"
                       variant="success"

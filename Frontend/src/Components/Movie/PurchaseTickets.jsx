@@ -4,7 +4,13 @@ import { useAuth } from "../Misc/AuthContext";
 import axios from "axios";
 import "../../CSS/PurchaseTickets.css";
 
-const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
+const PurchaseTickets = ({
+  movie,
+  location,
+  refreshTickets,
+  showTimes,
+  refresh,
+}) => {
   const { userEmail } = useAuth();
   const [show, setShow] = useState(false);
   const [theaters, setTheaters] = useState([]);
@@ -71,7 +77,8 @@ const PurchaseTickets = ({ movie, location, refreshTickets, showTimes }) => {
       );
       alert(res.data);
       refreshTickets();
-      handleClose();
+      setShow(false);
+      refresh();
     } catch (err) {
       alert(err.message);
     }
