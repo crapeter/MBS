@@ -3,14 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
 
-const AddPoster = ({ movie_id, movie_title }) => {
+const AddPoster = ({ movie_id, movie_title, refresh }) => {
   const nav = useNavigate();
 
   const [show, setShow] = useState(false);
   const [poster, setPoster] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    refresh();
+  };
   const handleShow = () => setShow(true);
 
   const handlePoster = (e) => {
@@ -45,6 +48,7 @@ const AddPoster = ({ movie_id, movie_title }) => {
     }
 
     setLoading(false);
+    refresh();
   };
 
   return (
@@ -68,9 +72,14 @@ const AddPoster = ({ movie_id, movie_title }) => {
                 onChange={handlePoster}
               />
             </Form.Group>
-            <Button variant="success" onClick={addPoster} disabled={loading}>
-              {loading ? "Uploading..." : "Add Poster"}
-            </Button>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Button variant="success" onClick={addPoster} disabled={loading}>
+                {loading ? "Uploading..." : "Add Poster"}
+              </Button>
+              <Button variant="danger" onClick={handleClose}>
+                Close
+              </Button>
+            </div>
           </Form>
         </Modal.Body>
       </Modal>

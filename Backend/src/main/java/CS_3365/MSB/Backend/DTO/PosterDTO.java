@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class PosterDTO {
-  private byte[] image;
+  private String image;
+  private Long movieId;
 }
