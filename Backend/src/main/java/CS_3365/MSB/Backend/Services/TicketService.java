@@ -8,11 +8,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketService {
   @Autowired
   private TicketRepo ticketRepo;
+
+  @Autowired
+  private TheaterRepo theaterRepo;
+
+  @Autowired
+  private MovieRepo movieRepo;
 
   public ResponseEntity<String> getTotalNumberOfTickets() {
     List<Ticket> tickets = ticketRepo.findAll();
@@ -43,5 +51,31 @@ public class TicketService {
         .filter(ticket -> ticket.getTheater().getLocation().equalsIgnoreCase(location))
         .toList();
     return Mapper.mapToTiList(tickets);
+  }
+
+  public ResponseEntity<Integer> getNumberSold() {
+    List<Ticket> tickets = ticketRepo.findAll();
+    int ticketsSold = tickets.stream().mapToInt(Ticket::getNumberPurchased).sum();
+    return ResponseEntity.ok().body(ticketsSold);
+  }
+
+  public ResponseEntity<Integer> getNumberSoldByLocation(String location) {
+    List<Ticket> tickets = ticketRepo.findAll();
+    int ticketsSold = tickets.stream()
+        .filter(ticket -> ticket.getTheater().getLocation().equalsIgnoreCase(location))
+        .mapToInt(Ticket::getNumberPurchased)
+        .sum();
+    return ResponseEntity.ok().body(ticketsSold);
+  }
+
+  public List<TicketDto> getTheaterBreakdown(String location) {
+    List<Ticket> tickets = ticketRepo.findAll();
+    List<Ticket> ticketsByLocation = tickets.stream()
+        .filter(ticket -> ticket.getTheater().getLocation().equalsIgnoreCase(location))
+        .toList();
+
+    if (ticketsByLocation.isEmpty())
+      return List.of();
+    return Mapper.mapToTiList(ticketsByLocation);
   }
 }

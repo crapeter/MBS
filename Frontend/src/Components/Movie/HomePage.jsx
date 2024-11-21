@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import MoviePoster from "./MoviePoster";
 import "../../CSS/HomePage.css";
 import axios from "axios";
 
@@ -11,10 +10,13 @@ const HomePage = () => {
   const [movies, setMovies] = useState([]);
   const [openMovieId, setOpenMovieId] = useState(null);
   const [viewCurrentCatalog, setViewCurrentCatalog] = useState(false);
+  const [moviePosterCache, setMoviePosterCache] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     try {
       getMovies();
+      getMoviePoster();
     } catch (err) {
       alert(err);
     }
@@ -30,6 +32,20 @@ const HomePage = () => {
       setMovies(sortedMovies);
     } catch (err) {
       alert(err.message);
+    }
+  };
+
+  const getMoviePoster = async () => {
+    try {
+      const posters = await axios.get("/api/posters/get");
+      const newPosterCache = posters.data.reduce((acc, poster) => {
+        acc[poster.movieId] = poster.image;
+        return acc;
+      }, {});
+      setMoviePosterCache(newPosterCache);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching movie posters:", error);
     }
   };
 
@@ -88,19 +104,27 @@ const HomePage = () => {
           </ul>
         </div>
 
-        <button
-          className="view_home_page_catalog"
-          onClick={toggleCurrentCatalog}
-        >
-          View Current Movie Catalog
-        </button>
+        {loading ? (
+          <button className="view_home_page_catalog">Loading Movies</button>
+        ) : (
+          <button
+            className="view_home_page_catalog"
+            onClick={toggleCurrentCatalog}
+          >
+            View Current Movie Catalog
+          </button>
+        )}
 
         {viewCurrentCatalog && (
           <div className="movie_grid">
             {movies.map((movie) => (
               <div key={movie.id} className="movie_item">
                 <div onClick={() => toggleMovieDetails(movie.id)}>
-                  <MoviePoster movie_id={movie.id} />
+                  <img
+                    src={`data:image/jpeg;base64,${moviePosterCache[movie.id]}`}
+                    alt="Movie Poster"
+                    style={{ width: "300px", height: "450px" }}
+                  />
                   <p
                     style={{ cursor: "pointer", fontWeight: "bold" }}
                     className="movie_title"

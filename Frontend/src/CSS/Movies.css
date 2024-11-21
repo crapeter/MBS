@@ -112,9 +112,6 @@ h3 {
 .movies_header_select {
   width: 100%;
   padding: 10px;
-  background-color: #505050;
-  color: white;
-  border: 1px solid #ffcc00;
   border-radius: 5px;
 }
 
@@ -140,7 +137,7 @@ h3 {
 }
 
 .movie_item:hover {
-  transform: scale(1.05);
+  transform: translateY(-10px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -189,4 +186,33 @@ h3 {
 
 .movie_details p {
   margin: 5px 0;
+}
+
+.spinner_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading_movies {
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #f3f3f3;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
