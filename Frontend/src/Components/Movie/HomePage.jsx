@@ -23,6 +23,13 @@ const HomePage = () => {
     // eslint-disable-next-line
   }, []);
 
+  const formatPrice = (price) => {
+    return price.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+  };
+
   const getMovies = async () => {
     try {
       const allMovies = await axios.get("/api/movies/all");
@@ -121,6 +128,7 @@ const HomePage = () => {
               <div key={movie.id} className="movie_item">
                 <div onClick={() => toggleMovieDetails(movie.id)}>
                   <img
+                    loading="lazy"
                     src={`data:image/jpeg;base64,${moviePosterCache[movie.id]}`}
                     alt="Movie Poster"
                     style={{ width: "300px", height: "450px" }}
@@ -149,6 +157,9 @@ const HomePage = () => {
                     <div>
                       <p>
                         <strong>Genre:</strong> {movie.genre}
+                      </p>
+                      <p>
+                        <strong>Price:</strong> {formatPrice(movie.price)}
                       </p>
                       <p>
                         <strong>Runtime:</strong> {movie.runTime}

@@ -222,7 +222,7 @@ const AdminPage = () => {
           <div className="tickets_sold_info">
             {Object.keys(breakdowns).length === 0 ? (
               <div className="admin_spinner_container">
-                <p className="admin_loading_movies">Loading Movies</p>
+                <p className="admin_loading_movies">Loading Theater Info</p>
                 <p className="admin_spinner"></p>
               </div>
             ) : (
@@ -287,6 +287,7 @@ const AdminPage = () => {
                       </div>
                     ) : (
                       <img
+                        loading="lazy"
                         src={`data:image/jpeg;base64,${
                           moviePosterCache[movie.id]
                         }`}
