@@ -19,6 +19,7 @@ const AdminPage = () => {
   ];
   const nav = useNavigate();
   const { isLoggedIn, isAdmin } = useAuth();
+
   const [totalTicketsSold, setTotalTicketsSold] = useState(0);
   const [soldByLocation, setSoldByLocation] = useState({});
   const [breakdowns, setBreakdowns] = useState({});
@@ -32,159 +33,125 @@ const AdminPage = () => {
   const [isCatalogHidden, setIsCatalogHidden] = useState(false);
   const [search, setSearch] = useState("");
 
+  const fetchData = async () => {
+    try {
+      const [totalTickets, posters] = await Promise.all([
+        axios.get("/api/tickets/number/sold"),
+        axios.get("/api/posters/get"),
+      ]);
+
+      setTotalTicketsSold(totalTickets.data);
+
+      const posterCache = posters.data.reduce((acc, poster) => {
+        acc[poster.movieId] = poster.image;
+        return acc;
+      }, {});
+      setMoviePosterCache(posterCache);
+
+      // Fetch location-specific data
+      const [locationsData, breakdownsData] = await Promise.all([
+        Promise.all(
+          locations.map((location) =>
+            axios.get(`/api/tickets/number/sold/${location}`)
+          )
+        ),
+        Promise.all(
+          locations.map((location) =>
+            axios.get(`/api/tickets/theater/breakdown/${location}`)
+          )
+        ),
+      ]);
+
+      // Process locations data
+      const soldByLocationData = {};
+      locations.forEach((location, index) => {
+        soldByLocationData[location] = locationsData[index].data;
+      });
+      setSoldByLocation(soldByLocationData);
+
+      // Process breakdown data
+      const breakdownsDataProcessed = {};
+      locations.forEach((location, index) => {
+        breakdownsDataProcessed[location] = breakdownsData[index].data;
+      });
+      setBreakdowns(breakdownsDataProcessed);
+
+      setPostersLoading(false);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      alert("Error fetching data. Please try again later.");
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await getTotalTicketsSold();
-        await getMoviePoster();
-
-        const fetchLocations = locations.map((location) =>
-          getTicketsSoldByLocation(location)
-        );
-        const fetchBreakdowns = locations.map((location) =>
-          getBreakdown(location)
-        );
-
-        await Promise.all([...fetchLocations, ...fetchBreakdowns]);
-      } catch (err) {
-        alert(err);
-      }
-    };
-
     fetchData();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    filterMovie();
-    // eslint-disable-next-line
-  }, [search]);
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get("/api/movies/all");
+        setMovies(response.data);
+        setAllMovies(response.data);
+      } catch (err) {
+        console.error("Error fetching movies:", err);
+      }
+    };
 
-  useEffect(() => {
-    getOnlyMovies();
+    fetchMovies();
     // eslint-disable-next-line
   }, [priceUpdated]);
 
-  const refresh = () => {
-    window.location.reload();
-  };
+  useEffect(() => {
+    const filterMovies = () => {
+      const filteredMovies = allMovies.filter((movie) =>
+        movie.title.toLowerCase().includes(search.toLowerCase())
+      );
+      setMovies(filteredMovies);
+    };
 
-  const togglePriceUpdated = () => {
-    setPriceUpdated((prev) => !prev);
-  };
-
-  const toggleMovieDetails = (movieId) => {
-    setOpenMovieId(openMovieId === movieId ? null : movieId);
-  };
-
-  const formatPrice = (price) => {
-    return price.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-  };
-
-  const toggleTheaterInfo = () => {
-    setIsTheaterInfoHidden((prev) => !prev);
-  };
-
-  const toggleCatalog = () => {
-    setIsCatalogHidden((prev) => !prev);
-  };
-
-  const getMoviePoster = async () => {
-    try {
-      const posters = await axios.get("/api/posters/get");
-      const newPosterCache = posters.data.reduce((acc, poster) => {
-        acc[poster.movieId] = poster.image;
-        return acc;
-      }, {});
-      setMoviePosterCache(newPosterCache);
-      setPostersLoading(false);
-    } catch (error) {
-      console.error("Error fetching movie posters:", error);
-    }
-  };
-
-  const filterMovie = () => {
-    let movieCopies = [...allMovies];
-    let movies = movieCopies.filter((movie) =>
-      movie.title.toLowerCase().includes(search.toLowerCase())
-    );
-    setMovies(movies);
-  };
-
-  const getOnlyMovies = async () => {
-    try {
-      const allMovies = await axios.get("/api/movies/all");
-      setMovies(allMovies.data.sort((a, b) => (a.title > b.title ? 1 : -1)));
-      setAllMovies(allMovies.data.sort((a, b) => (a.title > b.title ? 1 : -1)));
-    } catch (err) {
-      alert(err.message);
-    }
-  };
-
-  const getTotalTicketsSold = async () => {
-    try {
-      const res = await axios.get("/api/tickets/number/sold");
-      setTotalTicketsSold(res.data);
-    } catch (error) {
-      console.err(error);
-    }
-  };
-
-  const getTicketsSoldByLocation = async (location) => {
-    try {
-      const res = await axios.get(`/api/tickets/number/sold/${location}`);
-      setSoldByLocation((prev) => ({
-        ...prev,
-        [location]: res.data,
-      }));
-    } catch (error) {
-      console.err(error);
-    }
-  };
-
-  const getBreakdown = async (location) => {
-    try {
-      const res = await axios.get(`/api/tickets/theater/breakdown/${location}`);
-      setBreakdowns((prev) => ({
-        ...prev,
-        [location]: res.data,
-      }));
-    } catch (error) {
-      console.err(error);
-    }
-  };
+    filterMovies();
+  }, [search, allMovies]);
 
   const combineDuplicateMovies = (breakdowns) => {
     const uniqueData = {};
 
-    Object.keys(breakdowns).forEach((location) => {
-      uniqueData[location] = {};
+    for (const [location, theaters] of Object.entries(breakdowns)) {
+      const movieMap = new Map();
 
-      Object.values(breakdowns[location]).forEach((theaterData) => {
-        const { movieTitle, numberPurchased } = theaterData;
+      for (const { movieTitle, numberPurchased } of Object.values(theaters)) {
+        const currentCount = movieMap.get(movieTitle) || 0;
+        movieMap.set(movieTitle, currentCount + numberPurchased);
+      }
 
-        if (!uniqueData[location][movieTitle]) {
-          uniqueData[location][movieTitle] = 0;
-        }
-        uniqueData[location][movieTitle] += numberPurchased;
-      });
-
-      uniqueData[location] = Object.entries(uniqueData[location])
-        .sort(([a], [b]) => a.localeCompare(b))
-        .reduce((acc, [key, value]) => {
-          acc[key] = value;
-          return acc;
-        }, {});
-    });
+      uniqueData[location] = Object.fromEntries(
+        [...movieMap.entries()].sort(([a], [b]) => a.localeCompare(b))
+      );
+    }
 
     return uniqueData;
   };
 
-  const goBack = () => {
-    nav(-1);
+  const togglePriceUpdated = () => setPriceUpdated((prev) => !prev);
+
+  const toggleMovieDetails = (movieId) =>
+    setOpenMovieId((prev) => (prev === movieId ? null : movieId));
+
+  const formatPrice = (price) =>
+    price.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+
+  const toggleTheaterInfo = () => setIsTheaterInfoHidden((prev) => !prev);
+
+  const toggleCatalog = () => setIsCatalogHidden((prev) => !prev);
+
+  const goBack = () => nav(-1);
+
+  const refresh = () => {
+    window.location.reload();
   };
 
   return isLoggedIn && isAdmin ? (
@@ -220,7 +187,7 @@ const AdminPage = () => {
           <div></div>
         ) : (
           <div className="tickets_sold_info">
-            {Object.keys(breakdowns).length === 0 ? (
+            {Object.keys(breakdowns).length !== 6 ? (
               <div className="admin_spinner_container">
                 <p className="admin_loading_movies">Loading Theater Info</p>
                 <p className="admin_spinner"></p>

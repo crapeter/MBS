@@ -1,45 +1,54 @@
-import React, { createContext, useState, useContext, useEffect } from 'react'
+import React, { createContext, useState, useContext, useEffect } from "react";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const storedValue = localStorage.getItem('isLoggedIn')
-    return storedValue === 'true'
-  })
+    const storedValue = localStorage.getItem("isLoggedIn");
+    return storedValue === "true";
+  });
 
   const [isAdmin, setIsAdmin] = useState(() => {
-    const storedValue = localStorage.getItem('isAdmin')
-    return storedValue === 'true'
-  })
+    const storedValue = localStorage.getItem("isAdmin");
+    return storedValue === "true";
+  });
 
   const [userEmail, setUserEmail] = useState(() => {
-    return localStorage.getItem('userEmail') || ''
-  })
+    return localStorage.getItem("userEmail") || "";
+  });
 
   useEffect(() => {
     if (isLoggedIn !== null) {
-      localStorage.setItem('isLoggedIn', isLoggedIn.toString())
+      localStorage.setItem("isLoggedIn", isLoggedIn.toString());
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (isAdmin !== null) {
-      localStorage.setItem('isAdmin', isAdmin.toString())
+      localStorage.setItem("isAdmin", isAdmin.toString());
     }
-  }, [isAdmin])
+  }, [isAdmin]);
 
   useEffect(() => {
     if (userEmail) {
-      localStorage.setItem('userEmail', userEmail)
+      localStorage.setItem("userEmail", userEmail);
     }
-  }, [userEmail])
+  }, [userEmail]);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin, userEmail, setUserEmail }}>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        isAdmin,
+        setIsAdmin,
+        userEmail,
+        setUserEmail,
+      }}
+    >
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);

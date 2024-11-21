@@ -32,7 +32,9 @@ public class MovieService {
   }
 
   public Iterable<MovieDto> getAllMovies() {
-    return Mapper.mapToMList(movieRepo.findAll());
+    List<MovieDto> movies = Mapper.mapToMList(movieRepo.findAll());
+    movies.sort((m1, m2) -> m1.getTitle().compareToIgnoreCase(m2.getTitle()));
+    return movies;
   }
 
   public Iterable<MovieDto> getMoviesByTitle(String title) {
