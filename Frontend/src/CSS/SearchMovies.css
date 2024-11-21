@@ -12,9 +12,9 @@
 
 .search_div {
   width: 100%;
-  max-width: 800px;
+  max-width: 1500px;
   padding: 20px;
-  background-color: #444;
+  background-color: #888888;
   border: 3px solid black;
   border-radius: 20px;
 }
@@ -30,21 +30,19 @@ h1 {
   margin-bottom: 20px;
 }
 
+.return_button {
+  display: flex;
+  align-items: center;
+}
+
 .search_input {
   width: 70%;
-  padding: 10px;
-  border: none;
+  padding: 15px;
+  font-size: larger;
+  border: 2px solid black;
   border-radius: 5px;
   background-color: #ababab;
   color: black;
-}
-
-.return_button {
-  margin-left: 20px;
-  margin-top: 12px;
-  padding: 10px;
-  display: inline-flex;
-  align-items: center;
 }
 
 .movie_list {
@@ -80,11 +78,13 @@ h1 {
   display: flex;
 }
 
-.purchase_tickets, .view_tickets {
+.purchase_tickets,
+.view_tickets {
   padding-left: 5px;
 }
 
-.purchase_tickets, .view_tickets {
+.purchase_tickets,
+.view_tickets {
   display: flex;
   justify-content: space-between;
 }
