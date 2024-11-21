@@ -6,6 +6,7 @@ import lombok.Data;
 public class TicketDto {
   private Long movieId;
   private Long theaterId;
+  private String movieTitle;
   private int numberPurchased;
   private int roomNumber;
 }
