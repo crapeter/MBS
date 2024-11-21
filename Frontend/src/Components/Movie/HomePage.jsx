@@ -33,10 +33,7 @@ const HomePage = () => {
   const getMovies = async () => {
     try {
       const allMovies = await axios.get("/api/movies/all");
-      const sortedMovies = allMovies.data.sort((a, b) => {
-        return a.title > b.title ? 1 : -1;
-      });
-      setMovies(sortedMovies);
+      setMovies(allMovies.data);
     } catch (err) {
       alert(err.message);
     }

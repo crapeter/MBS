@@ -105,10 +105,7 @@ const Movies = () => {
       const allMovies = allMoviesResponse;
       const locationTheaters = locationTheatersResponse;
 
-      const sortedMovies = allMovies.data.sort((a, b) => {
-        return a.title > b.title ? 1 : -1;
-      });
-      setMovies(sortedMovies);
+      setMovies(allMovies.data);
 
       const theaterIds = locationTheaters.data.flatMap(
         (theater) => theater.movieIds
@@ -124,13 +121,6 @@ const Movies = () => {
         },
         { playingMovies: [], upcomingMovies: [] }
       );
-
-      playingMovies.sort((a, b) => {
-        return a.title > b.title ? 1 : -1;
-      });
-      upcomingMovies.sort((a, b) => {
-        return a.title > b.title ? 1 : -1;
-      });
 
       setTheaters(locationTheaters.data);
       setAllMovies(allMovies.data);
@@ -311,106 +301,105 @@ const Movies = () => {
               </div>
             ) : (
               <div>
-                {postersLoading ? (
-                  <div className="spinner_container">
-                    <p className="loading_movies">Loading Movies</p>
-                    <p className="spinner"></p>
-                  </div>
-                ) : (
-                  <div className="movie_grid">
-                    {movies.map((movie) => (
-                      <div key={movie.id} className="movie_item">
-                        <div onClick={() => toggleMovieDetails(movie.id)}>
-                          <img
-                            loading="lazy"
-                            src={`data:image/jpeg;base64,${
-                              moviePosterCache[movie.id]
-                            }`}
-                            alt="Movie Poster"
-                            style={{ width: "300px", height: "450px" }}
-                          />
-                          <p
-                            style={{ cursor: "pointer", fontWeight: "bold" }}
-                            className="movie_title"
-                          >
-                            {movie.title}
-                          </p>
-                        </div>
-
-                        {openMovieId === movie.id && (
-                          <div
-                            className="movie_details"
-                            style={{
-                              marginLeft: "20px",
-                              border: "2px solid black",
-                            }}
-                          >
-                            <Button
-                              className="big_review_button"
-                              variant="success"
-                              onClick={() => toReviews(movie)}
-                              style={{ color: "black", fontSize: "1.5rem" }}
-                            >
-                              Reviews
-                            </Button>
-                            <div>
-                              <p>
-                                <strong>Genre:</strong> {movie.genre}
-                              </p>
-                              <p>
-                                <strong>Price:</strong>{" "}
-                                {formatPrice(movie.price)}
-                              </p>
-                              <p>
-                                <strong>Runtime:</strong> {movie.runTime}
-                              </p>
-                              <p>
-                                <strong>Show time:</strong>{" "}
-                                {getShowTimes(movie)}
-                              </p>
-                              <p>
-                                <strong>Release Date:</strong>{" "}
-                                {movie.releaseDate}
-                              </p>
-                              <p>
-                                <strong>Director:</strong> {movie.director}
-                              </p>
-                              <p>
-                                <strong>Cast:</strong> {movie.cast}
-                              </p>
-                              <p>
-                                <strong>Description:</strong>{" "}
-                                {movie.description}
-                              </p>
-                            </div>
-
-                            <div className="movie_buttons_flex">
-                              {theaterMovieIds.includes(movie.id) && (
-                                <div className="movie_buttons_flex">
-                                  <PurchaseTickets
-                                    className="movie_buttons"
-                                    movie={movie}
-                                    location={viewLocation}
-                                    refreshTickets={refreshTickets}
-                                    showTimes={getShowTimes(movie)}
-                                    refresh={refresh}
-                                  />
-                                  <MovieChoise
-                                    className="movie_buttons"
-                                    movie={movie}
-                                    location={viewLocation}
-                                    ticketUpdated={ticketUpdated}
-                                    showTimes={getShowTimes(movie)}
-                                  />
-                                </div>
-                              )}
-                            </div>
+                <div className="movie_grid">
+                  {movies.map((movie) => (
+                    <div key={movie.id} className="movie_item">
+                      <div onClick={() => toggleMovieDetails(movie.id)}>
+                        {postersLoading ? (
+                          <div className="spinner_container">
+                            <p className="loading_movies">
+                              Loading Movie Posters
+                            </p>
+                            <p className="spinner"></p>
+                          </div>
+                        ) : (
+                          <div>
+                            <img
+                              loading="lazy"
+                              src={`data:image/jpeg;base64,${
+                                moviePosterCache[movie.id]
+                              }`}
+                              alt="Movie Poster"
+                              style={{ width: "300px", height: "450px" }}
+                            />
                           </div>
                         )}
                       </div>
-                    ))}
-                  </div>
-                )}
+                      <p
+                        style={{ cursor: "pointer", fontWeight: "bold" }}
+                        className="movie_title"
+                      >
+                        {movie.title}
+                      </p>
+                      {openMovieId === movie.id && (
+                        <div
+                          className="movie_details"
+                          style={{
+                            marginLeft: "20px",
+                            border: "2px solid black",
+                          }}
+                        >
+                          <Button
+                            className="big_review_button"
+                            variant="success"
+                            onClick={() => toReviews(movie)}
+                            style={{ color: "black", fontSize: "1.5rem" }}
+                          >
+                            Reviews
+                          </Button>
+                          <div>
+                            <p>
+                              <strong>Genre:</strong> {movie.genre}
+                            </p>
+                            <p>
+                              <strong>Price:</strong> {formatPrice(movie.price)}
+                            </p>
+                            <p>
+                              <strong>Runtime:</strong> {movie.runTime}
+                            </p>
+                            <p>
+                              <strong>Show time:</strong> {getShowTimes(movie)}
+                            </p>
+                            <p>
+                              <strong>Release Date:</strong> {movie.releaseDate}
+                            </p>
+                            <p>
+                              <strong>Director:</strong> {movie.director}
+                            </p>
+                            <p>
+                              <strong>Cast:</strong> {movie.cast}
+                            </p>
+                            <p>
+                              <strong>Description:</strong> {movie.description}
+                            </p>
+                          </div>
+
+                          <div className="movie_buttons_flex">
+                            {theaterMovieIds.includes(movie.id) && (
+                              <div className="movie_buttons_flex">
+                                <PurchaseTickets
+                                  className="movie_buttons"
+                                  movie={movie}
+                                  location={viewLocation}
+                                  refreshTickets={refreshTickets}
+                                  showTimes={getShowTimes(movie)}
+                                  refresh={refresh}
+                                />
+                                <MovieChoise
+                                  className="movie_buttons"
+                                  movie={movie}
+                                  location={viewLocation}
+                                  ticketUpdated={ticketUpdated}
+                                  showTimes={getShowTimes(movie)}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
