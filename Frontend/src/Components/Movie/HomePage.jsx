@@ -108,28 +108,33 @@ const HomePage = () => {
           </ul>
         </div>
 
-        {loading ? (
-          <button className="view_home_page_catalog">Loading Movies</button>
-        ) : (
-          <button
-            className="view_home_page_catalog"
-            onClick={toggleCurrentCatalog}
-          >
-            View Current Movie Catalog
-          </button>
-        )}
+        <button
+          className="view_home_page_catalog"
+          onClick={toggleCurrentCatalog}
+        >
+          {loading ? "Loading Movie Posters..." : "View Current Movie Catalog"}
+        </button>
 
         {viewCurrentCatalog && (
           <div className="movie_grid">
             {movies.map((movie) => (
               <div key={movie.id} className="movie_item">
                 <div onClick={() => toggleMovieDetails(movie.id)}>
-                  <img
-                    loading="lazy"
-                    src={`data:image/jpeg;base64,${moviePosterCache[movie.id]}`}
-                    alt="Movie Poster"
-                    style={{ width: "300px", height: "450px" }}
-                  />
+                  {loading ? (
+                    <div className="spinner_container">
+                      <p className="loading_movies">Loading Movie Poster</p>
+                      <p className="spinner"></p>
+                    </div>
+                  ) : (
+                    <img
+                      loading="lazy"
+                      src={`data:image/jpeg;base64,${
+                        moviePosterCache[movie.id]
+                      }`}
+                      alt="Movie Poster"
+                      style={{ width: "300px", height: "450px" }}
+                    />
+                  )}
                   <p
                     style={{ cursor: "pointer", fontWeight: "bold" }}
                     className="movie_title"

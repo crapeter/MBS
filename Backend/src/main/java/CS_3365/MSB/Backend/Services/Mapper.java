@@ -83,19 +83,6 @@ public abstract class Mapper {
     return tickets.stream().map(Mapper::mapToDto).collect(Collectors.toList());
   }
 
-  public static Movie mapToMovie(MovieDto movieDto) {
-    Movie movie = new Movie();
-    movie.setTitle(movieDto.getTitle());
-    movie.setDescription(movieDto.getDescription());
-    movie.setGenre(movieDto.getGenre());
-    movie.setRuntime(movieDto.getRunTime());
-    movie.setReleaseDate(movieDto.getReleaseDate());
-    movie.setDirector(movieDto.getDirector());
-    movie.setCast(movieDto.getCast());
-    movie.setPrice(movieDto.getPrice());
-    return movie;
-  }
-
   public static Theater mapToTheater(TheaterDto theaterDto) {
     Theater theater = new Theater();
     theater.setLocation(theaterDto.getLocation());

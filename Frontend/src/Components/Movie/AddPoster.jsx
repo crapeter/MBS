@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
 
-const AddPoster = ({ movie_id, movie_title, refresh }) => {
+const AddPoster = ({ movie_id, movie_title }) => {
   const nav = useNavigate();
 
   const [show, setShow] = useState(false);
@@ -12,7 +12,6 @@ const AddPoster = ({ movie_id, movie_title, refresh }) => {
 
   const handleClose = () => {
     setShow(false);
-    refresh();
   };
   const handleShow = () => setShow(true);
 
@@ -48,7 +47,6 @@ const AddPoster = ({ movie_id, movie_title, refresh }) => {
     }
 
     setLoading(false);
-    refresh();
   };
 
   return (

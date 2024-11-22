@@ -78,17 +78,10 @@
   margin-top: 3px;
 }
 
-.admin_spinner_container {
-  display: flex;
-}
-
-.admin_spinner_container {
-  display: flex;
-}
-
 .admin_loading_movies {
   font-size: 1.5em;
   margin-right: 10px;
+  width: 235px;
 }
 
 .admin_movie_spinner_container {

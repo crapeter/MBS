@@ -5,10 +5,5 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.modal {
-  display: block !important; /* Ensure the modal is visible */
-  opacity: 1 !important; /* Ensure opacity is set */
-  z-index: 1050 !important; /* Ensure it's above other elements */
+  background-color: #303030;
 }

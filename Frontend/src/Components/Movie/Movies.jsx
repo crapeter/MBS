@@ -320,7 +320,11 @@ const Movies = () => {
                                 moviePosterCache[movie.id]
                               }`}
                               alt="Movie Poster"
-                              style={{ width: "300px", height: "450px" }}
+                              style={{
+                                width: "300px",
+                                height: "450px",
+                                cursor: "pointer",
+                              }}
                             />
                           </div>
                         )}
@@ -328,6 +332,7 @@ const Movies = () => {
                       <p
                         style={{ cursor: "pointer", fontWeight: "bold" }}
                         className="movie_title"
+                        onClick={() => toggleMovieDetails(movie.id)}
                       >
                         {movie.title}
                       </p>
