@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../Misc/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import AddPoster from "./AddPoster";
 import AddMovie from "./AddMovie";
 import EditPrice from "./EditPrice";
@@ -40,9 +40,9 @@ const AdminPage = () => {
         axios.get("/api/posters/get"),
       ]);
 
-      setTotalTicketsSold(totalTickets.data);
-
       const posterCache = posters.data.reduce((acc, poster) => {
+        setTotalTicketsSold(totalTickets.data);
+
         acc[poster.movieId] = poster.image;
         return acc;
       }, {});
@@ -150,10 +150,6 @@ const AdminPage = () => {
 
   const goBack = () => nav(-1);
 
-  const refresh = () => {
-    window.location.reload();
-  };
-
   return isLoggedIn && isAdmin ? (
     <div className="top_admin_page_div">
       <div className="total_tickets_sold">
@@ -167,7 +163,7 @@ const AdminPage = () => {
             className="backButton"
             onClick={() => goBack()}
           >
-            Go Back
+            Return
           </Button>
 
           <Button variant="danger" onClick={toggleTheaterInfo}>
@@ -303,7 +299,6 @@ const AdminPage = () => {
                           className="movie_buttons"
                           movie_id={movie.id}
                           movie_title={movie.title}
-                          refresh={refresh}
                         />
                         <EditPrice
                           movie={movie}

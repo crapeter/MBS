@@ -213,10 +213,6 @@ public class UserService {
     return ticket.getTicketIds();
   }
 
-  public List<Theater> getTheatersByLocation(String location) {
-    return theaterRepo.findByLocation(location);
-  }
-
   public Theater getTheater(String location, int roomNumber) {
     return theaterRepo.findByLocationAndRoomNumber(location, roomNumber);
   }

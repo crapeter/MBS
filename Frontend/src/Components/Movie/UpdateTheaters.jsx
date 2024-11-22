@@ -86,52 +86,50 @@ const UpdateTheaters = () => {
           <Form className="update_theater_form_s">
             {theaters.map((theater) => (
               <div className="room_container_s">
-                <Form.Label
-                  className="update_theater_label_s"
-                  onClick={() => toggleTheaterDetails(theater.id)}
-                  style={{ cursor: "pointer", fontWeight: "bold" }}
-                >
-                  Theater {theater.roomNumber}
-                </Form.Label>
-                {openTheaterId === theater.id && (
-                  <div className="inner_stuff_s">
-                    {times.map((time, index) => (
-                      <Form.Group key={theater.id}>
-                        {time === "11:00" ? (
-                          <Form.Label className="update_theater_label">
-                            {time}am is playing:{" "}
-                            {getMovieTitle(theater.movieIds[index])}
-                          </Form.Label>
-                        ) : (
-                          <Form.Label className="update_theater_label">
-                            {time}pm is playing:{" "}
-                            {getMovieTitle(theater.movieIds[index])}
-                          </Form.Label>
-                        )}
-                        <Form.Select
-                          className="update_theater_select_s"
-                          onChange={(e) =>
-                            updateTheater(
-                              theater.location,
-                              theater.roomNumber,
-                              e.target.value,
-                              time
-                            )
-                          }
-                        >
-                          <option value="" className="movies_options">
-                            Choose the new movie
+                <div className="inner_stuff_s">
+                  <Form.Label
+                    className="update_theater_label_s"
+                    onClick={() => toggleTheaterDetails(theater.id)}
+                    style={{ cursor: "pointer", fontWeight: "bold" }}
+                  >
+                    Theater {theater.roomNumber}
+                  </Form.Label>
+                  {times.map((time, index) => (
+                    <Form.Group key={theater.id}>
+                      {time === "11:00" ? (
+                        <Form.Label className="update_theater_label">
+                          {time}am is playing:{" "}
+                          {getMovieTitle(theater.movieIds[index])}
+                        </Form.Label>
+                      ) : (
+                        <Form.Label className="update_theater_label">
+                          {time}pm is playing:{" "}
+                          {getMovieTitle(theater.movieIds[index])}
+                        </Form.Label>
+                      )}
+                      <Form.Select
+                        className="update_theater_select_s"
+                        onChange={(e) =>
+                          updateTheater(
+                            theater.location,
+                            theater.roomNumber,
+                            e.target.value,
+                            time
+                          )
+                        }
+                      >
+                        <option value="" className="movies_options">
+                          Choose the new movie
+                        </option>
+                        {movies.map((movie) => (
+                          <option key={movie.id} value={movie.id}>
+                            {movie.title}
                           </option>
-                          {movies.map((movie) => (
-                            <option key={movie.id} value={movie.id}>
-                              {movie.title}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </Form.Group>
-                    ))}
-                  </div>
-                )}
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+                  ))}
+                </div>
               </div>
             ))}
           </Form>
