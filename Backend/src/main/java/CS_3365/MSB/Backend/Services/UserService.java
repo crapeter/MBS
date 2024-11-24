@@ -29,9 +29,9 @@ public class UserService {
   @Autowired
   private ReviewRepo reviewRepo;
 
-  private static final String ALGORITHM = System.getenv("ALGORITHM");
-  private static final String SECRET_KEY = System.getenv("SECRET_KEY");
-  private static final String INIT_VECTOR = System.getenv("INIT_VECTOR");
+  private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
+  private static final String SECRET_KEY = "0123456789abcdef";
+  private static final String INIT_VECTOR = "abcdef9876543210";
 
   public boolean authenticate(String email, String password) {
     User user = userRepo.findByEmail(email);
@@ -244,6 +244,10 @@ public class UserService {
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("Failed to add review");
     }
+  }
+
+  public List<TicketDto> getAllTickets(String email) {
+    return Mapper.mapToTiList(ticketRepo.findByUserEmail(email));
   }
 
   private String encrypt(String password) {

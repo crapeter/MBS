@@ -16,6 +16,7 @@ import UpdateTheater from "./Components/Movie/UpdateTheaters";
 
 import Reviews from "./Components/Movie/Reviews";
 import AdminPage from "./Components/Movie/AdminPage";
+import TicketDisplay from "./Components/Movie/TicketDisplay";
 
 import "./App.css";
 
@@ -51,6 +52,7 @@ function App() {
                 Component={UpdateTheater}
               />
               <Route exact path="/Admin" Component={AdminPage} />
+              <Route exact path="/Tickets" Component={TicketDisplay} />
             </Routes>
           </BrowserRouter>
         </div>

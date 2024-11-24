@@ -7,6 +7,8 @@ public class TicketDto {
   private Long movieId;
   private Long theaterId;
   private String movieTitle;
+  private String location;
+  private String time;
   private int numberPurchased;
   private int roomNumber;
 }
