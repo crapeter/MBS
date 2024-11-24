@@ -83,6 +83,11 @@ public class UserController {
     return Mapper.mapToDto(userService.getUserByEmail(email));
   }
 
+  @GetMapping("/all/tickets")
+  public List<TicketDto> getAllTickets(@RequestParam String email) {
+    return userService.getAllTickets(email);
+  }
+
   @PatchMapping("/update/name")
   public ResponseEntity<String> updateUserName(@RequestParam String email, @RequestParam String newName) {
     return userService.updateUserName(email, newName);

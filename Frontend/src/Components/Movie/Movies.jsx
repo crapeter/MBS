@@ -5,6 +5,7 @@ import { Button, Form } from "react-bootstrap";
 import PurchaseTickets from "./PurchaseTickets";
 import MovieChoise from "./MovieChoice";
 import Logout from "../Misc/Logout";
+import TicketDisplay from "../Misc/ToTicketDisplay";
 import "../../CSS/Movies.css";
 import axios from "axios";
 
@@ -217,6 +218,7 @@ const Movies = () => {
               <Button variant="primary" onClick={toSearch}>
                 Search Movies
               </Button>
+              <TicketDisplay />
             </div>
             {isAdmin && (
               <div className="user_admin_buttons">

@@ -20,6 +20,8 @@
 
 .user_public_buttons {
   flex: 1;
+  display: flex;
+  gap: 10px;
 }
 
 .user_admin_buttons {
