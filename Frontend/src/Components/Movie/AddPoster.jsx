@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
 
 const AddPoster = ({ movie_id, movie_title }) => {
-  const nav = useNavigate();
-
   const [show, setShow] = useState(false);
   const [poster, setPoster] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -41,7 +38,7 @@ const AddPoster = ({ movie_id, movie_title }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      nav("/movies");
+      window.location.reload();
     } catch (err) {
       alert(err.message);
     }
@@ -51,7 +48,7 @@ const AddPoster = ({ movie_id, movie_title }) => {
 
   return (
     <div className="add_poster_div">
-      <Button variant="danger" onClick={handleShow}>
+      <Button variant="primary" onClick={handleShow}>
         Add Poster
       </Button>
 

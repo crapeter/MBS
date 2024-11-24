@@ -18,6 +18,9 @@ public class MovieService {
   @Autowired
   private TheaterRepo theaterRepo;
 
+  @Autowired
+  private PosterRepo posterRepo;
+
   public ResponseEntity<String> addMovie(Movie newMovie) {
     List<Movie> movies = movieRepo.findByDirectorAndTitle(newMovie.getDirector(), newMovie.getTitle());
     if (!movies.isEmpty())
@@ -93,6 +96,7 @@ public class MovieService {
 
     try {
       movieRepo.delete(movie);
+      posterRepo.delete(posterRepo.findByMovieId(movieId));
       return ResponseEntity.ok("Movie deleted successfully");
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("Failed to remove movie");
