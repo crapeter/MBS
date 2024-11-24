@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import AddPoster from "./AddPoster";
 import AddMovie from "./AddMovie";
 import EditPrice from "./EditPrice";
+import DeleteMovie from "./DeleteMovie";
 import axios from "axios";
 import "../../CSS/AdminPage.css";
 
@@ -26,7 +27,7 @@ const AdminPage = () => {
   const [movies, setMovies] = useState([]);
   const [allMovies, setAllMovies] = useState([]);
   const [openMovieId, setOpenMovieId] = useState(null);
-  const [priceUpdated, setPriceUpdated] = useState(false);
+  const [pageUpdated, setPageUpdated] = useState(false);
   const [moviePosterCache, setMoviePosterCache] = useState({});
   const [postersLoading, setPostersLoading] = useState(true);
   const [isTheaterInfoHidden, setIsTheaterInfoHidden] = useState(false);
@@ -101,7 +102,7 @@ const AdminPage = () => {
 
     fetchMovies();
     // eslint-disable-next-line
-  }, [priceUpdated]);
+  }, [pageUpdated]);
 
   useEffect(() => {
     const filterMovies = () => {
@@ -133,7 +134,7 @@ const AdminPage = () => {
     return uniqueData;
   };
 
-  const togglePriceUpdated = () => setPriceUpdated((prev) => !prev);
+  const togglePriceUpdated = () => setPageUpdated((prev) => !prev);
 
   const toggleMovieDetails = (movieId) =>
     setOpenMovieId((prev) => (prev === movieId ? null : movieId));
@@ -174,7 +175,7 @@ const AdminPage = () => {
             {isCatalogHidden ? "Show Current Catalog" : "Hide Current Catalog"}
           </Button>
 
-          <AddMovie location={""} />
+          <AddMovie togglePageUpdate={togglePriceUpdated} />
         </div>
       </div>
 
@@ -302,6 +303,10 @@ const AdminPage = () => {
                         />
                         <EditPrice
                           movie={movie}
+                          togglePageUpdate={togglePriceUpdated}
+                        />
+                        <DeleteMovie
+                          movieId={movie.id}
                           togglePageUpdate={togglePriceUpdated}
                         />
                       </div>

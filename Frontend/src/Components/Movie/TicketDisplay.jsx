@@ -90,7 +90,7 @@ const TicketDisplay = () => {
                       style={{ cursor: "pointer" }}
                       className="ticket_display_title"
                     >
-                      Movie Title: {ticket.movieTitle}
+                      Movie: {ticket.movieTitle}
                     </p>
                     {openTicketId === idx && (
                       <div className="ticket_display_data">

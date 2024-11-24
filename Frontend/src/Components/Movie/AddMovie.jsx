@@ -3,7 +3,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
 import "../../CSS/AddMovie.css";
 
-const AddMovie = ({ location }) => {
+const AddMovie = ({ togglePageUpdate }) => {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -56,6 +56,7 @@ const AddMovie = ({ location }) => {
         price: priceNum,
       });
       handleClose();
+      togglePageUpdate();
     } catch (err) {
       alert(err.message);
     }
