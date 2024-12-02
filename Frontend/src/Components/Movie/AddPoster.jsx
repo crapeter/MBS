@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
 
-const AddPoster = ({ movie_id, movie_title }) => {
+const AddPoster = ({ movie_id, movie_title, update_page }) => {
   const [show, setShow] = useState(false);
   const [poster, setPoster] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,8 @@ const AddPoster = ({ movie_id, movie_title }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      window.location.reload();
+      update_page();
+      handleClose();
     } catch (err) {
       alert(err.message);
     }

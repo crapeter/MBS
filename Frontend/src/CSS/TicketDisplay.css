@@ -29,6 +29,8 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: 650px;
+  overflow-x: auto;
 }
 
 .tickets_display_info {

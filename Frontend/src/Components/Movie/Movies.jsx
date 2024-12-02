@@ -25,7 +25,7 @@ const Movies = () => {
     "Snyder",
   ];
 
-  const { isLoggedIn, isAdmin } = useAuth();
+  const { isLoggedIn, isAdmin, userLocation, setUserLocation } = useAuth();
   const [movies, setMovies] = useState([]);
   const [openMovieId, setOpenMovieId] = useState(null);
   const [ticketUpdated, setTicketUpdated] = useState(false);
@@ -35,9 +35,12 @@ const Movies = () => {
   const [theaterMovieIds, setTheaterMovies] = useState([]);
   const [isPlaying, setIsPlaying] = useState([]);
   const [isUpcoming, setIsUpcoming] = useState([]);
-  const [viewLocation, setViewLocation] = useState("Lubbock");
+  const [viewLocation, setViewLocation] = useState(
+    userLocation ? userLocation : "Lubbock"
+  );
   const [moviePosterCache, setMoviePosterCache] = useState({});
   const [postersLoading, setPostersLoading] = useState(true);
+  const [pageUpdated, setPageUpdated] = useState(false);
 
   useEffect(() => {
     try {
@@ -65,6 +68,29 @@ const Movies = () => {
     // eslint-disable-next-line
   }, [viewLocation]);
 
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get("/api/movies/all");
+        setAllMovies(response.data);
+        if (movieDisplay === "All Movies") setMovies(response.data);
+        else if (movieDisplay === "Currently Playing Movies")
+          setMovies(
+            response.data.filter((movie) => theaterMovieIds.includes(movie.id))
+          );
+        else if (movieDisplay === "Upcoming Movie Catalog")
+          setMovies(
+            response.data.filter((movie) => !theaterMovieIds.includes(movie.id))
+          );
+      } catch (err) {
+        console.error("Error fetching movies:", err);
+      }
+    };
+
+    fetchMovies();
+    // eslint-disable-next-line
+  }, [pageUpdated]);
+
   const refreshTickets = () => {
     setTicketUpdated((prev) => !prev);
   };
@@ -74,7 +100,7 @@ const Movies = () => {
   };
 
   const refresh = () => {
-    window.location.reload();
+    setPageUpdated((prev) => !prev);
   };
 
   const toSearch = () => {
@@ -211,7 +237,9 @@ const Movies = () => {
     <div className="movie_div">
       {isLoggedIn ? (
         <div className="movies">
-          <h1 className="movies_header">Movies showing in {viewLocation}</h1>
+          <h1 className="movies_header">
+            Movies showing in {userLocation ? userLocation : viewLocation}
+          </h1>
 
           <div className="user_buttons">
             <div className="user_public_buttons">
@@ -240,7 +268,10 @@ const Movies = () => {
               <div className="dropdown_container">
                 <Form.Select
                   value={viewLocation}
-                  onChange={(e) => setViewLocation(e.target.value)}
+                  onChange={(e) => {
+                    setViewLocation(e.target.value);
+                    setUserLocation(e.target.value);
+                  }}
                   className="location_header_select"
                   required
                 >
