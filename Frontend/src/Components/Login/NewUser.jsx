@@ -1,49 +1,61 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom"
-import axios from 'axios'
-import '../../CSS/NewUser.css'
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../../CSS/NewUser.css";
 
 const NewUser = () => {
-  const isAdmin = false
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [address, setAddress] = useState('')
-  const [cardNumber, setCardNumber] = useState('')
+  const isAdmin = false;
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
 
-  const nav = useNavigate()
+  const nav = useNavigate();
 
   const handleRegistation = async () => {
     if (password !== confirmPassword) {
-      alert("Passwords do not match")
-      return
+      alert("Passwords do not match");
+      return;
     }
-    await axios.post(`/api/users/new/user`, {
-      isAdmin: isAdmin,
-      name: name,
-      email: email,
-      password: password,
-      phoneNum: phoneNumber,
-      address: address,
-      cardNum: cardNumber
-    })
-    .then(res => {
-      if (res.data) {
-        alert("Registration successful")
-        nav('/')
-      } else {
-        alert(res.data)
-      }
-    })
-    .catch(err => alert(err.message))
-  }
+    if (
+      name === "" ||
+      email === "" ||
+      password === "" ||
+      phoneNumber === "" ||
+      address === "" ||
+      cardNumber === ""
+    ) {
+      alert("Please fill out all fields");
+      return;
+    }
+    await axios
+      .post(`/api/users/new/user`, {
+        isAdmin: isAdmin,
+        name: name,
+        email: email,
+        password: password,
+        phoneNum: phoneNumber,
+        address: address,
+        cardNum: cardNumber,
+      })
+      .then((res) => {
+        if (res.data) {
+          alert("Registration successful");
+          nav("/login");
+        } else {
+          alert(res.data);
+        }
+      })
+      .catch((err) => alert("Card number is invalid"));
+  };
 
   const goBack = () => {
-    nav('/login')
-  }
+    nav("/login");
+  };
 
   return (
     <div className="top_register_div">
@@ -79,7 +91,7 @@ const NewUser = () => {
               requried
             />
           </Form.Group>
-          
+
           <Form.Group controlId="formBasicPassword">
             <Form.Control
               className="register_input"
@@ -121,12 +133,24 @@ const NewUser = () => {
           </Form.Group>
         </Form>
         <div>
-          <Button className="register_buttons" variant="primary" onClick={handleRegistation}>Register</Button>
-          <Button className="register_buttons" variant="danger" onClick={goBack}>Return</Button>
+          <Button
+            className="register_buttons"
+            variant="primary"
+            onClick={handleRegistation}
+          >
+            Register
+          </Button>
+          <Button
+            className="register_buttons"
+            variant="danger"
+            onClick={goBack}
+          >
+            Return
+          </Button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NewUser
+export default NewUser;

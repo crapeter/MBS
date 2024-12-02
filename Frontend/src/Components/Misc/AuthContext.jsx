@@ -17,6 +17,10 @@ export const AuthProvider = ({ children }) => {
     return localStorage.getItem("userEmail") || "";
   });
 
+  const [userLocation, setUserLocation] = useState(() => {
+    return localStorage.getItem("userLocation") || "";
+  });
+
   useEffect(() => {
     if (isLoggedIn !== null) {
       localStorage.setItem("isLoggedIn", isLoggedIn.toString());
@@ -35,6 +39,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, [userEmail]);
 
+  useEffect(() => {
+    if (userLocation) {
+      localStorage.setItem("userLocation", userLocation);
+    }
+  }, [userLocation]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -44,6 +54,8 @@ export const AuthProvider = ({ children }) => {
         setIsAdmin,
         userEmail,
         setUserEmail,
+        userLocation,
+        setUserLocation,
       }}
     >
       {children}

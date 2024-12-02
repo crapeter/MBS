@@ -29,7 +29,7 @@ const TicketDisplay = () => {
         const response = await axios.get(
           `/api/users/all/tickets?email=${userEmail}`
         );
-        setTickets(response.data);
+        setTickets(response.data.reverse());
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -72,7 +72,11 @@ const TicketDisplay = () => {
       {isLoggedIn && (
         <div className="ticket_display_container">
           <h1 className="header">Your Tickets</h1>
-          <Button variant="danger" onClick={goBack}>
+          <Button
+            variant="danger"
+            onClick={goBack}
+            style={{ marginBottom: "5px" }}
+          >
             Return
           </Button>
           {loading ? (

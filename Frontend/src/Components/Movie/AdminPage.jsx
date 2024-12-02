@@ -95,6 +95,12 @@ const AdminPage = () => {
         const response = await axios.get("/api/movies/all");
         setMovies(response.data);
         setAllMovies(response.data);
+        const posters = await axios.get("/api/posters/get");
+        const posterCache = posters.data.reduce((acc, poster) => {
+          acc[poster.movieId] = poster.image;
+          return acc;
+        }, {});
+        setMoviePosterCache(posterCache);
       } catch (err) {
         console.error("Error fetching movies:", err);
       }
@@ -300,6 +306,7 @@ const AdminPage = () => {
                           className="movie_buttons"
                           movie_id={movie.id}
                           movie_title={movie.title}
+                          update_page={togglePriceUpdated}
                         />
                         <EditPrice
                           movie={movie}
